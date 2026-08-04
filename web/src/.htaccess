@@ -1,0 +1,4 @@
+# Deny direct HTTP access to all files in this directory.
+# src/ is a private PHP include directory — it must never be
+# served directly to browsers.
+Require all denied

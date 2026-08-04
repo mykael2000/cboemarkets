@@ -1,0 +1,11 @@
+# Files and directories to exclude from FTP deployment
+.env
+.env.*
+!.env.example
+vendor/
+composer.lock
+sql/
+.git/
+.gitignore
+README.md
+*.md
