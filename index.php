@@ -75,11 +75,11 @@ $signinHref = site_url('signin.php');
       </a>
 
       <nav id="mobileNav" class="hidden xl:flex items-center gap-8 2xl:gap-10 text-white font-semibold text-[1rem] 2xl:text-[1.05rem]">
-        <a href="#" class="hover:text-[#39ff8e] transition">Markets</a>
-        <a href="#" class="hover:text-[#39ff8e] transition">Data</a>
-        <a href="#" class="hover:text-[#39ff8e] transition">Solutions</a>
-        <a href="#" class="hover:text-[#39ff8e] transition">Insights &amp; Education</a>
-        <a href="#" class="hover:text-[#39ff8e] transition">About Us</a>
+        <a target="_blank" href="https://www.cboe.com/markets" class="hover:text-[#39ff8e] transition">Markets</a>
+        <a target="_blank" href="https://www.cboe.com/cboe-data-vantage" class="hover:text-[#39ff8e] transition">Data</a>
+        <a target="_blank" href="https://www.cboe.com/solutions/options-analytics" class="hover:text-[#39ff8e] transition">Solutions</a>
+        <a target="_blank" href="https://www.cboe.com/insights" class="hover:text-[#39ff8e] transition">Insights &amp; Education</a>
+        <a target="_blank" href="https://www.cboe.com/about" class="hover:text-[#39ff8e] transition">About Us</a>
       </nav>
 
       <div class="flex items-center gap-3 sm:gap-5">
@@ -108,11 +108,11 @@ $signinHref = site_url('signin.php');
     <!-- Mobile dropdown -->
     <div id="mobileMenu" class="hidden xl:hidden border-t border-white/10 bg-[#171d3f]">
       <div class="max-w-[1500px] mx-auto px-4 sm:px-6 py-4 flex flex-col gap-2 text-white font-semibold">
-        <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Markets</a>
-        <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Data</a>
-        <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Solutions</a>
-        <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Insights &amp; Education</a>
-        <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">About Us</a>
+        <a target="_blank" href="https://www.cboe.com/markets" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Markets</a>
+        <a target="_blank" href="https://www.cboe.com/cboe-data-vantage" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Data</a>
+        <a target="_blank" href="https://www.cboe.com/solutions/options-analytics" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Solutions</a>
+        <a target="_blank" href="https://www.cboe.com/insights" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Insights &amp; Education</a>
+        <a target="_blank" href="https://www.cboe.com/about" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">About Us</a>
         <a href="<?= htmlspecialchars($signinHref, ENT_QUOTES, 'UTF-8') ?>" class="mt-2 inline-flex justify-center px-5 py-3 rounded-full border-2 border-[#39ff8e] text-[#39ff8e] hover:bg-[#39ff8e] hover:text-[#1b2147] transition">
           Sign In
         </a>
@@ -166,7 +166,7 @@ $signinHref = site_url('signin.php');
         </div>
 
         <div class="w-full lg:col-start-1 lg:col-end-2 lg:justify-self-start mt-6 lg:mt-0">
-          <a href="#" class="inline-flex w-full lg:w-auto items-center justify-center px-6 py-3 rounded-full border-2 border-[#0e1d5a] text-[#0e1d5a] font-semibold text-[1rem] hover:bg-[#0e1d5a] hover:text-white transition">
+          <a target="_blank" href="https://www.cboe.com/markets/prediction-markets" class="inline-flex w-full lg:w-auto items-center justify-center px-6 py-3 rounded-full border-2 border-[#0e1d5a] text-[#0e1d5a] font-semibold text-[1rem] hover:bg-[#0e1d5a] hover:text-white transition">
             Cboe Predictions
           </a>
         </div>
@@ -721,32 +721,32 @@ $signinHref = site_url('signin.php');
             <div>
               <h4 class="text-[0.9rem] font-semibold mb-3">About</h4>
               <ul class="space-y-1.5 text-[0.85rem] text-[#c0c7ff]">
-                <li><a href="#" class="hover:text-[#46e7ff]">About Us</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Careers</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Cboe Empowers</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Corporate Stewardship</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Hours &amp; Holidays</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Investor Relations</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Press Releases</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Public Policy</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/about" class="hover:text-[#46e7ff]">About Us</a></li>
+                <li><a target="_blank" href="https://careers.cboe.com/us/en" class="hover:text-[#46e7ff]">Careers</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/about/empowers" class="hover:text-[#46e7ff]">Cboe Empowers</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/about/corporate-stewardship" class="hover:text-[#46e7ff]">Corporate Stewardship</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/about/hours-and-holidays" class="hover:text-[#46e7ff]">Hours &amp; Holidays</a></li>
+                <li><a target="_blank" href="https://ir.cboe.com/overview/default.aspx" class="hover:text-[#46e7ff]">Investor Relations</a></li>
+                <li><a target="_blank" href="https://ir.cboe.com/news/default.aspx" class="hover:text-[#46e7ff]">Press Releases</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/about/policy/" class="hover:text-[#46e7ff]">Public Policy</a></li>
               </ul>
             </div>
 
             <div>
               <h4 class="text-[0.9rem] font-semibold mb-3">Legal</h4>
               <ul class="space-y-1.5 text-[0.85rem] text-[#c0c7ff]">
-                <li><a href="#" class="hover:text-[#46e7ff]">Accessibility</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Biosimilar Information Privacy Policy</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">California Notice &amp; Collection</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Copyright, Trademark &amp; Patents</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Disclaimers</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Email Management</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Notice of Financial Incentive</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Cboe’s Investor Protection</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Privacy Statement</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Terms &amp; Conditions</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Your Privacy Choices</a></li>
-                <li><a href="#" class="hover:text-[#46e7ff]">Do Not Sell or Share My Personal Information</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/accessibility" class="hover:text-[#46e7ff]">Accessibility</a></li>
+                <li><a target="_blank" href="https://cdn.cboe.com/resources/aboutcboe/Biometric_Information_Privacy_Policy.pdf" class="hover:text-[#46e7ff]">Biometric Information Privacy Policy</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/privacy#california" class="hover:text-[#46e7ff]">California Notice &amp; Collection</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/copyright" class="hover:text-[#46e7ff]">Copyright, Trademark &amp; Patents</a></li>
+                <li><a target="_blank" href="http://cboe.com/global-disclaimers/" class="hover:text-[#46e7ff]">Disclaimers</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/subscriptions/" class="hover:text-[#46e7ff]">Email Management</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/financial-incentive-notice/" class="hover:text-[#46e7ff]">Notice of Financial Incentive</a></li>
+                <li><a target="_blank" href="https://www.theocc.com/company-information/documents-and-archives/publications" class="hover:text-[#46e7ff]">Cboe’s Investor Protection</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/privacy" class="hover:text-[#46e7ff]">Privacy Statement</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/terms" class="hover:text-[#46e7ff]">Terms &amp; Conditions</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/privacy" class="hover:text-[#46e7ff]">Your Privacy Choices</a></li>
+                <li><a target="_blank" href="https://www.cboe.com/privacy" class="hover:text-[#46e7ff]">Do Not Sell or Share My Personal Information</a></li>
               </ul>
             </div>
           </div>
