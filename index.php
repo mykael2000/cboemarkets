@@ -1,5 +1,18 @@
 <?php
-// index.php
+function site_base_path(): string
+{
+  $scriptDir = rtrim((string) dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/');
+  return $scriptDir === '' || $scriptDir === '/' ? '' : $scriptDir;
+}
+
+function site_url(string $path): string
+{
+  $base = site_base_path();
+  $path = '/' . ltrim($path, '/');
+  return $base === '' ? $path : $base . $path;
+}
+
+$signinHref = site_url('signin.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +90,7 @@
           </svg>
         </button>
 
-        <a href="web/public/signin.php" class="hidden sm:inline-flex px-5 lg:px-6 py-2.5 lg:py-3 rounded-full border-2 border-[#39ff8e] text-[#39ff8e] font-semibold text-[0.95rem] lg:text-[1rem] hover:bg-[#39ff8e] hover:text-[#1b2147] transition">
+        <a href="<?= htmlspecialchars($signinHref, ENT_QUOTES, 'UTF-8') ?>" class="hidden sm:inline-flex px-5 lg:px-6 py-2.5 lg:py-3 rounded-full border-2 border-[#39ff8e] text-[#39ff8e] font-semibold text-[0.95rem] lg:text-[1rem] hover:bg-[#39ff8e] hover:text-[#1b2147] transition">
           Sign In
         </a>
 
@@ -100,7 +113,7 @@
         <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Solutions</a>
         <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Insights &amp; Education</a>
         <a href="#" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">About Us</a>
-        <a href="web/public/signin.php" class="mt-2 inline-flex justify-center px-5 py-3 rounded-full border-2 border-[#39ff8e] text-[#39ff8e] hover:bg-[#39ff8e] hover:text-[#1b2147] transition">
+        <a href="<?= htmlspecialchars($signinHref, ENT_QUOTES, 'UTF-8') ?>" class="mt-2 inline-flex justify-center px-5 py-3 rounded-full border-2 border-[#39ff8e] text-[#39ff8e] hover:bg-[#39ff8e] hover:text-[#1b2147] transition">
           Sign In
         </a>
       </div>

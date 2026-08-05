@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <p class="text-center text-slate-400 text-sm mt-6">
         Already have an account?
-        <a href="login.php" class="text-emerald-400 hover:text-emerald-300 transition font-medium">Sign in</a>
+        <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-400 hover:text-emerald-300 transition font-medium">Sign in</a>
       </p>
     </div>
   </div>
