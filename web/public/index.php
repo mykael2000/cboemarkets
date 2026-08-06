@@ -332,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p class="text-xs text-slate-400">Complete the check below to continue with registration</p>
                   </div>
                   <div class="g-recaptcha"
-                    data-sitekey="<?= htmlspecialchars(env('RECAPTCHA_SITE_KEY', '6LciqNgsAAAAAIID3i1LGWUdEbMjFSMPJzbwLAx0'), ENT_QUOTES) ?>"
+                    data-sitekey="<?= htmlspecialchars(env('RECAPTCHA_SITE_KEY', '6LcEq3gtAAAAAI7_4qLFkVUDlb4Kt1wTnS11BtVT'), ENT_QUOTES) ?>"
                     data-callback="onRecaptchaPassed"
                     data-expired-callback="onRecaptchaExpired">
                   </div>
