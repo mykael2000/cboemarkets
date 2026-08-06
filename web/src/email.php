@@ -135,13 +135,13 @@ function send_email(string $to, string $subject, string $htmlBody, ?string &$deb
 function send_email_via_smtp(string $to, string $subject, string $htmlBody, ?string &$debugError = null): bool
 {
   $debugError = null;
-  $host = env('SMTP_HOST', '');
-  $port = (int)env('SMTP_PORT', 587);
-  $user = env('SMTP_USER', '');
-  $pass = env('SMTP_PASS', '');
-  $fromEmail = env('SMTP_FROM_EMAIL', '');
-  $fromName  = env('SMTP_FROM_NAME', 'CBOE Markets');
-  $secure    = strtolower(env('SMTP_SECURE', 'tls'));
+  $host = trim((string) env('SMTP_HOST', ''));
+  $port = (int) env('SMTP_PORT', 587);
+  $user = trim((string) env('SMTP_USER', ''));
+  $pass = (string) env('SMTP_PASS', '');
+  $fromEmail = trim((string) env('SMTP_FROM_EMAIL', ''));
+  $fromName  = trim((string) env('SMTP_FROM_NAME', 'CBOE Markets'));
+  $secure    = strtolower(trim((string) env('SMTP_SECURE', 'tls')));
 
   if ($host === '' || $fromEmail === '') {
     $debugError = 'SMTP_HOST or SMTP_FROM_EMAIL not configured';

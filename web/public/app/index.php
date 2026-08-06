@@ -213,20 +213,20 @@ $pricesJson = json_encode([
     <style>
         /* ── Premium page background ── */
         body {
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #ffffff 100%);
+            background: linear-gradient(180deg, #f6faff 0%, #edf5ff 45%, #f9fbff 100%);
         }
 
         /* ── Balance hero glow ── */
         .card-glow {
-            box-shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 20px 55px rgba(15, 102, 192, 0.12);
         }
 
         /* ── Glassmorphic stat cards ── */
         .glass-card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-            -webkit-box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+            border: 1px solid #dcecff;
+            box-shadow: 0 8px 24px rgba(47, 127, 224, 0.08);
+            -webkit-box-shadow: 0 8px 24px rgba(47, 127, 224, 0.08);
         }
 
         /* ── Crypto badge colour variants ── */
@@ -235,18 +235,18 @@ $pricesJson = json_encode([
         .crypto-usdt { background: rgba(20,184,166,.08); border: 1px solid rgba(20,184,166,.25); }
 
         /* ── P&L colour helpers ── */
-        .pnl-pos { color: #10b981; }
+        .pnl-pos { color: #2f7fe0; }
         .pnl-neg { color: #ef4444; }
 
         /* ── Swap card gradient ── */
         .swap-gradient {
-            background: linear-gradient(145deg, rgba(239,246,255,1) 0%, rgba(255,255,255,1) 100%);
-            border: 1px solid #e2e8f0;
+            background: linear-gradient(145deg, rgba(235,244,255,1) 0%, rgba(255,255,255,1) 100%);
+            border: 1px solid #dcecff;
         }
 
         /* ── Subtle hover lift ── */
         .hover-lift { transition: transform .2s, box-shadow .2s; }
-        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 14px 24px rgba(15,23,42,.10); }
+        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 14px 24px rgba(47,127,224,.12); }
     </style>
 </head>
 <body class="bg-white text-slate-900 min-h-screen pb-28 md:pb-4 antialiased">

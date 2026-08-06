@@ -237,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </a>
     <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
       <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="hover:text-slate-900 transition">Login</a>
-      <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/register.php', ENT_QUOTES, 'UTF-8') ?>" class="bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Get Started</a>
+      <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/join_community.php', ENT_QUOTES, 'UTF-8') ?>" class="bg-[#2f7fe0] hover:bg-[#2968b5] text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Join Community</a>
     </nav>
     <!-- Mobile hamburger -->
     <button id="mobileMenuBtn" class="md:hidden text-slate-700 hover:text-slate-900 focus:outline-none">
@@ -249,7 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- Mobile menu -->
   <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2 shadow-sm">
     <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="block text-slate-600 hover:text-slate-900 py-1">Login</a>
-    <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/register.php', ENT_QUOTES, 'UTF-8') ?>" class="block bg-emerald-500 text-white px-4 py-2 rounded-lg text-center font-semibold">Get Started</a>
+    <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/join_community.php', ENT_QUOTES, 'UTF-8') ?>" class="block bg-[#2f7fe0] text-white px-4 py-2 rounded-lg text-center font-semibold">Join Community</a>
   </div>
 </header>
 
@@ -308,7 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/forgot_password.php', ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-600 hover:text-emerald-500 transition">Forgot password?</a>
                   </div>
 
-                  <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 text-base">
+                  <button type="submit" class="w-full bg-[#2f7fe0] hover:bg-[#2968b5] text-white font-bold py-3 rounded-xl transition shadow-lg shadow-[#2f7fe0]/20 text-base">
                     Access Platform
                   </button>
                 </form>
@@ -378,7 +378,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="text-xs text-emerald-700 font-medium">Human verification passed</span>
                   </div>
 
-                  <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 text-base">
+                  <button type="submit" class="w-full bg-[#2f7fe0] hover:bg-[#2968b5] text-white font-bold py-3 rounded-xl transition shadow-lg shadow-[#2f7fe0]/20 text-base">
                     Create Account
                   </button>
                 </form>

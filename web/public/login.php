@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <p class="text-center text-slate-400 text-sm mt-6">
         Don't have an account?
-        <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/register.php', ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-400 hover:text-emerald-300 transition font-medium">Create one free</a>
+        <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/join_community.php', ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-400 hover:text-emerald-300 transition font-medium">Join community first</a>
       </p>
     </div>
   </div>
