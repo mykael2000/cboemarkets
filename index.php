@@ -1,18 +1,34 @@
 <?php
 function site_base_path(): string
 {
-  $scriptDir = rtrim((string) dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/');
-  return $scriptDir === '' || $scriptDir === '/' ? '' : $scriptDir;
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    if ($scriptName !== '') {
+        $dir = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
+        if ($dir !== '' && $dir !== '/' && $dir !== '.') {
+            return $dir;
+        }
+    }
+
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+    $path = parse_url($requestUri, PHP_URL_PATH) ?: '/';
+    $path = trim($path, '/');
+
+    if ($path === '') {
+        return '';
+    }
+
+    $segments = explode('/', $path);
+    if (count($segments) > 1) {
+        array_pop($segments);
+        $base = implode('/', $segments);
+        return $base !== '' ? '/' . $base : '';
+    }
+
+    return '';
 }
 
-function site_url(string $path): string
-{
-  $base = site_base_path();
-  $path = '/' . ltrim($path, '/');
-  return $base === '' ? $path : $base . $path;
-}
-
-$signinHref = site_url('web/public/index.php');
+$basePath = site_base_path();
+$signinHref = ($basePath === '' ? '/web/public/signin.php' : $basePath . '/web/public/signin.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
