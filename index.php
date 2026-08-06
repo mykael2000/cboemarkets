@@ -1,34 +1,5 @@
 <?php
-function site_base_path(): string
-{
-    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-    if ($scriptName !== '') {
-        $dir = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
-        if ($dir !== '' && $dir !== '/' && $dir !== '.') {
-            return $dir;
-        }
-    }
-
-    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
-    $path = parse_url($requestUri, PHP_URL_PATH) ?: '/';
-    $path = trim($path, '/');
-
-    if ($path === '') {
-        return '';
-    }
-
-    $segments = explode('/', $path);
-    if (count($segments) > 1) {
-        array_pop($segments);
-        $base = implode('/', $segments);
-        return $base !== '' ? '/' . $base : '';
-    }
-
-    return '';
-}
-
-$basePath = site_base_path();
-$signinHref = ($basePath === '' ? '/web/public/signin.php' : $basePath . '/web/public/signin.php');
+$signinHref = '/signin.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
