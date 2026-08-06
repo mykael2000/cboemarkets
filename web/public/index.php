@@ -192,10 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/images/favicon.png">
   <title>CBOE Markets – Automated Crypto Trading</title>
-
   <!-- SEO -->
   <meta name="description" content="CBOE Markets is a smart digital trading platform. Access markets, track portfolios, and trade with confidence 24/7.">
-
   <!-- Open Graph / link preview -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cboemarkets.com/">
