@@ -12,7 +12,7 @@ function site_url(string $path): string
   return $base === '' ? $path : $base . $path;
 }
 
-$signinHref = site_url('signin.php');
+$signinHref = site_url('web/public/index.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
