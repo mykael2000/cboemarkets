@@ -1,0 +1,345 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/../../src/config.php';
+require_once __DIR__ . '/../../src/auth.php';
+require_once __DIR__ . '/../../src/csrf.php';
+require_once __DIR__ . '/../../src/helpers.php';
+
+require_login();
+$user = current_user();
+
+function ensure_stock_portfolio_table(): void
+{
+    db()->exec(
+        'CREATE TABLE IF NOT EXISTS stock_positions (
+            id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id BIGINT UNSIGNED NOT NULL,
+            symbol VARCHAR(20) NOT NULL,
+            company VARCHAR(100) NOT NULL,
+            quantity DECIMAL(18,8) NOT NULL DEFAULT 0.00000000,
+            avg_cost DECIMAL(18,2) NOT NULL DEFAULT 0.00,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_user_symbol (user_id, symbol),
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB'
+    );
+}
+
+ensure_stock_portfolio_table();
+
+$stocks = [
+    ['symbol' => 'AAPL', 'name' => 'Apple', 'sector' => 'Technology', 'price' => 0, 'change' => 0],
+    ['symbol' => 'MSFT', 'name' => 'Microsoft', 'sector' => 'Technology', 'price' => 0, 'change' => 0],
+    ['symbol' => 'NVDA', 'name' => 'NVIDIA', 'sector' => 'Semiconductors', 'price' => 0, 'change' => 0],
+    ['symbol' => 'AMZN', 'name' => 'Amazon', 'sector' => 'E-Commerce', 'price' => 0, 'change' => 0],
+    ['symbol' => 'GOOGL', 'name' => 'Alphabet', 'sector' => 'Technology', 'price' => 0, 'change' => 0],
+    ['symbol' => 'TSLA', 'name' => 'Tesla', 'sector' => 'Automotive', 'price' => 0, 'change' => 0],
+];
+
+foreach ($stocks as &$stock) {
+    $quote = stock_price_for_symbol($stock['symbol']);
+    $stock['price'] = $quote['price'];
+    $stock['change'] = $quote['change'];
+}
+unset($stock);
+
+$positions = [];
+try {
+    $stmt = db()->prepare('SELECT * FROM stock_positions WHERE user_id = ? ORDER BY updated_at DESC');
+    $stmt->execute([$user['id']]);
+    $positions = $stmt->fetchAll();
+} catch (Throwable) {
+    $positions = [];
+}
+
+$portfolioValue = 0.0;
+$portfolioCost = 0.0;
+foreach ($positions as $position) {
+    $quote = stock_price_for_symbol($position['symbol']);
+    $marketValue = (float)$position['quantity'] * $quote['price'];
+    $costValue = (float)$position['quantity'] * (float)$position['avg_cost'];
+    $portfolioValue += $marketValue;
+    $portfolioCost += $costValue;
+}
+
+$portfolioGain = $portfolioValue - $portfolioCost;
+$portfolioGainPct = $portfolioCost > 0 ? ($portfolioGain / $portfolioCost) * 100 : 0;
+
+$chartSymbol = strtoupper(trim($_GET['chart_symbol'] ?? 'AAPL'));
+$allowedChartSymbols = array_map(static function (array $stock): string { return $stock['symbol']; }, $stocks);
+if (!in_array($chartSymbol, $allowedChartSymbols, true)) {
+    $chartSymbol = 'AAPL';
+}
+
+$assetMix = [
+    'Technology' => 0.0,
+    'Consumer' => 0.0,
+    'Semiconductors' => 0.0,
+    'Other' => 0.0,
+];
+foreach ($positions as $position) {
+    $quote = stock_price_for_symbol($position['symbol']);
+    $marketValue = (float)$position['quantity'] * $quote['price'];
+    $sector = match ($position['symbol']) {
+        'AAPL', 'MSFT', 'GOOGL', 'META', 'AMZN', 'NFLX' => 'Technology',
+        'NVDA' => 'Semiconductors',
+        'TSLA' => 'Consumer',
+        default => 'Other',
+    };
+    $assetMix[$sector] += $marketValue;
+}
+$mixTotal = array_sum($assetMix);
+$assetMixPercent = [];
+foreach ($assetMix as $sector => $value) {
+    $assetMixPercent[$sector] = $mixTotal > 0 ? round(($value / $mixTotal) * 100, 1) : 0.0;
+}
+
+$error = get_flash('error');
+$success = get_flash('success');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'buy_stock') {
+    csrf_verify();
+
+    $symbol = strtoupper(trim($_POST['symbol'] ?? 'AAPL'));
+    $quantity = (float)($_POST['quantity'] ?? 0);
+    $company = trim($_POST['company'] ?? '');
+
+    if ($quantity <= 0 || $company === '') {
+        flash('error', 'Please enter a valid quantity and company.');
+        redirect('stocks.php');
+    }
+
+    $quote = stock_price_for_symbol($symbol);
+    $cost = $quote['price'] * $quantity;
+    if ((float)($user['balance'] ?? 0) < $cost) {
+        flash('error', 'Insufficient USDT balance.');
+        redirect('stocks.php');
+    }
+
+    try {
+        $pdo = db();
+        $pdo->beginTransaction();
+        $pdo->prepare('UPDATE users SET balance = balance - ? WHERE id = ?')->execute([$cost, $user['id']]);
+
+        $existing = $pdo->prepare('SELECT id, quantity, avg_cost FROM stock_positions WHERE user_id = ? AND symbol = ? LIMIT 1');
+        $existing->execute([$user['id'], $symbol]);
+        $row = $existing->fetch();
+
+        if ($row) {
+            $newQty = (float)$row['quantity'] + $quantity;
+            $newAvg = (((float)$row['quantity'] * (float)$row['avg_cost']) + $cost) / $newQty;
+            $pdo->prepare('UPDATE stock_positions SET quantity = ?, avg_cost = ?, updated_at = NOW() WHERE id = ?')
+                ->execute([$newQty, $newAvg, $row['id']]);
+        } else {
+            $pdo->prepare('INSERT INTO stock_positions (user_id, symbol, company, quantity, avg_cost) VALUES (?, ?, ?, ?, ?)')
+                ->execute([$user['id'], $symbol, $company, $quantity, $quote['price']]);
+        }
+
+        $pdo->commit();
+        flash('success', 'Stock purchase completed.');
+    } catch (Throwable) {
+        if (($pdo ?? null) instanceof PDO && $pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        flash('error', 'Could not complete stock purchase.');
+    }
+
+    redirect('stocks.php');
+}
+
+$user = current_user();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <title>Stocks – CBOE Markets</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: linear-gradient(180deg, #f6faff 0%, #edf5ff 45%, #f9fbff 100%); }
+    .glass { background: rgba(255,255,255,0.9); border:1px solid #dcecff; box-shadow:0 12px 40px rgba(15,102,192,0.08); }
+  </style>
+</head>
+<body class="min-h-screen text-slate-900 pb-20">
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+    <div>
+      <p class="text-xs uppercase tracking-[0.3em] text-blue-600 font-semibold">Invest</p>
+      <h1 class="text-xl font-extrabold text-slate-900">Stocks</h1>
+    </div>
+    <div class="rounded-full bg-blue-600/10 text-blue-700 px-3 py-1 text-xs font-semibold">Live market</div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <?php if ($error): ?>
+      <div class="rounded-xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm"><?= sanitize($error) ?></div>
+    <?php endif; ?>
+    <?php if ($success): ?>
+      <div class="rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 px-4 py-3 text-sm"><?= sanitize($success) ?></div>
+    <?php endif; ?>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-5">
+        <p class="text-sm text-slate-500">Portfolio value</p>
+        <p class="text-3xl font-bold text-slate-900">$<?= format_currency($portfolioValue, 2) ?></p>
+        <p class="mt-2 text-sm <?= $portfolioGain >= 0 ? 'text-emerald-600' : 'text-red-600' ?>">
+          <?= $portfolioGain >= 0 ? '+' : '' ?>$<?= format_currency($portfolioGain, 2) ?> (<?= $portfolioGain >= 0 ? '+' : '' ?><?= format_currency($portfolioGainPct, 2) ?>%)
+        </p>
+      </div>
+      <div class="glass rounded-2xl p-5">
+        <p class="text-sm text-slate-500">Cash balance</p>
+        <p class="text-3xl font-bold text-slate-900">$<?= format_currency((float)($user['balance'] ?? 0), 2) ?></p>
+        <p class="mt-2 text-sm text-slate-500">Ready for new positions</p>
+      </div>
+      <div class="glass rounded-2xl p-5">
+        <p class="text-sm text-slate-500">Asset mix</p>
+        <div class="mt-3 space-y-2">
+          <?php foreach ($assetMixPercent as $sector => $percent): ?>
+            <div class="flex items-center justify-between text-sm"><span><?= sanitize($sector) ?></span><span class="font-semibold"><?= format_currency((float)$percent, 1) ?>%</span></div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 xl:grid-cols-[1.2fr_0.8fr] gap-6">
+      <div class="glass rounded-2xl overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+          <div>
+            <h2 class="font-bold text-slate-900">Market watch</h2>
+            <p class="text-sm text-slate-500">Live prices and quick buy actions</p>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50/80">
+              <tr>
+                <th class="text-left px-5 py-3 text-slate-600">Symbol</th>
+                <th class="text-left px-5 py-3 text-slate-600">Company</th>
+                <th class="text-right px-5 py-3 text-slate-600">Price</th>
+                <th class="text-right px-5 py-3 text-slate-600">Change</th>
+                <th class="text-right px-5 py-3 text-slate-600">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($stocks as $stock): ?>
+                <tr class="border-t border-slate-200 hover:bg-slate-50/70">
+                  <td class="px-5 py-3 font-semibold text-slate-900"><?= sanitize($stock['symbol']) ?></td>
+                  <td class="px-5 py-3 text-slate-600"><?= sanitize($stock['name']) ?></td>
+                  <td class="px-5 py-3 text-right font-semibold text-slate-900">$<?= format_currency((float)$stock['price'], 2) ?></td>
+                  <td class="px-5 py-3 text-right <?= (float)$stock['change'] >= 0 ? 'text-emerald-600' : 'text-red-600' ?>">
+                    <?= (float)$stock['change'] >= 0 ? '+' : '' ?><?= format_currency((float)$stock['change'], 2) ?>%
+                  </td>
+                  <td class="px-5 py-3 text-right">
+                    <form method="post" class="inline-block">
+                      <?= csrf_field() ?>
+                      <input type="hidden" name="action" value="buy_stock">
+                      <input type="hidden" name="symbol" value="<?= sanitize($stock['symbol']) ?>">
+                      <input type="hidden" name="company" value="<?= sanitize($stock['name']) ?>">
+                      <input type="hidden" name="quantity" value="1">
+                      <button class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">Buy</button>
+                    </form>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="glass rounded-2xl p-5">
+          <h2 class="font-bold text-slate-900">Buy stock</h2>
+          <p class="text-sm text-slate-500 mt-1">A quick trade form for a single position.</p>
+          <form method="post" class="mt-4 space-y-3">
+            <?= csrf_field() ?>
+            <input type="hidden" name="action" value="buy_stock">
+            <select name="symbol" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm">
+              <?php foreach ($stocks as $stock): ?>
+                <option value="<?= sanitize($stock['symbol']) ?>"><?= sanitize($stock['symbol']) ?> - <?= sanitize($stock['name']) ?></option>
+              <?php endforeach; ?>
+            </select>
+            <input type="text" name="company" placeholder="Company name" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" required>
+            <input type="number" name="quantity" min="1" step="1" placeholder="Quantity" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" required>
+            <button class="w-full rounded-xl bg-blue-600 text-white py-2.5 font-semibold">Buy position</button>
+          </form>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="font-bold text-slate-900">Live stock chart</h2>
+            <form method="get" class="w-32">
+              <select name="chart_symbol" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-sm">
+                <?php foreach ($allowedChartSymbols as $symbol): ?>
+                  <option value="<?= sanitize($symbol) ?>" <?= $symbol === $chartSymbol ? 'selected' : '' ?>><?= sanitize($symbol) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </form>
+          </div>
+          <div class="mt-4 rounded-2xl overflow-hidden border border-slate-200" style="height: 320px;">
+            <div class="tradingview-widget-container h-full">
+              <div class="tradingview-widget-container__widget h-full"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+              {
+                "autosize": true,
+                "symbol": "NASDAQ:<?= sanitize($chartSymbol) ?>",
+                "interval": "60",
+                "timezone": "Etc/UTC",
+                "theme": "light",
+                "style": "1",
+                "locale": "en",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "save_image": false,
+                "backgroundColor": "rgba(255,255,255,1)",
+                "gridColor": "rgba(226,232,240,1)"
+              }
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="glass rounded-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+        <div>
+          <h2 class="font-bold text-slate-900">Your stock positions</h2>
+          <p class="text-sm text-slate-500">Purchased shares and average cost</p>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50/80">
+            <tr>
+              <th class="text-left px-5 py-3 text-slate-600">Symbol</th>
+              <th class="text-left px-5 py-3 text-slate-600">Company</th>
+              <th class="text-right px-5 py-3 text-slate-600">Shares</th>
+              <th class="text-right px-5 py-3 text-slate-600">Avg cost</th>
+              <th class="text-right px-5 py-3 text-slate-600">Market value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if (empty($positions)): ?>
+              <tr><td colspan="5" class="px-5 py-6 text-center text-slate-500">No stock positions yet.</td></tr>
+            <?php else: ?>
+              <?php foreach ($positions as $position): $quote = stock_price_for_symbol($position['symbol']); $mv = (float)$position['quantity'] * $quote['price']; ?>
+                <tr class="border-t border-slate-200 hover:bg-slate-50/70">
+                  <td class="px-5 py-3 font-semibold text-slate-900"><?= sanitize($position['symbol']) ?></td>
+                  <td class="px-5 py-3 text-slate-600"><?= sanitize($position['company']) ?></td>
+                  <td class="px-5 py-3 text-right text-slate-900"><?= format_currency((float)$position['quantity'], 2) ?></td>
+                  <td class="px-5 py-3 text-right text-slate-900">$<?= format_currency((float)$position['avg_cost'], 2) ?></td>
+                  <td class="px-5 py-3 text-right text-slate-900">$<?= format_currency($mv, 2) ?></td>
+                </tr>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <?php $activePage = 'stocks.php'; include '_nav.php'; ?>
+</body>
+</html>

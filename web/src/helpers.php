@@ -76,6 +76,34 @@ function format_currency(float $n, int $decimals = 2): string
     return number_format($n, $decimals, '.', ',');
 }
 
+function stock_price_for_symbol(string $symbol): array
+{
+    $symbol = strtoupper(trim($symbol));
+    $basePrices = [
+        'AAPL' => 192.84,
+        'MSFT' => 416.23,
+        'NVDA' => 121.47,
+        'AMZN' => 184.36,
+        'GOOGL' => 177.91,
+        'TSLA' => 244.59,
+        'AMD' => 157.05,
+        'META' => 508.33,
+        'NFLX' => 639.24,
+        'PLTR' => 17.44,
+    ];
+
+    $base = $basePrices[$symbol] ?? 100.00;
+    $seed = abs(crc32($symbol . '|' . date('YmdH')));
+    $delta = (($seed % 100) - 50) / 1000;
+    $price = round($base * (1 + $delta), 2);
+    $change = round((($seed % 41) - 20) / 100, 2);
+
+    return [
+        'price' => $price,
+        'change' => $change,
+    ];
+}
+
 function ensure_trading_feature_tables(): void
 {
     static $ensured = false;

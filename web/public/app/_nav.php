@@ -32,6 +32,12 @@ $_navPage = $activePage;
             <span>Trade</span>
         </a>
 
+        <a href="stocks.php"
+           class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition <?= $_navPage === 'stocks.php' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' ?>">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19h16M7 15l3-4 3 2 4-6"/></svg>
+            <span>Stocks</span>
+        </a>
+
         <a href="deposit.php"
            class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition <?= $_navPage === 'deposit.php' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' ?>">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
@@ -84,6 +90,10 @@ $_navPage = $activePage;
     <a href="trading.php" class="flex flex-col items-center gap-0.5 py-1 px-2 <?= $_navPage === 'trading.php' ? 'text-emerald-500' : 'text-slate-500 hover:text-emerald-400' ?> transition">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
         <span class="text-[10px] font-semibold">Trade</span>
+    </a>
+    <a href="stocks.php" class="flex flex-col items-center gap-0.5 py-1 px-2 <?= $_navPage === 'stocks.php' ? 'text-emerald-500' : 'text-slate-500 hover:text-emerald-400' ?> transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19h16M7 15l3-4 3 2 4-6"/></svg>
+        <span class="text-[10px] font-semibold">Stocks</span>
     </a>
     <a href="profile.php" class="flex flex-col items-center gap-0.5 py-1 px-2 <?= $_navPage === 'profile.php' ? 'text-emerald-500' : 'text-slate-500 hover:text-emerald-400' ?> transition">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
