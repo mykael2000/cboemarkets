@@ -164,13 +164,6 @@ $user = current_user();
   </style>
 </head>
 <body class="min-h-screen text-slate-900 pb-20">
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between">
-    <div>
-      <p class="text-xs uppercase tracking-[0.3em] text-blue-600 font-semibold">Invest</p>
-      <h1 class="text-xl font-extrabold text-slate-900">Stocks</h1>
-    </div>
-    <div class="rounded-full bg-blue-600/10 text-blue-700 px-3 py-1 text-xs font-semibold">Live market</div>
-  </header>
 
   <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
     <?php if ($error): ?>
@@ -341,5 +334,17 @@ $user = current_user();
   </main>
 
   <?php $activePage = 'stocks.php'; include '_nav.php'; ?>
+
+  <footer class="border-t border-slate-200 bg-white/90 backdrop-blur-sm mt-8">
+    <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-600">
+      <p>© <?= date('Y') ?> CBOE Markets. All rights reserved.</p>
+      <div class="flex items-center gap-4">
+        <a href="index.php" class="hover:text-blue-600 transition">Dashboard</a>
+        <a href="markets.php" class="hover:text-blue-600 transition">Markets</a>
+        <a href="trading.php" class="hover:text-blue-600 transition">Trading</a>
+        <a href="profile.php" class="hover:text-blue-600 transition">Profile</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
