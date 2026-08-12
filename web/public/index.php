@@ -236,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </a>
     <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
       <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="hover:text-slate-900 transition">Login</a>
-      <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/join_community.php', ENT_QUOTES, 'UTF-8') ?>" class="bg-[#2f7fe0] hover:bg-[#2968b5] text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Join Community</a>
+      <button type="button" id="joinCommunityBtn" class="bg-[#2f7fe0] hover:bg-[#2968b5] text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Join Community</button>
     </nav>
     <!-- Mobile hamburger -->
     <button id="mobileMenuBtn" class="md:hidden text-slate-700 hover:text-slate-900 focus:outline-none">
@@ -248,9 +248,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- Mobile menu -->
   <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2 shadow-sm">
     <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="block text-slate-600 hover:text-slate-900 py-1">Login</a>
-    <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/join_community.php', ENT_QUOTES, 'UTF-8') ?>" class="block bg-[#2f7fe0] text-white px-4 py-2 rounded-lg text-center font-semibold">Join Community</a>
+    <button type="button" data-open-community-modal class="block bg-[#2f7fe0] text-white px-4 py-2 rounded-lg text-center font-semibold w-full">Join Community</button>
   </div>
 </header>
+
+<div id="joinCommunityModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+  <div class="w-full max-w-xl rounded-3xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/20 overflow-hidden">
+    <div class="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-5 py-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#2f7fe0]">Community access</p>
+        <h2 class="mt-1 text-xl font-bold text-slate-900">Join the community</h2>
+      </div>
+      <button type="button" id="closeJoinCommunityModal" class="text-slate-500 hover:text-slate-800 text-2xl leading-none">×</button>
+    </div>
+
+    <div class="p-5 sm:p-6">
+      <div id="joinCommunityEmailStep" class="space-y-4">
+        <p class="text-sm text-slate-600">Enter your email to begin. After that, choose if you are already a member or creating a new account.</p>
+        <form id="joinCommunityEmailForm" class="space-y-4">
+          <div>
+            <label for="communityEmailInput" class="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
+            <input id="communityEmailInput" type="email" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-[#2f7fe0] focus:outline-none focus:ring-2 focus:ring-[#2f7fe0]/20" placeholder="you@example.com">
+          </div>
+          <button type="submit" class="w-full rounded-xl bg-[#2f7fe0] px-4 py-3 text-sm font-semibold text-white hover:bg-[#2968b5] transition">Join community</button>
+        </form>
+      </div>
+
+      <div id="joinCommunityChoiceStep" class="hidden space-y-4">
+        <p class="text-sm text-slate-600">We are ready for <span id="selectedCommunityEmail" class="font-semibold text-slate-800">your email</span>.</p>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <button type="button" data-community-choice="signin" class="rounded-2xl border border-slate-200 bg-slate-100 px-4 py-4 text-left transition hover:border-[#2f7fe0] hover:bg-[#edf5ff]">
+            <span class="block text-xs uppercase tracking-[0.2em] text-slate-500">Returning</span>
+            <span class="mt-2 block text-lg font-bold text-slate-900">Old member</span>
+          </button>
+          <button type="button" data-community-choice="signup" class="rounded-2xl border border-slate-200 bg-slate-100 px-4 py-4 text-left transition hover:border-[#2f7fe0] hover:bg-[#edf5ff]">
+            <span class="block text-xs uppercase tracking-[0.2em] text-slate-500">New</span>
+            <span class="mt-2 block text-lg font-bold text-slate-900">New member</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================
      AUTH SWITCHER
@@ -420,6 +459,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       button.classList.toggle('text-slate-500', !isActive);
     });
   }
+
+  const joinCommunityModal = document.getElementById('joinCommunityModal');
+  const joinCommunityEmailStep = document.getElementById('joinCommunityEmailStep');
+  const joinCommunityChoiceStep = document.getElementById('joinCommunityChoiceStep');
+  const joinCommunityBtn = document.getElementById('joinCommunityBtn');
+  const closeJoinCommunityModal = document.getElementById('closeJoinCommunityModal');
+  const communityEmailInput = document.getElementById('communityEmailInput');
+  const selectedCommunityEmail = document.getElementById('selectedCommunityEmail');
+
+  function openJoinCommunityModal() {
+    joinCommunityModal.classList.remove('hidden');
+    joinCommunityModal.classList.add('flex');
+    joinCommunityEmailStep.classList.remove('hidden');
+    joinCommunityChoiceStep.classList.add('hidden');
+    setTimeout(() => communityEmailInput && communityEmailInput.focus(), 50);
+  }
+
+  function closeJoinCommunityModalFn() {
+    joinCommunityModal.classList.add('hidden');
+    joinCommunityModal.classList.remove('flex');
+    joinCommunityEmailStep.classList.remove('hidden');
+    joinCommunityChoiceStep.classList.add('hidden');
+  }
+
+  if (joinCommunityBtn) {
+    joinCommunityBtn.addEventListener('click', openJoinCommunityModal);
+  }
+
+  document.querySelectorAll('[data-open-community-modal]').forEach((button) => {
+    button.addEventListener('click', openJoinCommunityModal);
+  });
+
+  if (closeJoinCommunityModal) {
+    closeJoinCommunityModal.addEventListener('click', closeJoinCommunityModalFn);
+  }
+
+  joinCommunityModal.addEventListener('click', (event) => {
+    if (event.target === joinCommunityModal) {
+      closeJoinCommunityModalFn();
+    }
+  });
+
+  document.getElementById('joinCommunityEmailForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const emailValue = (communityEmailInput.value || '').trim();
+    if (!emailValue || !/^\S+@\S+\.\S+$/.test(emailValue)) {
+      communityEmailInput.focus();
+      return;
+    }
+
+    selectedCommunityEmail.textContent = emailValue;
+    joinCommunityEmailStep.classList.add('hidden');
+    joinCommunityChoiceStep.classList.remove('hidden');
+  });
+
+  document.querySelectorAll('[data-community-choice]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const choice = button.dataset.communityChoice;
+      setAuthTab(choice === 'signin' ? 'signin' : 'signup');
+      closeJoinCommunityModalFn();
+    });
+  });
 
   document.querySelectorAll('.auth-tab-btn').forEach((button) => {
     button.addEventListener('click', () => setAuthTab(button.dataset.authTab));
