@@ -1,14 +1,16 @@
 <?php
 declare(strict_types=1);
-header("location: index.php");
+header('Location: /web/public/index.php');
 require_once __DIR__ . '/../src/config.php';
 require_once __DIR__ . '/../src/auth.php';
 require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 
 // Already logged in → go to dashboard
+$publicBase = '/web/public';
+
 if (is_logged_in()) {
-    redirect('app/index.php');
+    redirect($publicBase . '/app/index.php');
 }
 
 $error = get_flash('error');
@@ -22,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($email === '' || $password === '') {
         flash('error', 'Email and password are required.');
-        redirect('login.php');
+        redirect($publicBase . '/login.php');
     }
 
     try {
@@ -32,12 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$user || !password_verify($password, $user['password'])) {
             flash('error', 'Invalid email or password.');
-            redirect('login.php');
+            redirect($publicBase . '/login.php');
         }
 
         if ($user['status'] === 'disabled') {
             flash('error', 'Your account has been disabled. Please contact support.');
-            redirect('login.php');
+            redirect($publicBase . '/login.php');
         }
 
         if (!$user['email_verified']) {
@@ -50,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             send_verification_email($user['email'], $user['name'], $code, $verTok);
             $_SESSION['pending_verify_user_id'] = $user['id'];
             flash('error', 'Please verify your email address. A new code has been sent.');
-            redirect('verify_email.php');
+            redirect($publicBase . '/verify_email.php');
         }
 
         login_user($user);
@@ -69,10 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }
 
-        redirect('app/index.php');
+        redirect($publicBase . '/app/index.php');
     } catch (Throwable $e) {
         flash('error', 'A system error occurred. Please try again.');
-        redirect('login.php');
+        redirect($publicBase . '/login.php');
     }
 }
 ?>
@@ -90,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="w-full max-w-md">
     <!-- Logo -->
     <div class="text-center mb-8">
-      <a href="index.php" class="text-3xl font-extrabold text-emerald-400">3Commas</a>
+      <a href="<?= htmlspecialchars($publicBase . '/index.php', ENT_QUOTES, 'UTF-8') ?>" class="text-3xl font-extrabold text-emerald-400">3Commas</a>
       <p class="text-slate-400 mt-2">Sign in to your account</p>
     </div>
 
@@ -103,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
       <?php endif; ?>
 
-      <form method="POST" action="login.php" class="space-y-5">
+      <form method="POST" action="<?= htmlspecialchars($publicBase . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="space-y-5">
         <?= csrf_field() ?>
 
         <div>

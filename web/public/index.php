@@ -6,9 +6,11 @@ require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/email.php';
 
+$publicBase = '/web/public';
+
 // Already logged in → go to dashboard
 if (is_logged_in()) {
-    redirect('app/index.php');
+    redirect($publicBase . '/app/index.php');
 }
 
 $error = get_flash('error');
@@ -53,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recaptchaResponse = trim($_POST['g-recaptcha-response'] ?? '');
     if ($recaptchaResponse === '') {
       flash('error', 'Please complete the reCAPTCHA verification.');
-      redirect('index.php?tab=signup');
+      redirect($publicBase . '/index.php?tab=signup');
     }
     $recaptchaSecret = env('RECAPTCHA_SECRET_KEY', '');
     if ($recaptchaSecret !== '') {
@@ -70,28 +72,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $detail = $errCodes ? (' (' . implode(', ', $errCodes) . ')') : '';
         flash('error', 'reCAPTCHA verification failed' . $detail . '.');
-        redirect('index.php?tab=signup');
+        redirect($publicBase . '/index.php?tab=signup');
       }
     }
 
     if ($name === '' || $email === '' || $password === '') {
       flash('error', 'All fields are required.');
-      redirect('index.php?tab=signup');
+      redirect($publicBase . '/index.php?tab=signup');
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       flash('error', 'Please enter a valid email address.');
-      redirect('index.php?tab=signup');
+      redirect($publicBase . '/index.php?tab=signup');
     }
 
     if (strlen($password) < 8) {
       flash('error', 'Password must be at least 8 characters long.');
-      redirect('index.php?tab=signup');
+      redirect($publicBase . '/index.php?tab=signup');
     }
 
     if ($password !== $confirm) {
       flash('error', 'Passwords do not match.');
-      redirect('index.php?tab=signup');
+      redirect($publicBase . '/index.php?tab=signup');
     }
 
     try {
@@ -103,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       if ($check->fetch()) {
         flash('error', 'An account with that email already exists.');
-        redirect('index.php?tab=signup');
+        redirect($publicBase . '/index.php?tab=signup');
       }
 
       $hashed = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
@@ -119,10 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           ->execute([$code, $verTok, $expires, $userId]);
       send_verification_email($email, $name, $code, $verTok);
       $_SESSION['pending_verify_user_id'] = $userId;
-      redirect('verify_email.php');
+      redirect($publicBase . '/verify_email.php');
     } catch (Throwable $e) {
       flash('error', 'Registration failed: ' . $e->getMessage());
-      redirect('index.php?tab=signup');
+      redirect($publicBase . '/index.php?tab=signup');
     }
   }
 
@@ -132,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($email === '' || $password === '') {
         flash('error', 'Email and password are required.');
-    redirect('index.php?tab=signin');
+    redirect($publicBase . '/index.php?tab=signin');
     }
 
     try {
@@ -142,12 +144,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$user || !password_verify($password, $user['password'])) {
             flash('error', 'Invalid email or password.');
-      redirect('index.php?tab=signin');
+      redirect($publicBase . '/index.php?tab=signin');
         }
 
         if ($user['status'] === 'disabled') {
             flash('error', 'Your account has been disabled. Please contact support.');
-      redirect('index.php?tab=signin');
+      redirect($publicBase . '/index.php?tab=signin');
         }
 
         if (!$user['email_verified']) {
@@ -159,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             send_verification_email($user['email'], $user['name'], $code, $verTok);
             $_SESSION['pending_verify_user_id'] = $user['id'];
             flash('error', 'Please verify your email address. A new code has been sent.');
-            redirect('verify_email.php');
+            redirect($publicBase . '/verify_email.php');
         }
 
         login_user($user);
@@ -177,10 +179,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }
 
-        redirect('app/index.php');
+        redirect($publicBase . '/app/index.php');
     } catch (Throwable $e) {
         flash('error', 'A system error occurred. Please try again.');
-        redirect('index.php?tab=signin');
+        redirect($publicBase . '/index.php?tab=signin');
     }
 }
 ?>

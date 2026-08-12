@@ -6,8 +6,10 @@ require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/email.php';
 
+$publicBase = '/web/public';
+
 if (is_logged_in()) {
-    redirect('app/index.php');
+    redirect($publicBase . '/app/index.php');
 }
 
 $tokenError = null;
@@ -27,7 +29,7 @@ if (isset($_GET['token'])) {
             )->execute([$u['id']]);
             login_user($u);
             unset($_SESSION['pending_verify_user_id']);
-            redirect('app/index.php');
+            redirect($publicBase . '/app/index.php');
         } else {
             $tokenError = 'This confirmation link is invalid or has expired.';
         }
@@ -39,7 +41,7 @@ if (isset($_GET['token'])) {
 // ── Require pending session ─────────────────────────────────────────────────
 $userId = $_SESSION['pending_verify_user_id'] ?? null;
 if (!$userId && !$tokenError) {
-    redirect('index.php');
+    redirect($publicBase . '/index.php');
 }
 
 $pageUser = null;
@@ -50,10 +52,10 @@ if ($userId) {
         $pageUser = $stmt->fetch() ?: null;
         if (!$pageUser || $pageUser['email_verified']) {
             unset($_SESSION['pending_verify_user_id']);
-            redirect('index.php');
+            redirect($publicBase . '/index.php');
         }
     } catch (Throwable $e) {
-        redirect('index.php');
+        redirect($publicBase . '/index.php');
     }
 }
 
@@ -65,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
     if (!$pageUser) {
-        redirect('index.php');
+        redirect($publicBase . '/index.php');
     }
 
     $action = $_POST['action'] ?? 'verify';
@@ -84,14 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable $e) {
             flash('error', 'Failed to resend. Please try again.');
         }
-        redirect('verify_email.php');
+        redirect($publicBase . '/verify_email.php');
     }
 
     // Verify code
     $inputCode = preg_replace('/\D/', '', trim($_POST['code'] ?? ''));
     if (strlen($inputCode) !== 6) {
         flash('error', 'Please enter the 6-digit code.');
-        redirect('verify_email.php');
+        redirect($publicBase . '/verify_email.php');
     }
 
     try {
@@ -106,14 +108,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             )->execute([$userId]);
             login_user($confirmed);
             unset($_SESSION['pending_verify_user_id']);
-            redirect('app/index.php');
+            redirect($publicBase . '/app/index.php');
         } else {
             flash('error', 'Invalid or expired code. Please try again.');
-            redirect('verify_email.php');
+            redirect($publicBase . '/verify_email.php');
         }
     } catch (Throwable $e) {
         flash('error', 'Verification failed. Please try again.');
-        redirect('verify_email.php');
+        redirect($publicBase . '/verify_email.php');
     }
 }
 
@@ -138,7 +140,7 @@ if ($pageUser) {
   <div class="w-full max-w-md">
     <!-- Logo -->
     <div class="text-center mb-8">
-      <a href="index.php">
+      <a href="<?= htmlspecialchars($publicBase . '/index.php', ENT_QUOTES, 'UTF-8') ?>">
         <span class="text-2xl font-extrabold tracking-tight text-emerald-600">CBOE<span class="text-slate-900">Markets</span></span>
       </a>
     </div>
@@ -159,7 +161,7 @@ if ($pageUser) {
         <div class="text-center">
           <h1 class="text-xl font-bold text-slate-900 mb-2">Link Expired</h1>
           <p class="text-slate-500 text-sm mb-6"><?= sanitize($tokenError) ?></p>
-          <a href="index.php" class="text-sm text-emerald-600 hover:underline">← Back to sign in</a>
+          <a href="<?= htmlspecialchars($publicBase . '/index.php', ENT_QUOTES, 'UTF-8') ?>" class="text-sm text-emerald-600 hover:underline">← Back to sign in</a>
         </div>
 
       <?php else: ?>
