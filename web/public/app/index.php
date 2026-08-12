@@ -562,13 +562,13 @@ $pricesJson = json_encode([
                 <span class="mt-1 block text-[11px] font-medium uppercase tracking-wide text-slate-500">Trader signal copy</span>
             </a>
 
-            <a href="mining.php"
+            <a href="stocks.php"
                class="glass-card rounded-2xl border border-slate-200 p-4 transition hover-lift hover:border-amber-400/50 group">
                 <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500 group-hover:bg-amber-500/25 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v18m9-9H3m14.364-6.364L6.636 18.364m10.728 0L6.636 5.636"/></svg>
                 </div>
-                <p class="text-sm font-bold text-slate-800 group-hover:text-slate-950 transition">Crypto Mining</p>
-                <span class="mt-1 block text-[11px] font-medium uppercase tracking-wide text-slate-500">Mining pool hub</span>
+                <p class="text-sm font-bold text-slate-800 group-hover:text-slate-950 transition">Stock Exchange</p>
+                <span class="mt-1 block text-[11px] font-medium uppercase tracking-wide text-slate-500">Stock trading platform</span>
             </a>
         </div>
 
