@@ -26,23 +26,66 @@ function ensure_stock_portfolio_table(): void
     );
 }
 
-ensure_stock_portfolio_table();
+function ensure_market_stocks_table(): void
+{
+    db()->exec(
+        'CREATE TABLE IF NOT EXISTS market_stocks (
+            id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            symbol VARCHAR(20) NOT NULL UNIQUE,
+            company VARCHAR(120) NOT NULL,
+            sector VARCHAR(80) NOT NULL DEFAULT "Other",
+            price DECIMAL(18,2) NOT NULL DEFAULT 0.00,
+            change_pct DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+            active TINYINT(1) NOT NULL DEFAULT 1,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB'
+    );
+}
 
-$stocks = [
-    ['symbol' => 'AAPL', 'name' => 'Apple', 'sector' => 'Technology', 'price' => 0, 'change' => 0],
-    ['symbol' => 'MSFT', 'name' => 'Microsoft', 'sector' => 'Technology', 'price' => 0, 'change' => 0],
-    ['symbol' => 'NVDA', 'name' => 'NVIDIA', 'sector' => 'Semiconductors', 'price' => 0, 'change' => 0],
-    ['symbol' => 'AMZN', 'name' => 'Amazon', 'sector' => 'E-Commerce', 'price' => 0, 'change' => 0],
-    ['symbol' => 'GOOGL', 'name' => 'Alphabet', 'sector' => 'Technology', 'price' => 0, 'change' => 0],
-    ['symbol' => 'TSLA', 'name' => 'Tesla', 'sector' => 'Automotive', 'price' => 0, 'change' => 0],
+ensure_stock_portfolio_table();
+ensure_market_stocks_table();
+
+$defaultStocks = [
+    ['symbol' => 'AAPL', 'name' => 'Apple', 'sector' => 'Technology'],
+    ['symbol' => 'MSFT', 'name' => 'Microsoft', 'sector' => 'Technology'],
+    ['symbol' => 'NVDA', 'name' => 'NVIDIA', 'sector' => 'Semiconductors'],
+    ['symbol' => 'AMZN', 'name' => 'Amazon', 'sector' => 'E-Commerce'],
+    ['symbol' => 'GOOGL', 'name' => 'Alphabet', 'sector' => 'Technology'],
+    ['symbol' => 'TSLA', 'name' => 'Tesla', 'sector' => 'Automotive'],
 ];
 
-foreach ($stocks as &$stock) {
-    $quote = stock_price_for_symbol($stock['symbol']);
-    $stock['price'] = $quote['price'];
-    $stock['change'] = $quote['change'];
+$stockRows = db()->query('SELECT * FROM market_stocks WHERE active = 1 ORDER BY company ASC')->fetchAll() ?: [];
+if (empty($stockRows)) {
+    foreach ($defaultStocks as $stock) {
+        $quote = stock_price_for_symbol($stock['symbol']);
+        db()->prepare('INSERT INTO market_stocks (symbol, company, sector, price, change_pct, active) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE company=VALUES(company), sector=VALUES(sector), price=VALUES(price), change_pct=VALUES(change_pct), active=VALUES(active)')
+            ->execute([$stock['symbol'], $stock['name'], $stock['sector'], $quote['price'], $quote['change'], 1]);
+    }
+    $stockRows = db()->query('SELECT * FROM market_stocks WHERE active = 1 ORDER BY company ASC')->fetchAll() ?: [];
 }
-unset($stock);
+
+$stocks = [];
+foreach ($stockRows as $stockRow) {
+    $quote = stock_price_for_symbol($stockRow['symbol']);
+    $stocks[] = [
+        'symbol' => $stockRow['symbol'],
+        'name' => $stockRow['company'],
+        'sector' => $stockRow['sector'],
+        'price' => (float)($stockRow['price'] ?: $quote['price']),
+        'change' => (float)($stockRow['change_pct'] ?: $quote['change']),
+    ];
+}
+
+if (empty($stocks)) {
+    $stocks = $defaultStocks;
+    foreach ($stocks as &$stock) {
+        $quote = stock_price_for_symbol($stock['symbol']);
+        $stock['price'] = $quote['price'];
+        $stock['change'] = $quote['change'];
+    }
+    unset($stock);
+}
 
 $positions = [];
 try {
@@ -105,12 +148,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'buy_s
     $quantity = (float)($_POST['quantity'] ?? 0);
     $company = trim($_POST['company'] ?? '');
 
-    if ($quantity <= 0 || $company === '') {
-        flash('error', 'Please enter a valid quantity and company.');
+    if ($quantity <= 0) {
+        flash('error', 'Please enter a valid quantity.');
         redirect('stocks.php');
     }
 
     $quote = stock_price_for_symbol($symbol);
+    if ($company === '') {
+        $company = strtoupper($symbol);
+    }
     $cost = $quote['price'] * $quantity;
     if ((float)($user['balance'] ?? 0) < $cost) {
         flash('error', 'Insufficient USDT balance.');

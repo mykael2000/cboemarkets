@@ -53,6 +53,7 @@ $_adminPage = $activeAdminPage ?? basename($_SERVER['PHP_SELF'] ?? '');
         'notices.php'       => 'Notices',
         'mailer.php'        => 'Email Users',
         'users.php'         => 'Users',
+        'stocks.php'        => 'Stocks',
       ];
       foreach ($links as $file => $label):
         $isActive = $_adminPage === $file;
