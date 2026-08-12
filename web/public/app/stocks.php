@@ -163,7 +163,47 @@ $user = current_user();
     .glass { background: rgba(255,255,255,0.9); border:1px solid #dcecff; box-shadow:0 12px 40px rgba(15,102,192,0.08); }
   </style>
 </head>
-<body class="min-h-screen text-slate-900 pb-20">
+<body class="bg-white text-slate-900 min-h-screen pb-28 md:pb-4 antialiased">
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-2.5">
+    <div class="flex items-center justify-between max-w-7xl mx-auto gap-4">
+      <div class="flex items-center gap-3 flex-shrink-0">
+        <a href="index.php" class="flex items-center">
+          <span class="text-xl font-extrabold tracking-tight text-emerald-600">CBOE<span class="text-slate-900">Markets</span></span>
+        </a>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+        <a href="index.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">Dashboard</a>
+        <a href="markets.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">Markets</a>
+        <a href="trading.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">Trade</a>
+        <a href="stocks.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-emerald-600 bg-emerald-50 transition">Stocks</a>
+        <a href="deposit.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">Deposit</a>
+        <a href="withdraw.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">Withdraw</a>
+        <a href="swap.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">Swap</a>
+        <a href="profile.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">Profile</a>
+      </nav>
+
+      <div class="flex items-center gap-3 flex-shrink-0">
+        <span class="hidden sm:flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/30 px-3 py-1 rounded-full">
+          <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span class="text-emerald-400 text-xs font-semibold tracking-wide">LIVE</span>
+        </span>
+        <div class="flex items-center gap-2">
+          <?php if (!empty($user['profile_image'])): ?>
+            <img src="<?= sanitize($user['profile_image']) ?>" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-slate-300">
+          <?php else: ?>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-600 flex items-center justify-center text-slate-900 font-black text-sm flex-shrink-0">
+              <?= strtoupper(substr($user['name'] ?? 'U', 0, 1)) ?>
+            </div>
+          <?php endif; ?>
+          <div class="text-right hidden sm:block">
+            <p class="text-sm font-semibold text-slate-800 leading-tight"><?= sanitize($user['name']) ?></p>
+            <p class="text-[11px] text-slate-500"><?= sanitize($user['email']) ?></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
     <?php if ($error): ?>
