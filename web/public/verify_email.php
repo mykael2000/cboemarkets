@@ -214,7 +214,7 @@ if ($pageUser) {
         </form>
 
         <p class="mt-5 text-center text-xs text-slate-400 leading-relaxed">
-          Code valid for 30 minutes. Do not share it with anybody,<br>including 3Commas team members.
+          Code valid for 30 minutes. Do not share it with anybody,<br>including Cboemarkets team members.
         </p>
       <?php endif; ?>
     </div>

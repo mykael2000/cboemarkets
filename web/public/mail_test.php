@@ -47,7 +47,7 @@ echo "Sending test email to: $to\n";
 $debugError = null;
 $result = send_email(
     $to,
-    'Test Email from 3Commas',
+    'Test Email from Cboemarkets',
     '<h2>It works!</h2><p>This is a test email sent at ' . date('Y-m-d H:i:s') . '.</p>',
     $debugError
 );

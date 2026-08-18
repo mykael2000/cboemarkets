@@ -173,7 +173,7 @@ function build_admin_email(
                         <img src="{$logoUrl}" alt="" width="36" height="36" style="display:block;border:0;border-radius:6px;width:36px;height:36px;">
                       </td>
                       <td style="vertical-align:middle;">
-                        <span style="font-family:Arial,sans-serif;font-size:24px;font-weight:800;color:#10b981;letter-spacing:-0.5px;">3Commas</span>
+                        <span style="font-family:Arial,sans-serif;font-size:24px;font-weight:800;color:#10b981;letter-spacing:-0.5px;">Cboemarkets</span>
                       </td>
                     </tr>
                   </table>
@@ -226,7 +226,7 @@ function build_admin_email(
               <!-- Bottom footer -->
               <tr>
                 <td style="padding:24px 16px;text-align:center;">
-                  <p style="font-family:Arial,sans-serif;font-size:12px;color:#94a3b8;margin:0 0 6px;">&copy; {$year} 3Commas &middot; Automated Crypto Trading Platform</p>
+                  <p style="font-family:Arial,sans-serif;font-size:12px;color:#94a3b8;margin:0 0 6px;">&copy; {$year} Cboemarkets &middot; Automated Crypto Trading Platform</p>
                   <p style="font-family:Arial,sans-serif;font-size:11px;color:#cbd5e1;margin:0;">
                     <a href="{$appUrl}/app/index" style="color:#10b981;text-decoration:none;">Dashboard</a>
                     &nbsp;&middot;&nbsp;
@@ -448,7 +448,7 @@ $activeAdminPage = 'mailer.php';
       <tr><td align="center">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
           <tr><td style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
-            <span style="font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#10b981;letter-spacing:-0.5px;">3Commas</span>
+            <span style="font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#10b981;letter-spacing:-0.5px;">Cboemarkets</span>
             <span style="font-family:Arial,sans-serif;font-size:12px;color:#64748b;display:block;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Automated Crypto Trading</span>
           </td></tr>
           <tr><td style="height:3px;background:linear-gradient(90deg,#10b981,#3b82f6,#8b5cf6);font-size:0;line-height:0;">&nbsp;</td></tr>
@@ -467,7 +467,7 @@ $activeAdminPage = 'mailer.php';
             </table>
           </td></tr>
           <tr><td style="padding:24px 16px;text-align:center;">
-            <p style="font-family:Arial,sans-serif;font-size:12px;color:#94a3b8;margin:0 0 6px;">&copy; ${year} 3Commas &middot; Automated Crypto Trading Platform</p>
+            <p style="font-family:Arial,sans-serif;font-size:12px;color:#94a3b8;margin:0 0 6px;">&copy; ${year} Cboemarkets &middot; Automated Crypto Trading Platform</p>
           </td></tr>
         </table>
       </td></tr>

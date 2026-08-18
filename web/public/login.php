@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="w-full max-w-md">
     <!-- Logo -->
     <div class="text-center mb-8">
-      <a href="<?= htmlspecialchars($publicBase . '/index.php', ENT_QUOTES, 'UTF-8') ?>" class="text-3xl font-extrabold text-emerald-400">3Commas</a>
+      <a href="<?= htmlspecialchars($publicBase . '/index.php', ENT_QUOTES, 'UTF-8') ?>" class="text-3xl font-extrabold text-emerald-400">Cboemarkets</a>
       <p class="text-slate-400 mt-2">Sign in to your account</p>
     </div>
 

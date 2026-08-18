@@ -1,4 +1,4 @@
-# 3Commas Web Platform
+# Cboemarkets Web Platform
 
 A complete investment platform built with PHP 8.1+, MySQL 8, Tailwind CSS CDN, and vanilla JavaScript.
 
@@ -50,7 +50,7 @@ AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
 AWS_REGION=us-east-1
 SES_FROM_EMAIL=noreply@yourdomain.com
-SES_FROM_NAME=3Commas
+SES_FROM_NAME=Cboemarkets
 ```
 
 ### 4. Create the Database

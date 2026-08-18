@@ -439,15 +439,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <a href="index.php" class="flex-shrink-0">
         <span class="text-sm font-bold tracking-tight text-emerald-600">CBOE<span class="text-slate-900">Markets</span></span>
       </a>
-      <!-- <span class="text-xs text-slate-400">&copy; <?= date('Y') ?> 3Commas. All rights reserved.</span> -->
+      <!-- <span class="text-xs text-slate-400">&copy; <?= date('Y') ?> Cboemarkets. All rights reserved.</span> -->
     </div>
   </div>
 </footer>
 
 <script>
-  const initialAuthTab = <?= json_encode($activeAuthTab) ?>;
+  const authChoiceKey = 'cboe_auth_choice';
+  const savedAuthChoice = sessionStorage.getItem(authChoiceKey);
+  const initialAuthTab = savedAuthChoice || null;
 
   function setAuthTab(tab) {
+    if (!tab) {
+      document.querySelectorAll('[data-auth-panel]').forEach((panel) => panel.classList.add('hidden'));
+      document.querySelectorAll('.auth-tab-btn').forEach((button) => {
+        button.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+        button.classList.add('text-slate-500');
+      });
+      return;
+    }
+
     document.querySelectorAll('[data-auth-panel]').forEach((panel) => {
       panel.classList.toggle('hidden', panel.dataset.authPanel !== tab);
     });
@@ -466,6 +477,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   const joinCommunityAction = document.getElementById('joinCommunityAction');
   const communityEmailInput = document.getElementById('community_email');
   const selectedCommunityEmailText = document.getElementById('selectedCommunityEmailText');
+
+  function showAuthChoice(choice) {
+    if (!choice) {
+      return;
+    }
+
+    sessionStorage.setItem(authChoiceKey, choice);
+    setAuthTab(choice);
+    memberChoiceStep.classList.add('hidden');
+    authPreStep.classList.add('hidden');
+
+    if (choice === 'signin') {
+      const emailField = document.getElementById('signin_email');
+      if (emailField) emailField.value = communityEmailInput.value.trim();
+    }
+
+    if (choice === 'signup') {
+      const emailField = document.getElementById('signup_email');
+      if (emailField) emailField.value = communityEmailInput.value.trim();
+    }
+  }
 
   function startCommunityFlow() {
     const email = (communityEmailInput.value || '').trim();
@@ -494,18 +526,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   document.querySelectorAll('[data-member-choice]').forEach((button) => {
     button.addEventListener('click', () => {
       const choice = button.dataset.memberChoice;
-      setAuthTab(choice);
-      memberChoiceStep.classList.add('hidden');
-
-      if (choice === 'signin') {
-        const emailField = document.getElementById('signin_email');
-        if (emailField) emailField.value = communityEmailInput.value.trim();
-      }
-
-      if (choice === 'signup') {
-        const emailField = document.getElementById('signup_email');
-        if (emailField) emailField.value = communityEmailInput.value.trim();
-      }
+      showAuthChoice(choice);
     });
   });
 
@@ -514,14 +535,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if (!authPreStep.classList.contains('hidden') || !memberChoiceStep.classList.contains('hidden')) {
         return;
       }
-      setAuthTab(button.dataset.authTab);
+      const selectedTab = button.dataset.authTab;
+      if (selectedTab) {
+        sessionStorage.setItem(authChoiceKey, selectedTab);
+      }
+      setAuthTab(selectedTab);
     });
   });
 
   authPreStep.classList.remove('hidden');
   memberChoiceStep.classList.add('hidden');
   document.querySelectorAll('[data-auth-panel]').forEach((panel) => panel.classList.add('hidden'));
-  setAuthTab(initialAuthTab);
+
+  if (initialAuthTab) {
+    authPreStep.classList.add('hidden');
+    setAuthTab(initialAuthTab);
+  }
 
   function onRecaptchaPassed(token) {
     document.getElementById('signupRecaptchaToken').value = token || '';

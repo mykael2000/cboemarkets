@@ -1,5 +1,5 @@
 {
-    "name": "3commas/web",
+    "name": "Cboemarkets/web",
     "require": {
         "aws/aws-sdk-php": "^3.0"
     },

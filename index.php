@@ -78,7 +78,7 @@ $signinHref = '/signin.php';
         </button>
 
         <a href="<?= htmlspecialchars($signinHref, ENT_QUOTES, 'UTF-8') ?>" class="hidden sm:inline-flex px-5 lg:px-6 py-2.5 lg:py-3 rounded-full border-2 border-[#39ff8e] text-[#39ff8e] font-semibold text-[0.95rem] lg:text-[1rem] hover:bg-[#39ff8e] hover:text-[#1b2147] transition">
-          Sign In
+          Join Us
         </a>
 
         <button
@@ -101,7 +101,7 @@ $signinHref = '/signin.php';
         <a target="_blank" href="https://www.cboe.com/insights" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">Insights &amp; Education</a>
         <a target="_blank" href="https://www.cboe.com/about" class="px-3 py-3 rounded-md hover:bg-white/10 active:bg-white/10">About Us</a>
         <a href="<?= htmlspecialchars($signinHref, ENT_QUOTES, 'UTF-8') ?>" class="mt-2 inline-flex justify-center px-5 py-3 rounded-full border-2 border-[#39ff8e] text-[#39ff8e] hover:bg-[#39ff8e] hover:text-[#1b2147] transition">
-          Sign In
+          Join Us
         </a>
       </div>
     </div>
