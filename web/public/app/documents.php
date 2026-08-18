@@ -37,6 +37,8 @@ try {
   <!-- Legal Information Modals -->
   <?php
   $legalDocs = [
+    ['id' => 'cboe_global_markets_certificate_of_incorporation', 'title' => 'cboe-global-markets-certificate-of-incorporation', 'pdf' => '/web/public/app/documents/cboe-global-markets-certificate-of-incorporation.pdf'],
+    ['id' => 'cboe_bitcoin_us_etf_index_methodology', 'title' => 'Cboe_Bitcoin_US_ETF_Index_Methodology', 'pdf' => '/web/public/app/documents/Cboe_Bitcoin_US_ETF_Index_Methodology.pdf'],
     ['id' => 'rpp_from',       'title' => 'Recurrent Payment Policy as from December 29th 2024'],
     ['id' => 'rpp_until',      'title' => 'Recurrent Payment Policy until December 28th 2024'],
     ['id' => 'tor_from',       'title' => 'Terms of Referral as from December 29th 2024'],
@@ -921,6 +923,15 @@ try {
       <p class="text-xs text-slate-500 mb-4">This page contains a list of documents regulating the activity of Cboemarkets.</p>
       <ul class="divide-y divide-slate-100">
         <?php foreach ($legalDocs as $ld): ?>
+        <?php if (!empty($ld['pdf'])): ?>
+        <li>
+          <a href="<?= htmlspecialchars($ld['pdf'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener noreferrer"
+            class="w-full text-left py-2.5 text-sm text-emerald-700 hover:text-emerald-600 font-medium flex items-center justify-between gap-2 group transition">
+            <span><?= htmlspecialchars($ld['title']) ?></span>
+            <svg class="w-4 h-4 text-slate-300 group-hover:text-emerald-400 flex-shrink-0 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </li>
+        <?php else: ?>
         <li>
           <button onclick="openLegalModal('<?= $ld['id'] ?>')"
             class="w-full text-left py-2.5 text-sm text-emerald-700 hover:text-emerald-600 font-medium flex items-center justify-between gap-2 group transition">
@@ -928,6 +939,7 @@ try {
             <svg class="w-4 h-4 text-slate-300 group-hover:text-emerald-400 flex-shrink-0 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </button>
         </li>
+        <?php endif; ?>
         <?php endforeach; ?>
       </ul>
     </section>
