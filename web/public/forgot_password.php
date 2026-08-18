@@ -6,8 +6,10 @@ require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/email.php';
 
+$publicBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/');
+
 if (is_logged_in()) {
-    redirect('/app/index');
+    redirect($publicBase . '/app/index.php');
 }
 
 $error   = get_flash('error');
@@ -19,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         flash('error', 'Please enter a valid email address.');
-        redirect('/forgot_password.php');
+        redirect($publicBase . '/forgot_password.php');
     }
 
     try {
@@ -58,10 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
 
       flash('success', 'If that email exists in our system, a reset code has been sent. Use it on the reset page.');
-      redirect('/reset_password.php?email=' . urlencode($email));
+      redirect($publicBase . '/reset_password.php?email=' . urlencode($email));
     } catch (Throwable $e) {
       flash('error', 'A system error occurred. Please try again.');
-      redirect('/forgot_password.php');
+      redirect($publicBase . '/forgot_password.php');
     }
 }
 ?>

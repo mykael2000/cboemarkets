@@ -1,5 +1,6 @@
 <?php
-$signinHref = '/signin.php';
+$basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/');
+$signinHref = $basePath . '/signin.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

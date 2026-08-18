@@ -7,7 +7,7 @@ require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 
 // Already logged in → go to dashboard
-$publicBase = '/web/public';
+$publicBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/');
 
 if (is_logged_in()) {
     redirect($publicBase . '/app/index.php');

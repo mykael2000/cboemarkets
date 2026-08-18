@@ -5,6 +5,8 @@ require_once __DIR__ . '/../src/auth.php';
 require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 
+$publicBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/');
+
 $token   = trim($_GET['token'] ?? '');
 $email   = trim($_GET['email'] ?? '');
 $error   = get_flash('error');
@@ -46,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($token !== '') {
     if (!$valid) {
       flash('error', 'This reset link is invalid or has expired.');
-      redirect('/forgot_password.php');
+      redirect($publicBase . '/forgot_password.php');
     }
 
     $newPass = $_POST['password']         ?? '';
@@ -54,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (strlen($newPass) < 8) {
       flash('error', 'Password must be at least 8 characters.');
-      redirect('/reset_password.php?token=' . urlencode($token));
+      redirect($publicBase . '/reset_password.php?token=' . urlencode($token));
     }
 
     if ($newPass !== $confirm) {
       flash('error', 'Passwords do not match.');
-      redirect('/reset_password.php?token=' . urlencode($token));
+      redirect($publicBase . '/reset_password.php?token=' . urlencode($token));
     }
 
     try {
@@ -73,10 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $mark->execute([$token]);
 
       flash('success', 'Password updated successfully! Please log in.');
-      redirect('/login.php');
+      redirect($publicBase . '/login.php');
     } catch (Throwable) {
       flash('error', 'A system error occurred. Please try again.');
-      redirect('/reset_password.php?token=' . urlencode($token));
+      redirect($publicBase . '/reset_password.php?token=' . urlencode($token));
     }
 
   } elseif ($email !== '') {
@@ -87,11 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (strlen($newPass) < 8) {
       flash('error', 'Password must be at least 8 characters.');
-      redirect('/reset_password.php?email=' . urlencode($email));
+      redirect($publicBase . '/reset_password.php?email=' . urlencode($email));
     }
     if ($newPass !== $confirm) {
       flash('error', 'Passwords do not match.');
-      redirect('/reset_password.php?email=' . urlencode($email));
+      redirect($publicBase . '/reset_password.php?email=' . urlencode($email));
     }
 
     try {
@@ -101,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $user = $uStmt->fetch();
       if (!$user) {
         flash('error', 'Invalid or expired reset code.');
-        redirect('/forgot_password.php');
+        redirect($publicBase . '/forgot_password.php');
       }
 
       $otpStmt = $pdo->prepare('SELECT * FROM user_security_otps WHERE user_id = ? AND purpose = ? AND used = 0 AND expires_at > NOW() ORDER BY created_at DESC');
@@ -118,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       if (!$match) {
         flash('error', 'Invalid or expired reset code.');
-        redirect('/reset_password.php?email=' . urlencode($email));
+        redirect($publicBase . '/reset_password.php?email=' . urlencode($email));
       }
 
       $hashed = password_hash($newPass, PASSWORD_BCRYPT, ['cost' => 12]);
@@ -134,14 +136,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $markToken->execute([$user['email']]);
 
       flash('success', 'Password updated successfully! Please log in.');
-      redirect('/login.php');
+      redirect($publicBase . '/login.php');
     } catch (Throwable $e) {
       flash('error', 'A system error occurred. Please try again.');
-      redirect('/reset_password.php?email=' . urlencode($email));
+      redirect($publicBase . '/reset_password.php?email=' . urlencode($email));
     }
   } else {
     flash('error', 'Invalid request.');
-    redirect('/forgot_password.php');
+    redirect($publicBase . '/forgot_password.php');
   }
 }
 ?>
