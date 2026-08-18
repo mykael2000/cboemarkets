@@ -448,8 +448,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
   const authChoiceKey = 'cboe_auth_choice';
-  const savedAuthChoice = sessionStorage.getItem(authChoiceKey);
-  const initialAuthTab = savedAuthChoice || null;
+  const initialAuthTab = null;
+  sessionStorage.removeItem(authChoiceKey);
 
   function setAuthTab(tab) {
     if (!tab) {
