@@ -88,10 +88,10 @@ function auth_login_url(?string $script = null): string
 
     if (str_contains($script, '/web/public')) {
         $base = site_base_path($script);
-        return $base . '/login.php';
+        return $base . '/index.php';
     }
 
-    return '/cboemarkets/signin.php';
+    return '/cboemarkets/web/public/index.php';
 }
 
 // ---------------------------------------------------------------------------
