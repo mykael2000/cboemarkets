@@ -6,6 +6,8 @@ require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 
 $publicBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/');
+$loginHref = $publicBase . '/login.php';
+$registerHref = $publicBase . '/register.php';
 
 $token   = trim($_GET['token'] ?? '');
 $email   = trim($_GET['email'] ?? '');
@@ -165,8 +167,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <span class="text-2xl font-extrabold tracking-tight text-emerald-600">CBOE<span class="text-slate-900">Markets</span></span>
     </a>
     <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-      <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="hover:text-slate-900 transition">Login</a>
-      <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/register.php', ENT_QUOTES, 'UTF-8') ?>" class="bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Get Started</a>
+      <a href="<?= htmlspecialchars($loginHref, ENT_QUOTES, 'UTF-8') ?>" class="hover:text-slate-900 transition">Login</a>
+      <a href="<?= htmlspecialchars($registerHref, ENT_QUOTES, 'UTF-8') ?>" class="bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Get Started</a>
     </nav>
     <button id="mobileMenuBtn" class="md:hidden text-slate-700 hover:text-slate-900 focus:outline-none">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -175,8 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </button>
   </div>
   <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2 shadow-sm">
-    <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="block text-slate-600 hover:text-slate-900 py-1">Login</a>
-    <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/register.php', ENT_QUOTES, 'UTF-8') ?>" class="block bg-emerald-500 text-white px-4 py-2 rounded-lg text-center font-semibold">Get Started</a>
+    <a href="<?= htmlspecialchars($loginHref, ENT_QUOTES, 'UTF-8') ?>" class="block text-slate-600 hover:text-slate-900 py-1">Login</a>
+    <a href="<?= htmlspecialchars($registerHref, ENT_QUOTES, 'UTF-8') ?>" class="block bg-emerald-500 text-white px-4 py-2 rounded-lg text-center font-semibold">Get Started</a>
   </div>
 </header>
 
@@ -208,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 text-base">
                 Request New Link
               </a>
-              <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="text-center text-sm text-emerald-600 hover:text-emerald-500 transition">&larr; Back to Login</a>
+              <a href="<?= htmlspecialchars($loginHref, ENT_QUOTES, 'UTF-8') ?>" class="text-center text-sm text-emerald-600 hover:text-emerald-500 transition">&larr; Back to Login</a>
             </div>
           </div>
         <?php else: ?>
@@ -242,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   </button>
 
                   <p class="text-center text-sm text-slate-500">
-                    <a href="login.php" class="text-emerald-600 hover:text-emerald-500 transition">&larr; Back to Login</a>
+                    <a href="<?= htmlspecialchars($loginHref, ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-600 hover:text-emerald-500 transition">&larr; Back to Login</a>
                   </p>
                 </form>
               <?php else: ?>
@@ -276,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   </button>
 
                   <p class="text-center text-sm text-slate-500">
-                    <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-600 hover:text-emerald-500 transition">&larr; Back to Login</a>
+                    <a href="<?= htmlspecialchars($loginHref, ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-600 hover:text-emerald-500 transition">&larr; Back to Login</a>
                   </p>
                 </form>
               <?php endif; ?>

@@ -8,7 +8,7 @@ require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/email.php';
 
 if (is_logged_in()) {
-    redirect('app/index.php');
+    redirect(app_dashboard_url());
 }
 
 $error   = get_flash('error');
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             error_log('[register] Welcome email failed: ' . $emailErr->getMessage());
         }
 
-        redirect('app/index.php');
+        redirect(app_dashboard_url());
     } catch (Throwable $e) {
         flash('error', 'Registration failed. Please try again.');
         redirect('register.php');

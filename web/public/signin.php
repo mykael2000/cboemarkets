@@ -7,7 +7,7 @@ require_once __DIR__ . '/../src/csrf.php';
 require_once __DIR__ . '/../src/helpers.php';
 
 if (is_logged_in()) {
-    redirect('app/index.php');
+    redirect(app_dashboard_url());
 }
 
 require_once __DIR__ . '/index.php';

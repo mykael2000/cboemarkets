@@ -6,7 +6,7 @@ require_once __DIR__ . '/config.php';
 function require_login(): void
 {
     if (empty($_SESSION['user_id'])) {
-        header('Location: /login.php');
+        header('Location: ' . auth_login_url());
         exit;
     }
 }
@@ -15,7 +15,7 @@ function require_admin(): void
 {
     require_login();
     if (($_SESSION['role'] ?? '') !== 'admin') {
-        header('Location: /app/index.php');
+        header('Location: ' . app_dashboard_url());
         exit;
     }
 }

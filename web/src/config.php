@@ -54,6 +54,46 @@ function env(string $key, mixed $default = null): mixed
     return $_ENV[$key] ?? (getenv($key) !== false ? getenv($key) : $default);
 }
 
+function site_base_path(?string $script = null): string
+{
+    $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
+    $base = rtrim(dirname($script), '/');
+
+    if ($base === '.' || $base === '/') {
+        return '';
+    }
+
+    if (str_ends_with($base, '/app')) {
+        $base = preg_replace('#/app$#', '', $base);
+    }
+
+    return $base;
+}
+
+function app_dashboard_url(?string $script = null): string
+{
+    $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
+
+    if (str_contains($script, '/web/public')) {
+        $base = site_base_path($script);
+        return $base . '/app/index.php';
+    }
+
+    return '/cboemarkets/web/public/app/index.php';
+}
+
+function auth_login_url(?string $script = null): string
+{
+    $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
+
+    if (str_contains($script, '/web/public')) {
+        $base = site_base_path($script);
+        return $base . '/login.php';
+    }
+
+    return '/cboemarkets/signin.php';
+}
+
 // ---------------------------------------------------------------------------
 // Secure session bootstrap
 // ---------------------------------------------------------------------------

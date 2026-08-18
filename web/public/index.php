@@ -7,6 +7,8 @@ require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/email.php';
 
 $publicBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/');
+$loginHref = $publicBase . '/login.php';
+$registerHref = $publicBase . '/register.php';
 
 // Already logged in → go to dashboard
 if (is_logged_in()) {
