@@ -272,7 +272,7 @@ foreach ($coins as $coin => $col) {
           $subStatus = $sub['status'];
           $statusClass = match($subStatus) {
             'active'    => 'bg-emerald-50 text-emerald-600',
-            'completed' => 'bg-blue-50 text-blue-600',
+            'completed' => 'bg-emerald-50 text-emerald-600',
             'cancelled' => 'bg-slate-100 text-slate-500',
             default     => 'bg-slate-100 text-slate-500',
           };

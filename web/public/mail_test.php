@@ -36,7 +36,7 @@ if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
       <input type="hidden" name="secret" value="<?= htmlspecialchars((string)($_GET['secret'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
       <label for="to" style="display:block;margin-bottom:6px;">Recipient Email</label>
       <input id="to" name="to" type="email" required placeholder="you@example.com" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;margin-bottom:10px;">
-      <button type="submit" style="padding:10px 14px;border:0;border-radius:6px;background:#0ea5e9;color:#fff;cursor:pointer;">Send Test Email</button>
+      <button type="submit" style="padding:10px 14px;border:0;border-radius:6px;background:#10b981;color:#fff;cursor:pointer;">Send Test Email</button>
     </form>
     <?php
     exit;

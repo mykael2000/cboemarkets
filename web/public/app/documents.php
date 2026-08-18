@@ -838,7 +838,7 @@ try {
 <p>The GDPR is designed to give individuals greater control over their personal data and how it is used. For you, this means enhanced privacy protection without any changes to the Cboemarkets platform you know and trust. Our updated processes ensure your data is handled with great care and security, giving you peace of mind as you engage with our services.</p>
 <p><strong>What We Have in Place</strong></p>
 <ul class="list-disc list-inside space-y-1 mb-3">
-  <li><strong>Data Protection Officer (DPO):</strong> Our DPO is available for inquiries at <a href="mailto:dpo@Cboemarketsbot.io" class="text-blue-400 hover:underline">dpo@Cboemarketsbot.io</a>.</li>
+  <li><strong>Data Protection Officer (DPO):</strong> Our DPO is available for inquiries at <a href="mailto:dpo@Cboemarketsbot.io" class="text-emerald-400 hover:underline">dpo@Cboemarketsbot.io</a>.</li>
   <li><strong>Updated Legal Documents:</strong> Our up-to-date legal documents include: Client Terms of Service, API Terms of Service for Developers, Affiliate Program Terms and Conditions, and Terms for Referral. Additional legal documents are available in our Legal Information section.</li>
   <li><strong>Enhanced Privacy Notices:</strong> Our updated Privacy Notice outlines your rights under the GDPR and details how we process personal data. Job candidates also receive a Recruitment Privacy Notice to ensure transparency regarding their data.</li>
   <li><strong>Improved Cookie Management:</strong> We have a GDPR-compliant cookie banner that seeks voluntary consent for non-essential cookies. Our Cookie Policy provides detailed insights into the types of cookies we use and their purpose.</li>
@@ -854,11 +854,11 @@ try {
   <li><strong>Building Transparency:</strong> We are developing a Trust Center to further improve visibility into our data protection practices.</li>
 </ul>
 <p><strong>Have Questions?</strong></p>
-<p>If you have any questions, concerns, or suggestions regarding our GDPR compliance efforts, feel free to contact us at <a href="mailto:dpo@Cboemarketsbot.io" class="text-blue-400 hover:underline">dpo@Cboemarketsbot.io</a> or <a href="mailto:support@Cboemarketsbot.io" class="text-blue-400 hover:underline">support@Cboemarketsbot.io</a>.</p>
+<p>If you have any questions, concerns, or suggestions regarding our GDPR compliance efforts, feel free to contact us at <a href="mailto:dpo@Cboemarketsbot.io" class="text-emerald-400 hover:underline">dpo@Cboemarketsbot.io</a> or <a href="mailto:support@Cboemarketsbot.io" class="text-emerald-400 hover:underline">support@Cboemarketsbot.io</a>.</p>
 <p>At Cboemarkets, we&rsquo;re committed to upholding the highest standards of data privacy and security, ensuring your trust remains well-placed in our platform.</p>',
 //     'refund'         => '<p class="text-xs text-slate-400 mb-3 italic">Refund Policy — effective as of December 18, 2025.</p>
 // <p>Any capitalized term used herein shall have the meaning given to them in the Terms of Use.</p>
-// <p>In case of any issues related to payment or refund processes, please refer to the resources available on the Cboemarkets Help Center. You may also reach out to Cboemarkets Support via the &ldquo;Contact Us&rdquo; form or by emailing <a href="mailto:support@Cboemarketsbot.io" class="text-blue-400 hover:underline">support@Cboemarketsbot.io</a>.</p>
+// <p>In case of any issues related to payment or refund processes, please refer to the resources available on the Cboemarkets Help Center. You may also reach out to Cboemarkets Support via the &ldquo;Contact Us&rdquo; form or by emailing <a href="mailto:support@Cboemarketsbot.io" class="text-emerald-400 hover:underline">support@Cboemarketsbot.io</a>.</p>
 // <p><strong>1. Refund for Terminating a Plan</strong></p>
 // <p><strong>1.1</strong> As a consumer, you have the right to withdraw from your first Subscription to a Plan within <strong>15 (fifteen) days</strong> from the date you successfully subscribed (including any Trial period), as described in Section 14.4.1 of the Terms of Use. You are entitled to a refund if you exercise this right within that period. After the 15-day withdrawal period, no refund for termination will be provided.</p>
 // <p><strong>1.2</strong> For second and all subsequent purchases of the same Subscription Plan, a grace period of <strong>24 (twenty-four) hours</strong> is provided for refund eligibility, after which no refunds can be issued.</p>
@@ -949,7 +949,7 @@ try {
             $ext = strtolower(pathinfo($doc['file_name'], PATHINFO_EXTENSION));
             $iconColor = match($ext) {
                 'pdf'  => 'text-red-500',
-                'doc', 'docx' => 'text-blue-500',
+                'doc', 'docx' => 'text-emerald-500',
                 'xls', 'xlsx' => 'text-emerald-500',
                 default => 'text-slate-400',
             };

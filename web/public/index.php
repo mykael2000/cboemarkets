@@ -238,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </a>
     <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
       <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="hover:text-slate-900 transition">Login</a>
-      <button type="button" id="joinCommunityBtn" class="bg-[#2f7fe0] hover:bg-[#2968b5] text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Join Community</button>
+      <button type="button" id="joinCommunityBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm">Join Community</button>
     </nav>
     <!-- Mobile hamburger -->
     <button id="mobileMenuBtn" class="md:hidden text-slate-700 hover:text-slate-900 focus:outline-none">
@@ -250,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- Mobile menu -->
   <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2 shadow-sm">
     <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/login.php', ENT_QUOTES, 'UTF-8') ?>" class="block text-slate-600 hover:text-slate-900 py-1">Login</a>
-    <button type="button" data-open-community-modal class="block bg-[#2f7fe0] text-white px-4 py-2 rounded-lg text-center font-semibold w-full">Join Community</button>
+    <button type="button" data-open-community-modal class="block bg-emerald-600 text-white px-4 py-2 rounded-lg text-center font-semibold w-full">Join Community</button>
   </div>
 </header>
 
@@ -287,7 +287,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input id="community_email" type="email" autocomplete="email" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-slate-400" placeholder="you@example.com">
               </div>
 
-              <button type="button" id="joinCommunityAction" class="w-full bg-[#2f7fe0] hover:bg-[#2968b5] text-white font-bold py-3 rounded-xl transition shadow-lg shadow-[#2f7fe0]/20 text-base">
+              <button type="button" id="joinCommunityAction" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-600/20 text-base">
                 Join Community
               </button>
             </div>
@@ -295,17 +295,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div id="memberChoiceStep" class="hidden space-y-4">
-          <div class="rounded-2xl bg-gradient-to-br from-sky-50 to-white border border-slate-200 p-4 lg:p-5">
-            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Continue as</p>
+          <div class="rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-slate-200 p-4 lg:p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">Continue as</p>
             <h3 class="mt-2 text-sm lg:text-base font-bold text-slate-900">We are ready for <span id="selectedCommunityEmailText" class="text-slate-900">your email</span>.</h3>
           </div>
 
           <div class="grid sm:grid-cols-2 gap-3">
-            <button type="button" data-member-choice="signin" class="rounded-2xl border border-slate-200 bg-slate-100 px-4 py-4 text-left transition hover:border-[#2f7fe0] hover:bg-[#edf5ff]">
+            <button type="button" data-member-choice="signin" class="rounded-2xl border border-slate-200 bg-slate-100 px-4 py-4 text-left transition hover:border-emerald-500 hover:bg-emerald-50">
               <span class="block text-xs uppercase tracking-[0.2em] text-slate-500">Returning</span>
               <span class="mt-2 block text-lg font-bold text-slate-900">Old member</span>
             </button>
-            <button type="button" data-member-choice="signup" class="rounded-2xl border border-slate-200 bg-slate-100 px-4 py-4 text-left transition hover:border-[#2f7fe0] hover:bg-[#edf5ff]">
+            <button type="button" data-member-choice="signup" class="rounded-2xl border border-slate-200 bg-slate-100 px-4 py-4 text-left transition hover:border-emerald-500 hover:bg-emerald-50">
               <span class="block text-xs uppercase tracking-[0.2em] text-slate-500">New</span>
               <span class="mt-2 block text-lg font-bold text-slate-900">New member</span>
             </button>
@@ -347,7 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="<?= htmlspecialchars((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '/forgot_password.php', ENT_QUOTES, 'UTF-8') ?>" class="text-emerald-600 hover:text-emerald-500 transition">Forgot password?</a>
                   </div>
 
-                  <button type="submit" class="w-full bg-[#2f7fe0] hover:bg-[#2968b5] text-white font-bold py-3 rounded-xl transition shadow-lg shadow-[#2f7fe0]/20 text-base">
+                  <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-600/20 text-base">
                     Access Platform
                   </button>
                 </form>
@@ -357,8 +357,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="auth-panel hidden" data-auth-panel="signup">
             <div class="grid lg:grid-cols-2 gap-2 items-stretch">
-              <div class="rounded-2xl bg-gradient-to-br from-sky-50 to-white border border-slate-200 p-2 lg:p-6">
-                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Get started</p>
+              <div class="rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-slate-200 p-2 lg:p-6">
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">Get started</p>
                 <h2 class="mt-3 text-sm lg:text-base font-bold text-slate-900">Create your free account and begin trading with automation.</h2>
               </div>
 
@@ -417,7 +417,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="text-xs text-emerald-700 font-medium">Human verification passed</span>
                   </div>
 
-                  <button type="submit" class="w-full bg-[#2f7fe0] hover:bg-[#2968b5] text-white font-bold py-3 rounded-xl transition shadow-lg shadow-[#2f7fe0]/20 text-base">
+                  <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-600/20 text-base">
                     Create Account
                   </button>
                 </form>

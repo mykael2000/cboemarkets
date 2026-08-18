@@ -212,7 +212,7 @@ try {
                   <input type="number" name="dashboard_margin" step="0.00000001" min="0"
                     value="<?= sanitize(number_format((float)($u['dashboard_margin'] ?? 0), 8, '.', '')) ?>"
                     title="Auto Trading Allocated"
-                    class="w-24 bg-slate-600 border border-slate-500 text-white rounded px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    class="w-24 bg-slate-600 border border-slate-500 text-white rounded px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="Auto Trading">
                   <input type="number" name="dashboard_free_margin" step="0.00000001" min="0"
                     value="<?= sanitize(number_format((float)($u['dashboard_free_margin'] ?? 0), 8, '.', '')) ?>"

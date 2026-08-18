@@ -388,9 +388,9 @@ try {
                     <p class="text-xs text-slate-600 mt-0.5">BTC / ETH / USDT</p>
                 </button>
 
-                <button type="button" id="btnBank" onclick="selectMethod('bank')" class="method-card border-2 border-transparent rounded-xl p-4 text-center cursor-pointer transition bg-white hover:border-blue-500/60">
-                    <div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                <button type="button" id="btnBank" onclick="selectMethod('bank')" class="method-card border-2 border-transparent rounded-xl p-4 text-center cursor-pointer transition bg-white hover:border-emerald-500/60">
+                    <div class="w-10 h-10 bg-emerald-500/15 rounded-xl flex items-center justify-center mx-auto mb-2">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                     </div>
                     <p class="text-sm font-bold text-slate-800">Bank Transfer</p>
                     <p class="text-xs text-slate-600 mt-0.5">Wire / ACH</p>
@@ -450,24 +450,24 @@ try {
             <!-- Bank Fields -->
             <div id="bankFields" class="hidden bg-white border border-slate-200 rounded-2xl p-5 space-y-3">
                 <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
-                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                     Bank Details
                 </h3>
                 <div>
                     <label class="block text-xs text-slate-600 mb-1">Bank Name</label>
-                    <input type="text" name="bank_name" placeholder="e.g. Chase Bank" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" name="bank_name" placeholder="e.g. Chase Bank" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
                     <label class="block text-xs text-slate-600 mb-1">Account Holder Name</label>
-                    <input type="text" name="account_name" placeholder="Full name on account" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" name="account_name" placeholder="Full name on account" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
                     <label class="block text-xs text-slate-600 mb-1">Account Number / IBAN</label>
-                    <input type="text" name="account_no" placeholder="Account number" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" name="account_no" placeholder="Account number" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
                     <label class="block text-xs text-slate-600 mb-1">Routing / SWIFT / BIC (optional)</label>
-                    <input type="text" name="routing" placeholder="Routing or SWIFT code" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" name="routing" placeholder="Routing or SWIFT code" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
             </div>
 
@@ -536,7 +536,7 @@ try {
             const assetSelect  = el('assetSelect');
 
             if (method === 'bank') {
-                btnBank.classList.add('border-blue-500', 'bg-blue-500/10');
+                btnBank.classList.add('border-emerald-500', 'bg-emerald-500/10');
                 btnBank.classList.remove('border-transparent', 'bg-white');
                 btnCrypto.classList.remove('border-yellow-500', 'bg-yellow-500/10');
                 btnCrypto.classList.add('border-transparent', 'bg-white');
@@ -548,7 +548,7 @@ try {
             } else {
                 btnCrypto.classList.add('border-yellow-500', 'bg-yellow-500/10');
                 btnCrypto.classList.remove('border-transparent', 'bg-white');
-                btnBank.classList.remove('border-blue-500', 'bg-blue-500/10');
+                btnBank.classList.remove('border-emerald-500', 'bg-emerald-500/10');
                 btnBank.classList.add('border-transparent', 'bg-white');
                 cryptoFields.classList.remove('hidden');
                 bankFields.classList.add('hidden');

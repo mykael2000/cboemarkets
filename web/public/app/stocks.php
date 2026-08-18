@@ -341,7 +341,7 @@ $user = current_user();
                       <input type="hidden" name="symbol" value="<?= sanitize($stock['symbol']) ?>">
                       <input type="hidden" name="company" value="<?= sanitize($stock['name']) ?>">
                       <input type="hidden" name="quantity" value="1">
-                      <button class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">Buy</button>
+                      <button class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">Buy</button>
                     </form>
                   </td>
                 </tr>
@@ -365,7 +365,7 @@ $user = current_user();
             </select>
             <input type="text" name="company" placeholder="Company name" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" required>
             <input type="number" name="quantity" min="1" step="1" placeholder="Quantity" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" required>
-            <button class="w-full rounded-xl bg-blue-600 text-white py-2.5 font-semibold">Buy position</button>
+            <button class="w-full rounded-xl bg-emerald-600 text-white py-2.5 font-semibold">Buy position</button>
           </form>
         </div>
 
@@ -449,10 +449,10 @@ $user = current_user();
     <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-600">
       <p>© <?= date('Y') ?> CBOE Markets. All rights reserved.</p>
       <div class="flex items-center gap-4">
-        <a href="index.php" class="hover:text-blue-600 transition">Dashboard</a>
-        <a href="markets.php" class="hover:text-blue-600 transition">Markets</a>
-        <a href="trading.php" class="hover:text-blue-600 transition">Trading</a>
-        <a href="profile.php" class="hover:text-blue-600 transition">Profile</a>
+        <a href="index.php" class="hover:text-emerald-600 transition">Dashboard</a>
+        <a href="markets.php" class="hover:text-emerald-600 transition">Markets</a>
+        <a href="trading.php" class="hover:text-emerald-600 transition">Trading</a>
+        <a href="profile.php" class="hover:text-emerald-600 transition">Profile</a>
       </div>
     </div>
   </footer>

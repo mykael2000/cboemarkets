@@ -454,7 +454,7 @@ $pricesJson = json_encode([
                 <!-- Auto Trading Allocated -->
                 <div class="glass-card rounded-2xl p-2 hover-lift">
                     <p class="text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-2">Auto Trading Allocated</p>
-                    <p class="text-xl sm:text-2xl font-black tabular-nums text-blue-400">$<?= number_format($margin, 2) ?></p>
+                    <p class="text-xl sm:text-2xl font-black tabular-nums text-emerald-400">$<?= number_format($margin, 2) ?></p>
                     
                 </div>
 
@@ -498,7 +498,7 @@ $pricesJson = json_encode([
                     <?php
                     $cryptoColors = [
                         'BTC'  => ['badge' => 'crypto-btc',  'icon' => 'text-orange-400', 'bar' => 'from-orange-500 to-amber-400',   'pct' => 'text-orange-400'],
-                        'ETH'  => ['badge' => 'crypto-eth',  'icon' => 'text-indigo-400', 'bar' => 'from-indigo-500 to-blue-400',    'pct' => 'text-indigo-400'],
+                        'ETH'  => ['badge' => 'crypto-eth',  'icon' => 'text-indigo-400', 'bar' => 'from-indigo-500 to-emerald-400',    'pct' => 'text-indigo-400'],
                         'BNB'  => ['badge' => 'crypto-bnb',  'icon' => 'text-yellow-500', 'bar' => 'from-yellow-500 to-amber-300',   'pct' => 'text-yellow-500'],
                         'SOL'  => ['badge' => 'crypto-sol',  'icon' => 'text-purple-400', 'bar' => 'from-purple-500 to-pink-400',    'pct' => 'text-purple-400'],
                         'USDT' => ['badge' => 'crypto-usdt', 'icon' => 'text-teal-400',   'bar' => 'from-teal-500 to-emerald-400',   'pct' => 'text-teal-400'],
@@ -575,7 +575,7 @@ $pricesJson = json_encode([
             <!-- ── Quick Swap ── -->
             <div class="swap-gradient rounded-3xl p-3 flex flex-col">
                 <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m10 4v12m0 0l-4-4m4 4l4-4"/></svg>
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m10 4v12m0 0l-4-4m4 4l4-4"/></svg>
                     Quick Swap
                 </h3>
 
@@ -617,12 +617,12 @@ $pricesJson = json_encode([
                     <!-- Live Rate Display -->
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 space-y-1" id="rateBox">
                         <p class="text-[11px] text-slate-600 font-semibold uppercase tracking-wider">Live Exchange Rate</p>
-                        <p class="text-sm font-bold text-blue-300 tabular-nums" id="rateDisplay">— loading —</p>
+                        <p class="text-sm font-bold text-emerald-300 tabular-nums" id="rateDisplay">— loading —</p>
                         <p class="text-[11px] text-slate-500" id="receiveDisplay"></p>
                     </div>
 
                     <button type="submit"
-                            class="mt-auto w-full bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white font-bold py-2 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-blue-900/40">
+                            class="mt-auto w-full bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-600 hover:to-emerald-500 text-white font-bold py-2 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-900/40">
                         ⇄ Swap Now
                     </button>
                 </form>
@@ -775,8 +775,8 @@ $pricesJson = json_encode([
                     
                         <a href="trading.php"
                        class="glass-card hover:border-emerald-500/40 rounded-2xl p-2 text-center transition hover-lift group border border-slate-200">
-                        <div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center mx-auto mb-1 group-hover:bg-blue-500/25 transition">
-                               <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        <div class="w-10 h-10 bg-emerald-500/15 rounded-xl flex items-center justify-center mx-auto mb-1 group-hover:bg-emerald-500/25 transition">
+                               <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                         </div>
                             <p class="text-xs font-bold text-slate-600 group-hover:text-slate-900 transition">Trade</p>
                     </a>

@@ -202,7 +202,7 @@ $canUpload = in_array($status, ['unverified', 'rejected'], true);
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-2">
             <span class="inline-flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
+              <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
               Government-Issued ID
             </span>
           </label>
@@ -270,9 +270,9 @@ $canUpload = in_array($status, ['unverified', 'rejected'], true);
     <?php endif; ?>
 
     <!-- Info box -->
-    <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 text-sm text-blue-700">
+    <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 text-sm text-emerald-700">
       <p class="font-semibold mb-1">Why verify your identity?</p>
-      <ul class="list-disc list-inside space-y-0.5 text-blue-600">
+      <ul class="list-disc list-inside space-y-0.5 text-emerald-600">
         <li>Unlock higher withdrawal limits</li>
         <li>Access VIP investment plans</li>
         <li>Required for bank withdrawals</li>

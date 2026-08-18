@@ -142,7 +142,7 @@ try {
       <a href="index.php" class="text-slate-600 hover:text-slate-900 transition">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       </a>
-      <span class="text-lg font-extrabold text-blue-500">Swap</span>
+      <span class="text-lg font-extrabold text-emerald-500">Swap</span>
     </div>
   </header>
 
@@ -175,7 +175,7 @@ try {
     <!-- Swap form -->
     <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-4">
       <h2 class="font-bold text-slate-900 text-base flex items-center gap-2">
-        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m10 4v12m0 0l-4-4m4 4l4-4"/></svg>
+        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m10 4v12m0 0l-4-4m4 4l4-4"/></svg>
         Instant Swap (No Fees)
       </h2>
       <form method="POST" action="swap.php" class="space-y-3">
@@ -185,7 +185,7 @@ try {
           <div>
             <label class="block text-sm text-slate-600 mb-1.5">From</label>
             <select name="from_currency" id="swapFrom" required
-              class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
               <option value="USDT" selected>$ USDT</option>
               <option value="BTC">₿ BTC</option>
               <option value="ETH">Ξ ETH</option>
@@ -196,7 +196,7 @@ try {
           <div>
             <label class="block text-sm text-slate-600 mb-1.5">To</label>
             <select name="to_currency" id="swapTo" required
-              class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
               <option value="USDT">$ USDT</option>
               <option value="BTC" selected>₿ BTC</option>
               <option value="ETH">Ξ ETH</option>
@@ -207,19 +207,19 @@ try {
         </div>
 
         <div>
-          <label class="block text-sm text-slate-600 mb-1.5">Amount <span id="fromLabel" class="text-blue-500 font-semibold">USDT</span></label>
+          <label class="block text-sm text-slate-600 mb-1.5">Amount <span id="fromLabel" class="text-emerald-500 font-semibold">USDT</span></label>
           <input type="number" name="amount" id="swapAmount" step="0.00000001" min="0.00000001" required
-            class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 tabular-nums"
+            class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 tabular-nums"
             placeholder="0.00">
         </div>
 
         <!-- Quick USD chips -->
         <div class="flex gap-2 flex-wrap">
           <span class="text-xs text-slate-500 self-center">Quick fill:</span>
-          <button type="button" onclick="setUsdAmount(100)"  class="text-xs px-3 py-1.5 bg-blue-500/10 text-blue-600 rounded-lg hover:bg-blue-500/20 transition font-medium">$100</button>
-          <button type="button" onclick="setUsdAmount(500)"  class="text-xs px-3 py-1.5 bg-blue-500/10 text-blue-600 rounded-lg hover:bg-blue-500/20 transition font-medium">$500</button>
-          <button type="button" onclick="setUsdAmount(1000)" class="text-xs px-3 py-1.5 bg-blue-500/10 text-blue-600 rounded-lg hover:bg-blue-500/20 transition font-medium">$1,000</button>
-          <button type="button" onclick="setUsdAmount(2500)" class="text-xs px-3 py-1.5 bg-blue-500/10 text-blue-600 rounded-lg hover:bg-blue-500/20 transition font-medium">$2,500</button>
+          <button type="button" onclick="setUsdAmount(100)"  class="text-xs px-3 py-1.5 bg-emerald-500/10 text-emerald-600 rounded-lg hover:bg-emerald-500/20 transition font-medium">$100</button>
+          <button type="button" onclick="setUsdAmount(500)"  class="text-xs px-3 py-1.5 bg-emerald-500/10 text-emerald-600 rounded-lg hover:bg-emerald-500/20 transition font-medium">$500</button>
+          <button type="button" onclick="setUsdAmount(1000)" class="text-xs px-3 py-1.5 bg-emerald-500/10 text-emerald-600 rounded-lg hover:bg-emerald-500/20 transition font-medium">$1,000</button>
+          <button type="button" onclick="setUsdAmount(2500)" class="text-xs px-3 py-1.5 bg-emerald-500/10 text-emerald-600 rounded-lg hover:bg-emerald-500/20 transition font-medium">$2,500</button>
         </div>
 
         <!-- Live rate display -->
@@ -231,7 +231,7 @@ try {
         </div>
 
         <button type="submit"
-          class="w-full bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-600 hover:to-blue-400 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-blue-900/30">
+          class="w-full bg-gradient-to-r from-emerald-700 to-emerald-500 hover:from-emerald-600 hover:to-emerald-400 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-900/30">
           ⇄ Swap Now
         </button>
       </form>

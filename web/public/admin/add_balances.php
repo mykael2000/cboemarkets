@@ -222,7 +222,7 @@ try {
           <input type="hidden" name="action" value="add_auto_trading">
           <div>
             <label class="block text-xs text-slate-300 mb-1">User</label>
-            <select name="user_id" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/60">
+            <select name="user_id" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/60">
               <option value="">Select user</option>
               <?php foreach ($users as $u): ?>
               <option value="<?= (int)$u['id'] ?>"><?= sanitize($u['name']) ?> (<?= sanitize($u['email']) ?>)</option>
@@ -231,9 +231,9 @@ try {
           </div>
           <div>
             <label class="block text-xs text-slate-300 mb-1">Amount (USD)</label>
-            <input type="number" name="amount" min="0.00000001" step="0.00000001" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/60" placeholder="0.00">
+            <input type="number" name="amount" min="0.00000001" step="0.00000001" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/60" placeholder="0.00">
           </div>
-          <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg transition">Add Auto Trading Balance</button>
+          <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-lg transition">Add Auto Trading Balance</button>
         </form>
       </section>
 

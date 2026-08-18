@@ -199,7 +199,7 @@ if ($selectedId > 0) {
               $totalPnl = $pnlMap[$sub['id']] ?? 0;
               $statusColor = match($sub['status']) {
                 'active'    => 'text-emerald-400 bg-emerald-500/10',
-                'completed' => 'text-blue-400 bg-blue-500/10',
+                'completed' => 'text-emerald-400 bg-emerald-500/10',
                 'cancelled' => 'text-slate-400 bg-slate-600',
                 default     => 'text-slate-400 bg-slate-600',
               };
