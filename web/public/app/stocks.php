@@ -445,7 +445,7 @@ $user = current_user();
 
   <?php $activePage = 'stocks.php'; include '_nav.php'; ?>
 
-  <footer class="border-t border-slate-200 bg-white/90 backdrop-blur-sm mt-8">
+  <!-- <footer class="border-t border-slate-200 bg-white/90 backdrop-blur-sm mt-8">
     <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-600">
       <p>© <?= date('Y') ?> CBOE Markets. All rights reserved.</p>
       <div class="flex items-center gap-4">
@@ -455,6 +455,6 @@ $user = current_user();
         <a href="profile.php" class="hover:text-emerald-600 transition">Profile</a>
       </div>
     </div>
-  </footer>
+  </footer> -->
 </body>
 </html>

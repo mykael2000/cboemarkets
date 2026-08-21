@@ -417,9 +417,6 @@ $pricesJson = json_encode([
                         $<?= number_format($totalBalance, 2) ?>
                     </h2>
                     <p class="text-emerald-600 text-base font-medium">≈ <?= number_format($totalBalance, 2) ?> USDT</p>
-                    <a href="<?= sanitize($platformUrl) ?>" target="_blank" rel="noopener noreferrer" class="inline-flex mt-2 text-xs text-sky-700 hover:text-sky-600 font-semibold">
-                        <?= sanitize($platformUrl) ?>
-                    </a>
                 </div>
 
                 <div class="flex flex-row sm:flex-col gap-2 sm:items-end">
