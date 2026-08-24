@@ -14,10 +14,13 @@ function require_login(): void
 function require_admin(): void
 {
     require_login();
-    if (($_SESSION['role'] ?? '') !== 'admin') {
+    $user = current_user();
+    if (($user['role'] ?? '') !== 'admin') {
         header('Location: ' . app_dashboard_url());
         exit;
     }
+
+    $_SESSION['role'] = $user['role'];
 }
 
 function login_user(array $user): void
