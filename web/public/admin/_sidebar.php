@@ -60,7 +60,7 @@ $_adminBase = site_base_path();
       foreach ($links as $file => $label):
         $isActive = $_adminPage === $file;
     ?>
-    <a href="<?= sanitize($_adminBase . '/admin/' . $file) ?>"
+    <a href="<?= sanitize('admin/' . $file) ?>"
       class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition
         <?= $isActive ? 'bg-slate-800 text-emerald-400 ring-1 ring-emerald-500/30' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
       <?= sanitize($label) ?>
