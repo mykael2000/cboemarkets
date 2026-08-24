@@ -583,18 +583,7 @@ $user = current_user();
       <div class="px-5 sm:px-7 py-5 border-b border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white">
         <p class="text-xs uppercase tracking-[0.2em] text-slate-200">Stocks Account Access</p>
         <h2 id="stocksQuestionnaireTitle" class="mt-1 text-xl sm:text-2xl font-bold">Professional Suitability Questionnaire</h2>
-        <p class="mt-2 text-sm text-slate-200 max-w-3xl">To access stocks trading, complete this regulatory onboarding questionnaire. Your responses help us verify identity, assess suitability, and configure your account features.</p>
-      </div>
-
-      <div class="px-5 sm:px-7 pt-4 pb-2 border-b border-slate-100">
-        <div class="grid grid-cols-2 md:grid-cols-6 gap-2 text-xs font-semibold text-slate-500" id="questionnaireStepper">
-          <div data-step-pill="1" class="rounded-lg px-2 py-2 text-center bg-emerald-50 text-emerald-700 border border-emerald-200">1. Personal</div>
-          <div data-step-pill="2" class="rounded-lg px-2 py-2 text-center bg-slate-50 border border-slate-200">2. Employment</div>
-          <div data-step-pill="3" class="rounded-lg px-2 py-2 text-center bg-slate-50 border border-slate-200">3. Financial</div>
-          <div data-step-pill="4" class="rounded-lg px-2 py-2 text-center bg-slate-50 border border-slate-200">4. Investment</div>
-          <div data-step-pill="5" class="rounded-lg px-2 py-2 text-center bg-slate-50 border border-slate-200">5. Features</div>
-          <div data-step-pill="6" class="rounded-lg px-2 py-2 text-center bg-slate-50 border border-slate-200">6. Funding</div>
-        </div>
+        <p class="mt-2 text-sm text-slate-200 max-w-3xl">Your responses help us verify identity, assess suitability, and configure your account features.</p>
       </div>
 
       <form method="post" class="flex-1 overflow-y-auto questionnaire-scrollbar" id="stocksQuestionnaireForm">
@@ -617,7 +606,7 @@ $user = current_user();
             <h3 class="text-lg font-bold text-slate-900">Personal Information</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <label class="text-sm text-slate-700">First name<input required name="first_name" value="<?= sanitize((string)($questionnaireValues['first_name'] ?? '')) ?>" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" /></label>
-              <label class="text-sm text-slate-700">Middle name<input name="middle_name" value="<?= sanitize((string)($questionnaireValues['middle_name'] ?? '')) ?>" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" /></label>
+              <label class="text-sm text-slate-700">Middle name (optional)<input name="middle_name" value="<?= sanitize((string)($questionnaireValues['middle_name'] ?? '')) ?>" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" /></label>
               <label class="text-sm text-slate-700">Last name<input required name="last_name" value="<?= sanitize((string)($questionnaireValues['last_name'] ?? '')) ?>" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" /></label>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
