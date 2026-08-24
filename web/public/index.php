@@ -262,7 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <section class="py-3 md:py-4 lg:py-5 min-h-[calc(100vh-8.5rem)] flex items-center">
   <div class="w-full max-w-6xl mx-auto px-4 sm:px-6">
     <div class="bg-white border border-slate-200 rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden">
-      <div class="p-4 sm:p-6 lg:p-7 border-b border-slate-200 bg-slate-50/80">
+      <div id="authTabsWrap" class="hidden p-4 sm:p-6 lg:p-7 border-b border-slate-200 bg-slate-50/80">
         <div class="grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1">
           <button type="button" class="auth-tab-btn rounded-xl px-4 py-3 lg:py-3.5 text-sm lg:text-base font-semibold transition" data-auth-tab="signin">Sign in</button>
           <button type="button" class="auth-tab-btn rounded-xl px-4 py-3 lg:py-3.5 text-sm lg:text-base font-semibold transition" data-auth-tab="signup">Sign up</button>
@@ -476,6 +476,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   const authPreStep = document.getElementById('authPreStep');
   const memberChoiceStep = document.getElementById('memberChoiceStep');
+  const authTabsWrap = document.getElementById('authTabsWrap');
   const joinCommunityAction = document.getElementById('joinCommunityAction');
   const communityEmailInput = document.getElementById('community_email');
   const selectedCommunityEmailText = document.getElementById('selectedCommunityEmailText');
@@ -489,6 +490,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     setAuthTab(choice);
     memberChoiceStep.classList.add('hidden');
     authPreStep.classList.add('hidden');
+    if (authTabsWrap) authTabsWrap.classList.remove('hidden');
 
     if (choice === 'signin') {
       const emailField = document.getElementById('signin_email');
@@ -547,10 +549,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   authPreStep.classList.remove('hidden');
   memberChoiceStep.classList.add('hidden');
+  if (authTabsWrap) authTabsWrap.classList.add('hidden');
   document.querySelectorAll('[data-auth-panel]').forEach((panel) => panel.classList.add('hidden'));
 
   if (initialAuthTab) {
     authPreStep.classList.add('hidden');
+    if (authTabsWrap) authTabsWrap.classList.remove('hidden');
     setAuthTab(initialAuthTab);
   }
 
@@ -570,21 +574,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     document.getElementById('mobileMenu').classList.toggle('hidden');
   });
 </script>
-
-<!-- Smartsupp Live Chat -->
-<script type="text/javascript">
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = '974526ed39790a589cf4d6ee38fc45e6e627627d';
-if (window.innerWidth < 768) {
-  _smartsupp.offsetY = 80;
-}
-window.smartsupp||(function(d) {
-  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-  c.type='text/javascript';c.charset='utf-8';c.async=true;
-  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-})(document);
-</script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
 </body>
 </html>

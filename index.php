@@ -1,6 +1,7 @@
 <?php
 $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/');
 $signinHref = $basePath . '/web/public/index.php';
+$volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -166,7 +167,7 @@ $signinHref = $basePath . '/web/public/index.php';
       <div class="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 pt-2 sm:pt-4 md:pt-6 lg:pt-8 pb-10 lg:pb-12">
         <div class="flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-2 mb-8 lg:mb-10 text-left">
           <p class="text-[1.05rem] font-semibold tracking-tight">VOLUME SNAPSHOT</p>
-          <p class="text-[0.95rem] text-[#9ca3c9]">(daily volume for July 20, 2026)</p>
+          <p id="volumeSnapshotDate" class="text-[0.95rem] text-[#9ca3c9]">(daily volume for July 20, 2026)</p>
         </div>
 
         <!-- Mobile stacked snapshot (left-aligned, tighter spacing) -->
@@ -177,7 +178,7 @@ $signinHref = $basePath . '/web/public/index.php';
               <div class="bg-[#0e2348] rounded-md p-2">
                 <div class="text-[0.72rem] font-semibold text-[#9ca3c9] uppercase tracking-wider">SPX Index Options</div>
                 <div class="mt-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between items-start gap-0.5">
-                  <div class="text-2xl font-bold text-[#2fe676] leading-none">4.71M</div>
+                  <div class="text-2xl font-bold text-[#2fe676] leading-none" data-volume-field="spx_options">4.71M</div>
                   <div class="text-xs text-[#9ca3c9]">Volume</div>
                 </div>
               </div>
@@ -185,7 +186,7 @@ $signinHref = $basePath . '/web/public/index.php';
               <div class="bg-[#0e2348] rounded-md p-2">
                 <div class="text-[0.72rem] font-semibold text-[#9ca3c9] uppercase tracking-wider">VIX Index Options</div>
                 <div class="mt-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between items-start gap-0.5">
-                  <div class="text-2xl font-bold text-[#2fe676] leading-none">642.23K</div>
+                  <div class="text-2xl font-bold text-[#2fe676] leading-none" data-volume-field="vix_options">642.23K</div>
                   <div class="text-xs text-[#9ca3c9]">Volume</div>
                 </div>
               </div>
@@ -193,7 +194,7 @@ $signinHref = $basePath . '/web/public/index.php';
               <div class="bg-[#0e2348] rounded-md p-2">
                 <div class="text-[0.72rem] font-semibold text-[#9ca3c9] uppercase tracking-wider">VIX Futures</div>
                 <div class="mt-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between items-start gap-0.5">
-                  <div class="text-2xl font-bold text-[#2fe676] leading-none">249.69K</div>
+                  <div class="text-2xl font-bold text-[#2fe676] leading-none" data-volume-field="vix_futures">249.69K</div>
                   <div class="text-xs text-[#9ca3c9]">Volume</div>
                 </div>
               </div>
@@ -201,7 +202,7 @@ $signinHref = $basePath . '/web/public/index.php';
               <div class="bg-[#0e2348] rounded-md p-2">
                 <div class="text-[0.72rem] font-semibold text-[#9ca3c9] uppercase tracking-wider">Industry Volume</div>
                 <div class="mt-1 flex flex-col items-start">
-                  <div class="text-2xl font-bold text-[#2fe676] leading-none">64.24M</div>
+                  <div class="text-2xl font-bold text-[#2fe676] leading-none" data-volume-field="industry_volume">64.24M</div>
                   <div class="text-xs text-[#9ca3c9] mt-1">Total Options Industry Volume in Contracts</div>
                 </div>
               </div>
@@ -228,25 +229,25 @@ $signinHref = $basePath . '/web/public/index.php';
 
           <div class="sm:border-l sm:border-[#2c355f] px-4 sm:pl-6 lg:pl-8 text-center sm:text-left">
             <p class="text-[1.1rem] lg:text-[1.25rem] font-semibold mb-3">SPX Index Options</p>
-            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1">4.71M</p>
+            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1" data-volume-field="spx_options">4.71M</p>
             <p class="text-[0.8rem] sm:text-[0.85rem] tracking-[0.12em] uppercase text-[#9ca3c9]">Volume</p>
           </div>
 
           <div class="sm:border-l sm:border-[#2c355f] px-4 sm:pl-6 lg:pl-8 text-center sm:text-left">
             <p class="text-[1.1rem] lg:text-[1.25rem] font-semibold mb-3">VIX Index Options</p>
-            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1">642.23K</p>
+            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1" data-volume-field="vix_options">642.23K</p>
             <p class="text-[0.8rem] sm:text-[0.85rem] tracking-[0.12em] uppercase text-[#9ca3c9]">Volume</p>
           </div>
 
           <div class="sm:border-l sm:border-[#2c355f] px-4 sm:pl-6 lg:pl-8 text-center sm:text-left">
             <p class="text-[1.1rem] lg:text-[1.25rem] font-semibold mb-3">VIX Futures</p>
-            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1">249.69K</p>
+            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1" data-volume-field="vix_futures">249.69K</p>
             <p class="text-[0.8rem] sm:text-[0.85rem] tracking-[0.12em] uppercase text-[#9ca3c9]">Volume</p>
           </div>
 
           <div class="sm:border-l sm:border-[#2c355f] px-4 sm:pl-6 lg:pl-8 text-center sm:text-left">
             <p class="text-[1.1rem] lg:text-[1.25rem] font-semibold mb-3">Industry Volume</p>
-            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1">64.24M</p>
+            <p class="text-[2.2rem] sm:text-[2.5rem] lg:text-[2.6rem] font-bold text-[#2fe676] leading-none mb-1" data-volume-field="industry_volume">64.24M</p>
             <p class="text-[0.8rem] sm:text-[0.85rem] tracking-[0.12em] uppercase text-[#9ca3c9] leading-snug">
               Total Options Industry<br />
               Volume in Contracts
@@ -751,6 +752,7 @@ $signinHref = $basePath . '/web/public/index.php';
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
+      const volumeSnapshotApi = <?= json_encode($volumeSnapshotApi, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
 
         menuToggle.addEventListener('click', () => {
             const isHidden = mobileMenu.classList.contains('hidden');
@@ -765,6 +767,40 @@ $signinHref = $basePath . '/web/public/index.php';
             menuToggle.setAttribute('aria-expanded', 'false');
             }
         });
+
+        async function refreshVolumeSnapshot() {
+          try {
+            const res = await fetch(volumeSnapshotApi, { headers: { 'Accept': 'application/json' } });
+            if (!res.ok) {
+              return;
+            }
+
+            const data = await res.json();
+            if (!data || !data.success || !data.display) {
+              return;
+            }
+
+            const fields = ['spx_options', 'vix_options', 'vix_futures', 'industry_volume'];
+            fields.forEach((field) => {
+              const value = data.display[field];
+              if (!value) {
+                return;
+              }
+              document.querySelectorAll(`[data-volume-field="${field}"]`).forEach((el) => {
+                el.textContent = value;
+              });
+            });
+
+            const dateEl = document.getElementById('volumeSnapshotDate');
+            if (dateEl && data.trading_date_label) {
+              dateEl.textContent = `(daily volume for ${data.trading_date_label})`;
+            }
+          } catch (err) {
+            // Keep existing hardcoded values if API call fails.
+          }
+        }
+
+        refreshVolumeSnapshot();
     </script>
 </body>
 </html>
