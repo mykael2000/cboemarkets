@@ -155,7 +155,7 @@ $volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
         </div>
 
         <div class="w-full lg:col-start-1 lg:col-end-2 lg:justify-self-start mt-6 lg:mt-0">
-          <a target="_blank" href="https://www.cboe.com/markets/prediction-markets" class="inline-flex w-full lg:w-auto items-center justify-center px-6 py-3 rounded-full border-2 border-[#0e1d5a] text-[#0e1d5a] font-semibold text-[1rem] hover:bg-[#0e1d5a] hover:text-white transition">
+          <a target="_blank" href="<?= htmlspecialchars($signinHref, ENT_QUOTES, 'UTF-8') ?>" class="inline-flex w-full lg:w-auto items-center justify-center px-6 py-3 rounded-full border-2 border-[#0e1d5a] text-[#0e1d5a] font-semibold text-[1rem] hover:bg-[#0e1d5a] hover:text-white transition">
             Cboe Predictions
           </a>
         </div>
