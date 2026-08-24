@@ -10,6 +10,25 @@ require_admin();
 $error   = get_flash('error');
 $success = get_flash('success');
 
+function ensure_deposit_addresses_table(): void
+{
+  db()->exec(
+    'CREATE TABLE IF NOT EXISTS deposit_addresses (
+      id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+      asset_ticker VARCHAR(20) NOT NULL,
+      address VARCHAR(255) NOT NULL,
+      network VARCHAR(50) NOT NULL,
+      active TINYINT(1) NOT NULL DEFAULT 1,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB'
+  );
+}
+
+ensure_deposit_addresses_table();
+
+$adminBase = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/admin/addresses.php'), '/');
+$addressesPage = $adminBase . '/addresses.php';
+
 // Handle Add
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add') {
     csrf_verify();
@@ -20,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
 
     if ($ticker === '' || $address === '' || $network === '') {
         flash('error', 'All fields are required.');
-        redirect('/admin/addresses');
+      redirect($addressesPage);
     }
 
     try {
@@ -32,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
     } catch (Throwable) {
         flash('error', 'Failed to add address.');
     }
-    redirect('/admin/addresses');
+    redirect($addressesPage);
 }
 
 // Handle Edit
@@ -46,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'edit'
 
     if ($id <= 0 || $ticker === '' || $address === '') {
         flash('error', 'Invalid form data.');
-        redirect('/admin/addresses');
+      redirect($addressesPage);
     }
 
     try {
@@ -58,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'edit'
     } catch (Throwable) {
         flash('error', 'Failed to update address.');
     }
-    redirect('/admin/addresses');
+    redirect($addressesPage);
 }
 
 // Handle Delete
@@ -72,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
     } catch (Throwable) {
         flash('error', 'Failed to delete address.');
     }
-    redirect('/admin/addresses');
+    redirect($addressesPage);
 }
 
 $addresses = [];
@@ -115,7 +134,7 @@ if (isset($_GET['edit'])) {
       <!-- Add / Edit Form -->
       <div class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-4"><?= $editAddr ? 'Edit Address' : 'Add Address' ?></h2>
-        <form method="POST" action="/admin/addresses" class="space-y-3">
+        <form method="POST" action="<?= sanitize($addressesPage) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="<?= $editAddr ? 'edit' : 'add' ?>">
           <?php if ($editAddr): ?>
@@ -189,7 +208,7 @@ if (isset($_GET['edit'])) {
                 </td>
                 <td class="px-4 py-3 text-right">
                   <a href="/admin/addresses.php?edit=<?= (int)$a['id'] ?>" class="text-emerald-400 hover:text-emerald-300 text-xs mr-3">Edit</a>
-                  <form method="POST" action="/admin/addresses" class="inline" onsubmit="return confirm('Delete this address?')">
+                  <form method="POST" action="<?= sanitize($addressesPage) ?>" class="inline" onsubmit="return confirm('Delete this address?')">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="id" value="<?= (int)$a['id'] ?>">

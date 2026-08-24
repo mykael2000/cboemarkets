@@ -80,7 +80,7 @@ $kycColor = match($kycStatus) {
         </div>
       </div>
       <?php if ($user['role'] === 'admin'): ?>
-      <a href="../admin/index.php" class="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg bg-purple-50 text-purple-600 hover:bg-purple-100 font-medium transition">Admin</a>
+      <a href="<?= sanitize(admin_dashboard_url()) ?>" class="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg bg-purple-50 text-purple-600 hover:bg-purple-100 font-medium transition">Admin</a>
       <?php endif; ?>
     </div>
 

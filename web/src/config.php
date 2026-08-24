@@ -94,6 +94,18 @@ function auth_login_url(?string $script = null): string
     return '/cboemarkets/web/public/index.php';
 }
 
+function admin_dashboard_url(?string $script = null): string
+{
+    $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
+
+    if (str_contains($script, '/web/public')) {
+        $base = site_base_path($script);
+        return $base . '/admin/index.php';
+    }
+
+    return '/cboemarkets/web/public/admin/index.php';
+}
+
 // ---------------------------------------------------------------------------
 // Secure session bootstrap
 // ---------------------------------------------------------------------------

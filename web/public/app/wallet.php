@@ -24,6 +24,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'depos
         redirect('/app/wallet.php#deposit');
     }
 
+    if ($addr !== '') {
+      try {
+        $addrCheck = db()->prepare(
+          'SELECT id FROM deposit_addresses WHERE active = 1 AND asset_ticker = ? AND address = ? LIMIT 1'
+        );
+        $addrCheck->execute([$asset, $addr]);
+        if (!$addrCheck->fetchColumn()) {
+          flash('error', 'Please use an admin-approved wallet address.');
+          redirect('/app/wallet.php#deposit');
+        }
+      } catch (Throwable) {
+        flash('error', 'Could not verify deposit address. Please try again.');
+        redirect('/app/wallet.php#deposit');
+      }
+    }
+
     try {
         $stmt = db()->prepare(
             'INSERT INTO deposit_requests (user_id, asset_ticker, amount, txid, address, status)
