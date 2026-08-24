@@ -67,43 +67,32 @@ function site_base_path(?string $script = null): string
         $base = preg_replace('#/app$#', '', $base);
     }
 
+    if (str_ends_with($base, '/admin')) {
+        $base = preg_replace('#/admin$#', '', $base);
+    }
+
     return $base;
 }
 
 function app_dashboard_url(?string $script = null): string
 {
     $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
-
-    if (str_contains($script, '/web/public')) {
-        $base = site_base_path($script);
-        return $base . '/app/index.php';
-    }
-
-    return '/cboemarkets/web/public/app/index.php';
+    $base = site_base_path($script);
+    return $base . '/app/index.php';
 }
 
 function auth_login_url(?string $script = null): string
 {
     $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
-
-    if (str_contains($script, '/web/public')) {
-        $base = site_base_path($script);
-        return $base . '/index.php';
-    }
-
-    return '/cboemarkets/web/public/index.php';
+    $base = site_base_path($script);
+    return $base . '/index.php';
 }
 
 function admin_dashboard_url(?string $script = null): string
 {
     $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
-
-    if (str_contains($script, '/web/public')) {
-        $base = site_base_path($script);
-        return $base . '/admin/index.php';
-    }
-
-    return '/cboemarkets/web/public/admin/index.php';
+    $base = site_base_path($script);
+    return $base . '/admin/index.php';
 }
 
 // ---------------------------------------------------------------------------
