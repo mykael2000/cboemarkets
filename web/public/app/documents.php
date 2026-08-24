@@ -13,6 +13,7 @@ try {
         'SELECT * FROM admin_documents WHERE public_visible = 1 ORDER BY created_at DESC'
     )->fetchAll();
 } catch (Throwable) {}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

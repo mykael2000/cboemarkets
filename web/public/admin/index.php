@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../src/helpers.php';
 
 require_admin();
 $user = current_user();
+$adminBase = site_base_path();
 
 // Fetch stats
 $stats = ['users' => 0, 'pending_withdrawals' => 0, 'pending_deposits' => 0, 'active_plans' => 0];
@@ -60,27 +61,27 @@ try {
 
       <!-- Quick Links -->
       <div class="grid md:grid-cols-2 gap-4">
-        <a href="/admin/add_balances.php" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
+        <a href="<?= sanitize($adminBase . '/admin/add_balances.php') ?>" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
           <h3 class="font-bold text-white mb-1">Add Balances</h3>
           <p class="text-slate-400 text-sm">Add deposit, profit, auto and copy trading balances</p>
         </a>
-        <a href="/admin/deposits.php" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
+        <a href="<?= sanitize($adminBase . '/admin/deposits.php') ?>" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
           <h3 class="font-bold text-white mb-1">Review Deposits</h3>
           <p class="text-slate-400 text-sm"><?= $stats['pending_deposits'] ?> pending requests</p>
         </a>
-        <a href="/admin/withdrawals.php" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
+        <a href="<?= sanitize($adminBase . '/admin/withdrawals.php') ?>" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
           <h3 class="font-bold text-white mb-1">Review Withdrawals</h3>
           <p class="text-slate-400 text-sm"><?= $stats['pending_withdrawals'] ?> pending requests</p>
         </a>
-        <a href="/admin/users.php" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
+        <a href="<?= sanitize($adminBase . '/admin/users.php') ?>" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
           <h3 class="font-bold text-white mb-1">Manage Users</h3>
           <p class="text-slate-400 text-sm"><?= $stats['users'] ?> total users</p>
         </a>
-        <a href="/admin/plans.php" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
+        <a href="<?= sanitize($adminBase . '/admin/plans.php') ?>" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
           <h3 class="font-bold text-white mb-1">Investment Plans</h3>
           <p class="text-slate-400 text-sm">Create and manage plans</p>
         </a>
-        <a href="/admin/addresses.php" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
+        <a href="<?= sanitize($adminBase . '/admin/addresses.php') ?>" class="bg-slate-700 hover:bg-slate-600 rounded-2xl p-5 transition block">
           <h3 class="font-bold text-white mb-1">Deposit Addresses</h3>
           <p class="text-slate-400 text-sm">Manage receiving addresses</p>
         </a>
