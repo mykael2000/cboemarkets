@@ -8,7 +8,25 @@ $volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cboe </title>
+  <!-- Open Graph (Facebook, LinkedIn, Slack, Discord, WhatsApp, etc.) -->
+<meta property="og:title" content="Cboe Global Markets" />
+<meta property="og:description" content="Cboe Global Markets, a leading provider of market infrastructure and tradable products, delivers cutting-edge trading, clearing and investment solutions to market participants around the world." />
+<meta property="og:image" content="https://cboemarkets.com/logo.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Descriptive alt text for the preview image" />
+<meta property="og:url" content="https://cboemarkets.com/logo.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Cboe Global Markets" />
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Cboe Global Markets" />
+<meta name="twitter:description" content="Cboe Global Markets, a leading provider of market infrastructure and tradable products, delivers cutting-edge trading, clearing and investment solutions to market participants around the world." />
+<meta name="twitter:image" content="https://cboemarkets.com/logo.jpg" />
+<meta name="twitter:image:alt" content="Cboe Global Markets, a leading provider of market infrastructure and tradable products, delivers cutting-edge trading, clearing and investment solutions to market participants around the world." />
+<meta name="twitter:site" content="@cboe" />
+  <title>Cboe Global Markets</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -700,10 +718,10 @@ $volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
               </p>
 
               <div class="flex items-center gap-3 text-[#8b93d1] text-[0.9rem]">
-                <a href="#" aria-label="LinkedIn" class="hover:text-[#46e7ff]">in</a>
-                <a href="#" aria-label="Twitter" class="hover:text-[#46e7ff]">X</a>
-                <a href="#" aria-label="Facebook" class="hover:text-[#46e7ff]">f</a>
-                <a href="#" aria-label="YouTube" class="hover:text-[#46e7ff]">▶</a>
+                <a href="https://www.linkedin.com/company/cboe" aria-label="LinkedIn" class="hover:text-[#46e7ff]">in</a>
+                <a href="http://www.x.com/cboe" aria-label="Twitter" class="hover:text-[#46e7ff]">X</a>
+                <a href="http://www.facebook.com/pages/cboe-chicago-board-options-exchange/177809058917950?ref=ts" aria-label="Facebook" class="hover:text-[#46e7ff]">f</a>
+                <a href="https://www.youtube.com/user/cboetv" aria-label="YouTube" class="hover:text-[#46e7ff]">▶</a>
               </div>
             </div>
 
