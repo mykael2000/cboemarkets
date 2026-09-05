@@ -101,14 +101,10 @@ $_navPage = $activePage;
     </a>
 </nav>
 
-<!-- Smartsupp Live Chat -->
+<!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
 var _smartsupp = _smartsupp || {};
-_smartsupp.key = '974526ed39790a589cf4d6ee38fc45e6e627627d';
-// On mobile, push the widget above the fixed bottom nav bar (~80px tall)
-if (window.innerWidth < 768) {
-  _smartsupp.offsetY = 80;
-}
+_smartsupp.key = 'f47d469a065aaf52c7517f422baba3b744a5ea62';
 window.smartsupp||(function(d) {
   var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
   s=d.getElementsByTagName('script')[0];c=d.createElement('script');
