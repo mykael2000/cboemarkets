@@ -112,7 +112,7 @@ if (isset($_GET['edit'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Deposit Addresses – CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -171,7 +171,7 @@ if (isset($_GET['edit'])) {
             <?= $editAddr ? 'Update Address' : 'Add Address' ?>
           </button>
           <?php if ($editAddr): ?>
-            <a href="/admin/addresses.php" class="block text-center text-slate-400 hover:text-white text-sm mt-1">Cancel</a>
+            <a href="addresses.php" class="block text-center text-slate-400 hover:text-white text-sm mt-1">Cancel</a>
           <?php endif; ?>
         </form>
       </div>
@@ -207,7 +207,7 @@ if (isset($_GET['edit'])) {
                   </span>
                 </td>
                 <td class="px-4 py-3 text-right">
-                  <a href="/admin/addresses.php?edit=<?= (int)$a['id'] ?>" class="text-emerald-400 hover:text-emerald-300 text-xs mr-3">Edit</a>
+                  <a href="addresses.php?edit=<?= (int)$a['id'] ?>" class="text-emerald-400 hover:text-emerald-300 text-xs mr-3">Edit</a>
                   <form method="POST" action="<?= sanitize($addressesPage) ?>" class="inline" onsubmit="return confirm('Delete this address?')">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="delete">

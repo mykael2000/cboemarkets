@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($subject === '' || $heading === '' || $body_text === '') {
         flash('error', 'Subject, heading, and body are required.');
-        redirect('/admin/mailer');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     // Build recipient list
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $recipients[] = ['name' => 'Valued Member', 'email' => $custom_email];
         } else {
             flash('error', 'Invalid custom email address.');
-            redirect('/admin/mailer');
+            redirect($_SERVER['PHP_SELF']);
         }
     } else {
         // Specific user ID
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if (empty($recipients)) {
             flash('error', 'Selected user not found.');
-            redirect('/admin/mailer');
+            redirect($_SERVER['PHP_SELF']);
         }
     }
 
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         flash('error', $errMsg);
     }
-    redirect('/admin/mailer');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 /**
@@ -285,7 +285,7 @@ $activeAdminPage = 'mailer.php';
           Compose Email
         </h2>
 
-        <form method="POST" action="/admin/mailer" id="mailForm" class="space-y-4">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" id="mailForm" class="space-y-4">
           <?= csrf_field() ?>
 
           <!-- Recipient -->

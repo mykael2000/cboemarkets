@@ -21,16 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
 
     if ($title === '') {
         flash('error', 'Title is required.');
-        redirect('/admin/documents');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     if (!isset($_FILES['document']) || $_FILES['document']['error'] === UPLOAD_ERR_NO_FILE) {
         flash('error', 'Please select a file to upload.');
-        redirect('/admin/documents');
+        redirect($_SERVER['PHP_SELF']);
     }
     if ($_FILES['document']['error'] !== UPLOAD_ERR_OK) {
         flash('error', 'Upload error. Please try again.');
-        redirect('/admin/documents');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     $allowed_exts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'png', 'jpg', 'jpeg'];
@@ -39,11 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
 
     if (!in_array($ext, $allowed_exts, true)) {
         flash('error', 'Invalid file type. Allowed: PDF, DOC, DOCX, XLS, XLSX, TXT, PNG, JPG.');
-        redirect('/admin/documents');
+        redirect($_SERVER['PHP_SELF']);
     }
     if ($_FILES['document']['size'] > $max_size) {
         flash('error', 'File exceeds the 20 MB limit.');
-        redirect('/admin/documents');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     // Validate MIME type using finfo
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
     $mimeType = $finfo->file($_FILES['document']['tmp_name']);
     if (!in_array($mimeType, $allowedMimes, true)) {
         flash('error', 'File content type is not allowed.');
-        redirect('/admin/documents');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     // Ensure upload directory and .htaccess protection exist before any file operations
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
 
     if (!move_uploaded_file($_FILES['document']['tmp_name'], $uploadDir . $safeName)) {
         flash('error', 'Failed to save file. Please try again.');
-        redirect('/admin/documents');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     try {
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
         @unlink($uploadDir . $safeName);
         flash('error', 'Failed to save document metadata.');
     }
-    redirect('/admin/documents');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 // ── Toggle visibility ────────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
     } catch (Throwable) {
         flash('error', 'Failed to update visibility.');
     }
-    redirect('/admin/documents');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 // ── Delete document ──────────────────────────────────────────────────────────
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
     } catch (Throwable) {
         flash('error', 'Failed to delete document.');
     }
-    redirect('/admin/documents');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 $docs = [];
@@ -139,7 +139,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Documents – CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -161,7 +161,7 @@ try {
       <!-- Upload Form -->
       <div class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-4">Upload Document</h2>
-        <form method="POST" action="/admin/documents" enctype="multipart/form-data" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" enctype="multipart/form-data" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="upload">
 
@@ -215,9 +215,9 @@ try {
               <p class="text-xs text-slate-500 mt-1"><?= sanitize($doc['file_name']) ?> &bull; <?= date('M j, Y', strtotime($doc['created_at'])) ?></p>
             </div>
             <div class="flex items-center gap-2 flex-shrink-0">
-              <a href="/<?= sanitize($doc['file_path']) ?>" target="_blank" rel="noopener"
+              <a href="<?= sanitize('../' . ltrim((string)$doc['file_path'], '/')) ?>" target="_blank" rel="noopener"
                 class="text-xs text-emerald-400 hover:text-emerald-300 transition">View</a>
-              <form method="POST" action="/admin/documents" class="inline">
+              <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="inline">
                 <?= csrf_field() ?>
                 <input type="hidden" name="action" value="toggle">
                 <input type="hidden" name="id" value="<?= (int)$doc['id'] ?>">
@@ -225,7 +225,7 @@ try {
                   <?= $doc['public_visible'] ? 'Hide' : 'Show' ?>
                 </button>
               </form>
-              <form method="POST" action="/admin/documents" class="inline"
+              <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="inline"
                 onsubmit="return confirm('Delete this document?')">
                 <?= csrf_field() ?>
                 <input type="hidden" name="action" value="delete">

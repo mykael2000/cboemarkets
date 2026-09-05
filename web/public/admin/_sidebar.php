@@ -5,7 +5,6 @@
  * Set $activeAdminPage to the current filename (e.g. 'users.php') before including.
  */
 $_adminPage = $activeAdminPage ?? basename($_SERVER['PHP_SELF'] ?? '');
-$_adminBase = site_base_path();
 ?>
 <button
   id="adminSidebarOpen"
@@ -67,7 +66,7 @@ $_adminBase = site_base_path();
     </a>
     <?php endforeach; ?>
     <hr class="border-slate-700 my-3">
-    <a href="<?= sanitize($_adminBase . '/app/index.php') ?>" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition">User Dashboard</a>
+    <a href="../app/index.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition">User Dashboard</a>
   </nav>
 </aside>
 

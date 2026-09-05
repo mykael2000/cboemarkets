@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($symbol === '' || $company === '' || $price < 0) {
             flash('error', 'Symbol, company and price are required.');
-            redirect('/admin/stocks');
+            redirect($_SERVER['PHP_SELF']);
         }
 
         try {
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable $e) {
             flash('error', 'Failed to save stock. ' . $e->getMessage());
         }
-        redirect('/admin/stocks');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     if ($action === 'delete_stock') {
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable) {
             flash('error', 'Failed to remove stock.');
         }
-        redirect('/admin/stocks');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     if ($action === 'add_position' || $action === 'update_position' || $action === 'delete_position') {
@@ -101,12 +101,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } catch (Throwable) {
                 flash('error', 'Failed to delete position.');
             }
-            redirect('/admin/stocks');
+            redirect($_SERVER['PHP_SELF']);
         }
 
         if ($userId <= 0 || $symbol === '' || $quantity <= 0 || $avgCost < 0) {
             flash('error', 'Please provide a valid user, symbol, quantity and average cost.');
-            redirect('/admin/stocks');
+            redirect($_SERVER['PHP_SELF']);
         }
 
         try {
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('error', 'Failed to save user position. ' . $e->getMessage());
         }
 
-        redirect('/admin/stocks');
+        redirect($_SERVER['PHP_SELF']);
     }
 }
 
@@ -164,7 +164,7 @@ if (isset($_GET['edit_stock'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Stocks – CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -188,7 +188,7 @@ if (isset($_GET['edit_stock'])) {
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-4"><?= $editStock ? 'Edit Stock' : 'Add Stock' ?></h2>
-        <form method="POST" action="/admin/stocks" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="<?= $editStock ? 'edit_stock' : 'add_stock' ?>">
           <?php if ($editStock): ?>
@@ -231,14 +231,14 @@ if (isset($_GET['edit_stock'])) {
             <?= $editStock ? 'Update Stock' : 'Add Stock' ?>
           </button>
           <?php if ($editStock): ?>
-            <a href="/admin/stocks" class="block text-center text-slate-400 hover:text-white text-sm mt-1">Cancel</a>
+            <a href="stocks.php" class="block text-center text-slate-400 hover:text-white text-sm mt-1">Cancel</a>
           <?php endif; ?>
         </form>
       </section>
 
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-4">Add Stock to User</h2>
-        <form method="POST" action="/admin/stocks" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_position">
 
@@ -317,8 +317,8 @@ if (isset($_GET['edit_stock'])) {
                   </td>
                   <td class="px-4 py-3 text-right">
                     <div class="flex justify-end gap-2">
-                      <a href="/admin/stocks?edit_stock=<?= (int)$stock['id'] ?>" class="text-xs bg-slate-600 hover:bg-slate-500 text-white px-2 py-1 rounded transition">Edit</a>
-                      <form method="POST" action="/admin/stocks" onsubmit="return confirm('Remove this stock from the market list?');">
+                      <a href="stocks.php?edit_stock=<?= (int)$stock['id'] ?>" class="text-xs bg-slate-600 hover:bg-slate-500 text-white px-2 py-1 rounded transition">Edit</a>
+                      <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" onsubmit="return confirm('Remove this stock from the market list?');">
                         <?= csrf_field() ?>
                         <input type="hidden" name="action" value="delete_stock">
                         <input type="hidden" name="id" value="<?= (int)$stock['id'] ?>">
@@ -360,7 +360,7 @@ if (isset($_GET['edit_stock'])) {
                   <td class="px-4 py-3 text-white font-semibold"><?= sanitize($p['symbol']) ?></td>
                   <td class="px-4 py-3 text-white"><?= sanitize($p['company']) ?></td>
                   <td class="px-4 py-3 text-right text-white">
-                    <form method="POST" action="/admin/stocks" class="flex justify-end gap-2">
+                    <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="flex justify-end gap-2">
                       <?= csrf_field() ?>
                       <input type="hidden" name="action" value="update_position">
                       <input type="hidden" name="position_id" value="<?= (int)$p['id'] ?>">
@@ -373,7 +373,7 @@ if (isset($_GET['edit_stock'])) {
                       <div class="flex justify-end gap-2">
                         <button type="submit" class="text-xs bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 px-2 py-1 rounded transition">Save</button>
                     </form>
-                        <form method="POST" action="/admin/stocks" onsubmit="return confirm('Delete this user stock position?');">
+                        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" onsubmit="return confirm('Delete this user stock position?');">
                           <?= csrf_field() ?>
                           <input type="hidden" name="action" value="delete_position">
                           <input type="hidden" name="position_id" value="<?= (int)$p['id'] ?>">

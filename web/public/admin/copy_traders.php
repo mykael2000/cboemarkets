@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
 
     if ($name === '') {
         flash('error', 'Trader name is required.');
-        redirect('/admin/copy_traders');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     try {
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
         flash('error', 'Failed to create copy trader.');
     }
 
-    redirect('/admin/copy_traders');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'edit') {
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'edit'
 
     if ($id <= 0 || $name === '') {
         flash('error', 'Invalid trader data.');
-        redirect('/admin/copy_traders');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     try {
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'edit'
         flash('error', 'Failed to update copy trader.');
     }
 
-    redirect('/admin/copy_traders');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delete') {
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
         flash('error', 'Failed to delete copy trader.');
     }
 
-    redirect('/admin/copy_traders');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 $traders = [];
@@ -105,7 +105,7 @@ if (isset($_GET['edit'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Copy Traders - CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -128,7 +128,7 @@ if (isset($_GET['edit'])) {
     <div class="grid gap-6 lg:grid-cols-3">
       <section class="rounded-2xl bg-slate-700 p-5">
         <h2 class="mb-4 font-bold text-white"><?= $editTrader ? 'Edit Trader' : 'Add Trader' ?></h2>
-        <form method="POST" action="/admin/copy_traders" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="<?= $editTrader ? 'edit' : 'add' ?>">
           <?php if ($editTrader): ?>
@@ -160,7 +160,7 @@ if (isset($_GET['edit'])) {
           </label>
           <button type="submit" class="w-full rounded-xl bg-emerald-500 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-400"><?= $editTrader ? 'Update Trader' : 'Create Trader' ?></button>
           <?php if ($editTrader): ?>
-            <a href="/admin/copy_traders.php" class="block text-center text-sm text-slate-400 hover:text-white">Cancel</a>
+            <a href="copy_traders.php" class="block text-center text-sm text-slate-400 hover:text-white">Cancel</a>
           <?php endif; ?>
         </form>
       </section>
@@ -200,8 +200,8 @@ if (isset($_GET['edit'])) {
                   <span class="rounded-full px-2 py-0.5 text-xs <?= $trader['active'] ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400' ?>"><?= $trader['active'] ? 'Yes' : 'No' ?></span>
                 </td>
                 <td class="px-4 py-3 text-right">
-                  <a href="/admin/copy_traders.php?edit=<?= (int)$trader['id'] ?>" class="mr-3 text-xs text-emerald-400 hover:text-emerald-300">Edit</a>
-                  <form method="POST" action="/admin/copy_traders" class="inline" onsubmit="return confirm('Delete this trader?')">
+                  <a href="copy_traders.php?edit=<?= (int)$trader['id'] ?>" class="mr-3 text-xs text-emerald-400 hover:text-emerald-300">Edit</a>
+                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="inline" onsubmit="return confirm('Delete this trader?')">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="id" value="<?= (int)$trader['id'] ?>">

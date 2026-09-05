@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
     } catch (Throwable) {
         flash('error', 'Failed to update user status.');
     }
-    redirect('/admin/users');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 // Toggle role
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
     // Prevent self-demotion
     if ($id === (int)($_SESSION['user_id'] ?? 0)) {
         flash('error', 'You cannot change your own role.');
-        redirect('/admin/users');
+        redirect($_SERVER['PHP_SELF']);
     }
     try {
         $pdo  = db();
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
     } catch (Throwable) {
         flash('error', 'Failed to update user role.');
     }
-    redirect('/admin/users');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 // Update balance
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
 
   if ($id <= 0 || $balance < 0 || $btcBalance < 0 || $ethBalance < 0 || $bnbBalance < 0 || $solBalance < 0 || $equity < 0 || $margin < 0 || $freeMargin < 0) {
         flash('error', 'Invalid balance value.');
-        redirect('/admin/users');
+        redirect($_SERVER['PHP_SELF']);
     }
     try {
         db()->prepare(
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
     } catch (Throwable) {
     flash('error', 'Failed to update balances and dashboard stats.');
     }
-    redirect('/admin/users');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 $users = [];
@@ -118,7 +118,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>User Management – CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -170,7 +170,7 @@ try {
                 </span>
               </td>
               <td class="px-4 py-3 text-right">
-                <form method="POST" action="/admin/users" class="flex flex-wrap items-center justify-end gap-1">
+                <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="flex flex-wrap items-center justify-end gap-1">
                   <?= csrf_field() ?>
                   <input type="hidden" name="action" value="update_balance">
                   <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
@@ -226,7 +226,7 @@ try {
               <td class="px-4 py-3">
                 <div class="flex gap-2 justify-end">
                   <!-- Toggle Status -->
-                  <form method="POST" action="/admin/users">
+                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="toggle_status">
                     <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
@@ -237,7 +237,7 @@ try {
                   </form>
                   <!-- Toggle Role -->
                   <?php if ((int)$u['id'] !== (int)($_SESSION['user_id'] ?? 0)): ?>
-                  <form method="POST" action="/admin/users">
+                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="toggle_role">
                     <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_p
 
     if ($subId <= 0) {
         flash('error', 'Invalid subscription.');
-        redirect('/admin/subscriptions');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     try {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_p
     } catch (Throwable) {
         flash('error', 'Failed to add P&L update.');
     }
-    redirect('/admin/subscriptions');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 // ── Update subscription status ───────────────────────────────────────────────
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
     $status = $_POST['status']       ?? '';
     if (!in_array($status, ['active','completed','cancelled'], true)) {
         flash('error', 'Invalid status.');
-        redirect('/admin/subscriptions');
+        redirect($_SERVER['PHP_SELF']);
     }
     try {
         db()->prepare('UPDATE user_plans SET status = ? WHERE id = ?')->execute([$status, $subId]);
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
     } catch (Throwable) {
         flash('error', 'Failed to update status.');
     }
-    redirect('/admin/subscriptions');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 // ── Load subscriptions ───────────────────────────────────────────────────────
@@ -113,7 +113,7 @@ if ($selectedId > 0) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>VIP Subscriptions – CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -134,7 +134,7 @@ if ($selectedId > 0) {
     <!-- Status filter -->
     <div class="flex gap-2 flex-wrap mb-6">
       <?php foreach (['active','completed','cancelled','all'] as $s): ?>
-      <a href="/admin/subscriptions.php?status=<?= $s ?>"
+      <a href="subscriptions.php?status=<?= $s ?>"
         class="px-3 py-1.5 rounded-lg text-sm font-medium transition <?= $filterStatus === $s ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
         <?= ucfirst($s) ?>
       </a>
@@ -146,7 +146,7 @@ if ($selectedId > 0) {
     <div class="bg-slate-700 rounded-2xl p-5 mb-6">
       <div class="flex items-center justify-between mb-4">
         <h2 class="font-bold text-white">P&amp;L History for Subscription #<?= $selectedId ?></h2>
-        <a href="/admin/subscriptions.php?status=<?= sanitize($filterStatus) ?>" class="text-sm text-slate-400 hover:text-white">← Back</a>
+        <a href="subscriptions.php?status=<?= sanitize($filterStatus) ?>" class="text-sm text-slate-400 hover:text-white">← Back</a>
       </div>
       <?php if (empty($pnlHistory)): ?>
         <p class="text-slate-400 text-sm">No P&amp;L updates yet for this subscription.</p>
@@ -221,7 +221,7 @@ if ($selectedId > 0) {
                 <?= $totalPnl >= 0 ? '+' : '' ?>$<?= format_currency(abs($totalPnl)) ?>
               </td>
               <td class="px-4 py-3 text-center">
-                <form method="POST" action="/admin/subscriptions" class="inline-flex items-center gap-1">
+                <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="inline-flex items-center gap-1">
                   <?= csrf_field() ?>
                   <input type="hidden" name="action" value="update_status">
                   <input type="hidden" name="id" value="<?= (int)$sub['id'] ?>">
@@ -238,7 +238,7 @@ if ($selectedId > 0) {
               </td>
               <td class="px-4 py-3 text-right">
                 <div class="flex items-center gap-2 justify-end">
-                  <a href="/admin/subscriptions.php?status=<?= sanitize($filterStatus) ?>&sub=<?= (int)$sub['id'] ?>"
+                  <a href="subscriptions.php?status=<?= sanitize($filterStatus) ?>&sub=<?= (int)$sub['id'] ?>"
                     class="text-xs text-slate-400 hover:text-white transition">History</a>
                   <!-- Add PnL inline -->
                   <button onclick="togglePnlForm(<?= (int)$sub['id'] ?>)"
@@ -248,7 +248,7 @@ if ($selectedId > 0) {
                 </div>
                 <!-- Inline PnL form -->
                 <div id="pnl-form-<?= (int)$sub['id'] ?>" class="hidden mt-2">
-                  <form method="POST" action="/admin/subscriptions" class="flex flex-col gap-1">
+                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="flex flex-col gap-1">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="add_pnl">
                     <input type="hidden" name="subscription_id" value="<?= (int)$sub['id'] ?>">

@@ -40,12 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
 
     if ($id <= 0 || $status === null) {
         flash('error', 'Invalid request.');
-        redirect('/admin/deposits');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     if ($status === 'approved' && $amount <= 0) {
         flash('error', 'Approved deposits require an amount greater than zero.');
-        redirect('/admin/deposits');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     try {
@@ -59,13 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
         if (!$deposit) {
             $pdo->rollBack();
             flash('error', 'Deposit request not found.');
-            redirect('/admin/deposits');
+            redirect($_SERVER['PHP_SELF']);
         }
 
         if ($deposit['status'] !== 'pending') {
             $pdo->rollBack();
             flash('error', 'This deposit request was already reviewed.');
-            redirect('/admin/deposits');
+            redirect($_SERVER['PHP_SELF']);
         }
 
         if ($status === 'approved') {
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
         flash('error', 'Failed to process deposit request.');
     }
 
-    redirect('/admin/deposits');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 $deposits = [];
@@ -124,7 +124,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Deposit Requests - CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -184,7 +184,7 @@ try {
               <td class="px-4 py-3">
                 <?php if ($d['status'] === 'pending'): ?>
                 <div class="flex flex-col gap-2 items-end">
-                  <form method="POST" action="/admin/deposits" class="flex flex-col gap-1 w-56">
+                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="flex flex-col gap-1 w-56">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" value="<?= (int)$d['id'] ?>">

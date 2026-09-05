@@ -46,12 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   ];
     if (!in_array($action, $validActions, true) || $userId <= 0 || $amount <= 0) {
         flash('error', 'Please choose a valid user and amount greater than zero.');
-        redirect('/admin/add_balances');
+      redirect($_SERVER['PHP_SELF']);
     }
 
   if (($action === 'add_deposit' || $action === 'add_profit') && !isset($assetToColumn[$assetTicker])) {
     flash('error', 'Please select a valid coin.');
-    redirect('/admin/add_balances');
+    redirect($_SERVER['PHP_SELF']);
   }
 
     try {
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$selectedUser) {
             $pdo->rollBack();
             flash('error', 'User not found.');
-            redirect('/admin/add_balances');
+          redirect($_SERVER['PHP_SELF']);
         }
 
         if ($action === 'add_deposit') {
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash('error', 'Failed to apply update. Please try again.');
     }
 
-    redirect('/admin/add_balances');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 $error = get_flash('error');
@@ -125,7 +125,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Add Balances - CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -150,7 +150,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Deposit</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to selected coin balance and updates Total Deposit.</p>
-        <form method="POST" action="/admin/add_balances" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_deposit">
           <div>
@@ -184,7 +184,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Profit</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to Today's PnL and credits selected coin balance.</p>
-        <form method="POST" action="/admin/add_balances" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_profit">
           <div>
@@ -217,7 +217,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Auto Trading Balance</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to Auto Trading Allocated.</p>
-        <form method="POST" action="/admin/add_balances" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_auto_trading">
           <div>
@@ -240,7 +240,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Copy Trading Balance</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to Copy Trading Allocated.</p>
-        <form method="POST" action="/admin/add_balances" class="space-y-3">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_copy_trading">
           <div>

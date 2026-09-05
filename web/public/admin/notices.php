@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 flash('error', 'Failed to create notice.');
             }
         }
-        redirect('/admin/notices');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     if ($action === 'toggle') {
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable) {
             flash('error', 'Failed to update notice.');
         }
-        redirect('/admin/notices');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     if ($action === 'delete') {
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable) {
             flash('error', 'Failed to delete notice.');
         }
-        redirect('/admin/notices');
+        redirect($_SERVER['PHP_SELF']);
     }
 }
 
@@ -81,7 +81,7 @@ $activeAdminPage = 'notices.php';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Notices – Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -105,7 +105,7 @@ $activeAdminPage = 'notices.php';
     <!-- Create Notice Form -->
     <div class="bg-slate-700 rounded-2xl p-6 mb-8 max-w-2xl">
       <h2 class="text-base font-bold text-white mb-4">New Notice</h2>
-      <form method="POST" action="/admin/notices" class="space-y-4">
+      <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-4">
         <?= csrf_field() ?>
         <input type="hidden" name="action" value="create">
         <div>
@@ -150,7 +150,7 @@ $activeAdminPage = 'notices.php';
         </div>
         <div class="flex items-center gap-2">
           <!-- Toggle active/inactive -->
-          <form method="POST" action="/admin/notices">
+          <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="toggle">
             <input type="hidden" name="id" value="<?= (int)$n['id'] ?>">
@@ -163,7 +163,7 @@ $activeAdminPage = 'notices.php';
             </button>
           </form>
           <!-- Delete -->
-          <form method="POST" action="/admin/notices"
+          <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>"
             onsubmit="return confirm('Delete this notice?')">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="delete">

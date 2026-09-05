@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
 
     if ($id <= 0 || !$status) {
         flash('error', 'Invalid request.');
-        redirect('/admin/withdrawals');
+        redirect($_SERVER['PHP_SELF']);
     }
 
     try {
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
     } catch (Throwable) {
         flash('error', 'Failed to update withdrawal.');
     }
-    redirect('/admin/withdrawals');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 $withdrawals = [];
@@ -69,7 +69,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Withdrawal Requests – CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -129,7 +129,7 @@ try {
               <td class="px-4 py-3">
                 <?php if ($w['status'] === 'pending'): ?>
                 <div class="flex flex-col gap-2 items-end">
-                  <form method="POST" action="/admin/withdrawals" class="flex flex-col gap-1 w-48">
+                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="flex flex-col gap-1 w-48">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" value="<?= (int)$w['id'] ?>">

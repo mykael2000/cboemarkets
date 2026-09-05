@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'reject' && $id > 0) {
         if ($note === '') {
             flash('error', 'A rejection reason is required.');
-            redirect('/admin/kyc');
+            redirect($_SERVER['PHP_SELF']);
         }
         try {
             db()->prepare(
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('error', 'Failed to reject KYC.');
         }
     }
-    redirect('/admin/kyc');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 // Filter
@@ -73,7 +73,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>KYC Review – CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -94,7 +94,7 @@ try {
     <!-- Status filter -->
     <div class="flex gap-2 flex-wrap mb-6">
       <?php foreach (['pending','verified','rejected','all'] as $s): ?>
-      <a href="/admin/kyc.php?status=<?= $s ?>"
+      <a href="kyc.php?status=<?= $s ?>"
         class="px-3 py-1.5 rounded-lg text-sm font-medium transition <?= $filterStatus === $s ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
         <?= ucfirst($s) ?>
       </a>
@@ -145,12 +145,12 @@ try {
             <?php if (!empty($path)): ?>
               <?php $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION)); ?>
               <?php if (in_array($ext, ['jpg','jpeg','png'], true)): ?>
-              <a href="/<?= sanitize($path) ?>" target="_blank" rel="noopener">
-                <img src="/<?= sanitize($path) ?>" alt="<?= $label ?>"
+              <a href="<?= sanitize('../' . ltrim((string)$path, '/')) ?>" target="_blank" rel="noopener">
+                <img src="<?= sanitize('../' . ltrim((string)$path, '/')) ?>" alt="<?= $label ?>"
                   class="w-full h-24 object-cover rounded-lg hover:opacity-80 transition cursor-pointer">
               </a>
               <?php else: ?>
-              <a href="/<?= sanitize($path) ?>" target="_blank" rel="noopener"
+              <a href="<?= sanitize('../' . ltrim((string)$path, '/')) ?>" target="_blank" rel="noopener"
                 class="text-xs text-emerald-400 hover:text-emerald-300 underline">View PDF</a>
               <?php endif; ?>
             <?php else: ?>
@@ -163,7 +163,7 @@ try {
         <!-- Actions -->
         <?php if ($sub['status'] === 'pending'): ?>
         <div class="flex flex-wrap gap-3">
-          <form method="POST" action="/admin/kyc" onsubmit="return confirm('Approve this KYC?')">
+          <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" onsubmit="return confirm('Approve this KYC?')">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="approve">
             <input type="hidden" name="id" value="<?= (int)$sub['id'] ?>">
@@ -172,7 +172,7 @@ try {
             </button>
           </form>
 
-          <form method="POST" action="/admin/kyc" class="flex items-center gap-2"
+          <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="flex items-center gap-2"
             onsubmit="return confirm('Reject this KYC?')">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="reject">
@@ -185,7 +185,7 @@ try {
           </form>
         </div>
         <?php elseif ($sub['status'] === 'rejected'): ?>
-        <form method="POST" action="/admin/kyc" onsubmit="return confirm('Re-approve this KYC?')">
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" onsubmit="return confirm('Re-approve this KYC?')">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="approve">
           <input type="hidden" name="id" value="<?= (int)$sub['id'] ?>">

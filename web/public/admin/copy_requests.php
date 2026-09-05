@@ -35,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'revie
         if (!$request) {
             $pdo->rollBack();
             flash('error', 'Request not found or already reviewed.');
-            redirect('/admin/copy_requests');
+            redirect($_SERVER['PHP_SELF']);
         }
 
         if ($status === 'approved') {
             if ((float)$request['user_balance'] < (float)$request['amount']) {
                 $pdo->rollBack();
                 flash('error', 'User has insufficient USDT balance for approval.');
-                redirect('/admin/copy_requests');
+                redirect($_SERVER['PHP_SELF']);
             }
 
             $pdo->prepare('UPDATE users SET balance = balance - ? WHERE id = ?')->execute([(float)$request['amount'], (int)$request['user_id']]);
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'revie
         flash('error', 'Failed to review request.');
     }
 
-    redirect('/admin/copy_requests');
+    redirect($_SERVER['PHP_SELF']);
 }
 
 $filterStatus = $_GET['status'] ?? 'pending';
@@ -101,7 +101,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
   <title>Copy Requests - CBOE Markets Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -121,7 +121,7 @@ try {
 
     <div class="mb-6 flex flex-wrap gap-2">
       <?php foreach (['pending', 'approved', 'rejected', 'all'] as $status): ?>
-      <a href="/admin/copy_requests.php?status=<?= $status ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition <?= $filterStatus === $status ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>"><?= ucfirst($status) ?></a>
+      <a href="copy_requests.php?status=<?= $status ?>" class="rounded-lg px-3 py-1.5 text-sm font-medium transition <?= $filterStatus === $status ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>"><?= ucfirst($status) ?></a>
       <?php endforeach; ?>
     </div>
 
@@ -159,7 +159,7 @@ try {
               <td class="px-4 py-3 text-xs text-slate-400"><?= date('M j, Y H:i', strtotime($request['created_at'])) ?></td>
               <td class="px-4 py-3 text-right">
                 <?php if ($request['status'] === 'pending'): ?>
-                <form method="POST" action="/admin/copy_requests" class="ml-auto flex w-56 flex-col gap-2">
+                <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="ml-auto flex w-56 flex-col gap-2">
                   <?= csrf_field() ?>
                   <input type="hidden" name="action" value="review">
                   <input type="hidden" name="id" value="<?= (int)$request['id'] ?>">
