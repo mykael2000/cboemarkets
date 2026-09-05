@@ -125,7 +125,7 @@ if (isset($_GET['edit'])) {
       <!-- Add / Edit Form -->
       <div class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-4"><?= $editPlan ? 'Edit Plan' : 'Add New Plan' ?></h2>
-        <form method="POST" action="/admin/plans" class="space-y-3">
+        <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="<?= $editPlan ? 'edit' : 'add' ?>">
           <?php if ($editPlan): ?>
