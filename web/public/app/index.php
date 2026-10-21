@@ -1088,8 +1088,9 @@ $pricesJson = json_encode([
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1">
 
+                        <div class="text-xs text-emerald-300 font-medium mb-1">Profit Added</div>
                         <div class="text-lg font-bold text-emerald-100">+$${Number(amount).toFixed(2)}</div>
-                        ${note ? `<div class="text-xs text-emerald-200 mt-1 truncate">${note}</div>` : ''}
+                        
                     </div>
                     <button onclick="this.closest('.profit-notification').remove()" class="text-emerald-300 hover:text-white transition-colors">&times;</button>
                 </div>
