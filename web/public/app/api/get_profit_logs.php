@@ -7,9 +7,9 @@ declare(strict_types=1);
  * Returns JSON with profit_logs and current dashboard_today_pnl.
  */
 
-require_once __DIR__ . '/web/src/config.php';
-require_once __DIR__ . '/web/src/auth.php';
-require_once __DIR__ . '/web/src/helpers.php';
+require_once __DIR__ . '/../../../src/config.php';
+require_once __DIR__ . '/../../../src/auth.php';
+require_once __DIR__ . '/../../../src/helpers.php';
 
 require_login();
 
