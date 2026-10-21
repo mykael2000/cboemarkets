@@ -416,7 +416,7 @@ $pricesJson = json_encode([
         <?php endif; ?>
 
         <!-- ─── RECENT PROFIT ADDED (Real-time AJAX section) ─── -->
-        <div id="profitLogsContainer" class="hidden">
+        <!-- <div id="profitLogsContainer" class="hidden">
             <div class="glass-card rounded-3xl p-3">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -426,10 +426,10 @@ $pricesJson = json_encode([
                     <span class="text-[11px] text-slate-500 bg-emerald-500/10 px-2 py-0.5 rounded-full font-semibold">Auto-updates</span>
                 </div>
                 <div id="profitLogsList" class="space-y-1.5 max-h-32 overflow-y-auto pr-1">
-                    <!-- New profit entries will appear here via AJAX -->
+              
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- ─── MAIN BALANCE HERO CARD ─── -->
         <div class="relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/60 to-sky-50/70 border border-slate-200 rounded-3xl p-3 sm:p-4 card-glow">
