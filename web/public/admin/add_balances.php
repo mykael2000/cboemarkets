@@ -26,7 +26,36 @@ function ensure_user_dashboard_metric_columns(): void
     $ensured = true;
 }
 
+function ensure_profit_logs_table(): void
+{
+    static $ensured = false;
+    if ($ensured) {
+        return;
+    }
+
+    try {
+        db()->exec(
+            'CREATE TABLE IF NOT EXISTS profit_logs (
+                id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                user_id         BIGINT UNSIGNED NOT NULL,
+                admin_id        BIGINT UNSIGNED NULL,
+                amount          DECIMAL(18,8) NOT NULL,
+                note            VARCHAR(255) NULL DEFAULT NULL,
+                created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                INDEX idx_user_created (user_id, created_at DESC),
+                INDEX idx_admin_created (admin_id, created_at DESC),
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB'
+        );
+    } catch (Throwable) {
+        // Table creation is best-effort; logging still works if table exists.
+    }
+
+    $ensured = true;
+}
+
 ensure_user_dashboard_metric_columns();
+ensure_profit_logs_table();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
@@ -58,6 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo = db();
         $pdo->beginTransaction();
 
+        $now = date('Y-m-d H:i:s');
+
         $st = $pdo->prepare('SELECT id, name FROM users WHERE id = ? LIMIT 1 FOR UPDATE');
         $st->execute([$userId]);
         $selectedUser = $st->fetch();
@@ -88,6 +119,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ->execute([$usdValue, $coinAmount, $userId]);
 
           flash('success', 'Added $' . number_format($usdValue, 2) . ' profit and credited ' . rtrim(rtrim(number_format($coinAmount, 8, '.', ''), '0'), '.') . ' ' . $assetTicker . ' to ' . $selectedUser['name'] . '.');
+
+            // ── Log the profit addition for real-time user dashboard updates ──
+            $adminId = $_SESSION['admin_user_id'] ?? null;
+            if ($adminId === null || $adminId <= 0) {
+                $adminStmt = $pdo->prepare('SELECT id FROM users WHERE role = "admin" ORDER BY id DESC LIMIT 1');
+                $adminStmt->execute();
+                $admin = $adminStmt->fetch();
+                $adminId = $admin['id'] ?? null;
+            }
+            $note = 'Profit added by admin';
+            if (!empty($selectedUser['name'])) {
+                $note .= ' to ' . $selectedUser['name'];
+            }
+            $pdo->prepare(
+                'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
+                 VALUES (?, ?, ?, ?, ?)'
+            )->execute([$userId, $adminId, $usdValue, $note, $now]);
+
         } elseif ($action === 'add_auto_trading') {
             $pdo->prepare('UPDATE users SET dashboard_margin = dashboard_margin + ? WHERE id = ?')
                 ->execute([$amount, $userId]);

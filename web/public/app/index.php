@@ -247,6 +247,22 @@ $pricesJson = json_encode([
         /* ── Subtle hover lift ── */
         .hover-lift { transition: transform .2s, box-shadow .2s; }
         .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 14px 24px rgba(47,127,224,.12); }
+
+        /* ── Recent Profit Added section ── */
+        #profitLogsContainer {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        #profitLogsList .new-profit-item {
+            animation: pulse-glow 1.5s ease-in-out 3;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { background-color: rgba(255,255,255,0.6); }
+            50% { background-color: rgba(255,255,255,1); }
+        }
     </style>
 </head>
 <body class="bg-white text-slate-900 min-h-screen pb-28 md:pb-4 antialiased">
@@ -399,9 +415,23 @@ $pricesJson = json_encode([
         </div>
         <?php endif; ?>
 
-        <!-- ════════════════════════════════════════
-             MAIN BALANCE HERO CARD
-        ════════════════════════════════════════ -->
+        <!-- ─── RECENT PROFIT ADDED (Real-time AJAX section) ─── -->
+        <div id="profitLogsContainer" class="hidden">
+            <div class="glass-card rounded-3xl p-3">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Recent Profit Added
+                    </h3>
+                    <span class="text-[11px] text-slate-500 bg-emerald-500/10 px-2 py-0.5 rounded-full font-semibold">Auto-updates</span>
+                </div>
+                <div id="profitLogsList" class="space-y-1.5 max-h-32 overflow-y-auto pr-1">
+                    <!-- New profit entries will appear here via AJAX -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── MAIN BALANCE HERO CARD ─── -->
         <div class="relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/60 to-sky-50/70 border border-slate-200 rounded-3xl p-3 sm:p-4 card-glow">
             <!-- decorative glow orbs -->
             <div class="absolute -top-16 -right-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -854,6 +884,114 @@ $pricesJson = json_encode([
         });
 
         updateRate();
+    })();
+    </script>
+
+    <!-- ─── RECENT PROFIT ADDED - Real-time AJAX ─── -->
+    <script>
+    (function() {
+        const PROFIT_LOGS_URL = 'api/get_profit_logs.php';
+        const listEl = document.getElementById('profitLogsList');
+        const containerEl = document.getElementById('profitLogsContainer');
+        let lastSeenProfitLogIds = new Set();
+        let isLoading = false;
+
+        function formatCurrency(amount) {
+            return '$' + Number(amount).toFixed(2);
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            const now = new Date();
+            const diff = now - d;
+            const mins = Math.floor(diff / 60000);
+            if (mins < 1) return 'Just now';
+            if (mins < 60) return mins + 'm ago';
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + 'h ago';
+            const days = Math.floor(hrs / 24);
+            return days + 'd ago';
+        }
+
+        function addProfitLog(log) {
+            const id = log.id || log.log_id;
+            const amount = log.amount || 0;
+            const note = log.note || 'Profit added';
+            const admin = log.admin_id ? ' (by ' + log.admin_id + ')' : '';
+            const time = formatDate(log.created_at || new Date().toISOString());
+
+            const item = document.createElement('div');
+            item.className = 'flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0';
+            item.innerHTML = `
+                <div class="flex items-center gap-2 flex-1">
+                    <span class="text-emerald-500 font-bold">+${formatCurrency(amount)}</span>
+                    <span class="text-xs text-slate-500 truncate flex-1">${note}</span>
+                    ${admin ? '<span class="text-[11px] text-slate-400">' + admin + '</span>' : ''}
+                </div>
+                <span class="text-[11px] text-slate-400 shrink-0">' + time + '</span>
+            `;
+
+            const isNew = !lastSeenProfitLogIds.has(id);
+            if (isNew) {
+                lastSeenProfitLogIds.add(id);
+                item.classList.add('new-profit-item');
+            }
+
+            if (listEl) {
+                listEl.insertBefore(item, listEl.firstChild);
+            }
+
+            if (listEl) {
+                while (listEl.children.length > 30) {
+                    listEl.removeChild(listEl.lastChild);
+                }
+            }
+
+            if (containerEl) {
+                containerEl.classList.remove('hidden');
+            }
+
+            return isNew;
+        }
+
+        async function fetchProfitLogs() {
+            if (isLoading) return;
+            isLoading = true;
+
+            try {
+                const res = await fetch(PROFIT_LOGS_URL, {
+                    method: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!data || !data.logs) return;
+
+                let hasNew = false;
+                for (const log of data.logs) {
+                    if (addProfitLog(log)) {
+                        hasNew = true;
+                    }
+                }
+            } catch (e) {
+                // Silent fail - polling shouldn't break the page
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Initial load
+        fetchProfitLogs();
+
+        // Poll every 3 seconds
+        setInterval(fetchProfitLogs, 3000);
+
+        // Re-check on visibility change (user returns to tab)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                fetchProfitLogs();
+            }
+        });
     })();
     </script>
 

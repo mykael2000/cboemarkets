@@ -30,6 +30,10 @@ function login_user(array $user): void
     $_SESSION['name']    = $user['name'];
     $_SESSION['email']   = $user['email'];
     $_SESSION['role']    = $user['role'];
+    // Persist admin ID so admin-only actions (add profit, etc.) can attribute them.
+    if (($user['role'] ?? '') === 'admin') {
+        $_SESSION['admin_user_id'] = (int)$user['id'];
+    }
 }
 
 function logout_user(): void
