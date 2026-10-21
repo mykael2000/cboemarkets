@@ -40,20 +40,42 @@ try {
     // Reverse so newest is at the bottom (or keep newest first? We'll sort newest first in JS)
     // Actually, we want to show newest first in the UI. Keep as is (DESC) and reverse in JS if needed.
 
-    // Fetch current dashboard metrics
+    // Fetch current dashboard metrics + coin balances
     $metricsStmt = $pdo->prepare(
-        'SELECT dashboard_today_pnl, dashboard_equity, dashboard_margin, dashboard_free_margin
+        'SELECT dashboard_today_pnl, dashboard_equity, dashboard_margin, dashboard_free_margin,
+                balance, btc_balance, eth_balance, bnb_balance, sol_balance
          FROM users WHERE id = ? LIMIT 1'
     );
     $metricsStmt->execute([$user_id]);
     $metrics = $metricsStmt->fetch();
 
+    $todayPnl = (float)($metrics['dashboard_today_pnl'] ?? 0);
+    $equity   = (float)($metrics['dashboard_equity'] ?? 0);
+    $margin   = (float)($metrics['dashboard_margin'] ?? 0);
+    $freeMargin = (float)($metrics['dashboard_free_margin'] ?? 0);
+    $usdtBal  = (float)($metrics['balance'] ?? 0);
+    $btcBal   = (float)($metrics['btc_balance'] ?? 0);
+    $ethBal   = (float)($metrics['eth_balance'] ?? 0);
+    $bnbBal   = (float)($metrics['bnb_balance'] ?? 0);
+    $solBal   = (float)($metrics['sol_balance'] ?? 0);
+
+    // Total balance = sum of all coin balances valued in USDT (BTC/ETH/etc. valued at 1:1 for now; can be enhanced with price feed)
+    $totalBalance = $usdtBal + $btcBal + $ethBal + $bnbBal + $solBal;
+
     $response = [
         'logs' => $logs,
-        'today_pnl' => (float)($metrics['dashboard_today_pnl'] ?? 0),
-        'equity' => (float)($metrics['dashboard_equity'] ?? 0),
-        'margin' => (float)($metrics['dashboard_margin'] ?? 0),
-        'free_margin' => (float)($metrics['dashboard_free_margin'] ?? 0),
+        'today_pnl' => $todayPnl,
+        'equity' => $equity,
+        'margin' => $margin,
+        'free_margin' => $freeMargin,
+        'total_balance' => $totalBalance,
+        'coin_balances' => [
+            'USDT' => $usdtBal,
+            'BTC'  => $btcBal,
+            'ETH'  => $ethBal,
+            'BNB'  => $bnbBal,
+            'SOL'  => $solBal,
+        ],
         'user_id' => $user_id,
     ];
 

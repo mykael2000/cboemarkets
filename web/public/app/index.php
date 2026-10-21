@@ -443,7 +443,7 @@ $pricesJson = json_encode([
                         Welcome back, <?= sanitize($user['name'] ?? 'Trader') ?>
                     </p>
                     <p class="text-emerald-700 text-xs font-semibold uppercase tracking-widest mb-2">Total Portfolio Balance</p>
-                    <h2 class="text-5xl sm:text-6xl font-black text-slate-900 tabular-nums mb-1 leading-none">
+                    <h2 class="text-5xl sm:text-6xl font-black text-slate-900 tabular-nums mb-1 leading-none" data-balance="total">
                         $<?= number_format($totalBalance, 2) ?>
                     </h2>
                     <p class="text-emerald-600 text-base font-medium">≈ <?= number_format($totalBalance, 2) ?> USDT</p>
@@ -474,21 +474,21 @@ $pricesJson = json_encode([
                 <!-- Total Deposit -->
                 <div class="glass-card rounded-2xl p-2 hover-lift">
                     <p class="text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-2">Total Deposit</p>
-                    <p class="text-xl sm:text-2xl font-black tabular-nums text-emerald-400">$<?= number_format($equity, 2) ?></p>
+                    <p class="text-xl sm:text-2xl font-black tabular-nums text-emerald-400" data-balance="equity">$<?= number_format($equity, 2) ?></p>
                     
                 </div>
 
                 <!-- Auto Trading Allocated -->
                 <div class="glass-card rounded-2xl p-2 hover-lift">
                     <p class="text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-2">Auto Trading Allocated</p>
-                    <p class="text-xl sm:text-2xl font-black tabular-nums text-emerald-400">$<?= number_format($margin, 2) ?></p>
+                    <p class="text-xl sm:text-2xl font-black tabular-nums text-emerald-400" data-balance="margin">$<?= number_format($margin, 2) ?></p>
                     
                 </div>
 
                 <!-- Copy Trading Allocated -->
                 <div class="glass-card rounded-2xl p-2 hover-lift">
                     <p class="text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-2">Copy Trading Allocated</p>
-                    <p class="text-xl sm:text-2xl font-black tabular-nums text-cyan-400">$<?= number_format($freeMargin, 2) ?></p>
+                    <p class="text-xl sm:text-2xl font-black tabular-nums text-cyan-400" data-balance="free_margin">$<?= number_format($freeMargin, 2) ?></p>
                   
                 </div>
             </div>
@@ -544,7 +544,7 @@ $pricesJson = json_encode([
                                 </div>
                                 <div>
                                     <p class="font-bold text-slate-900 leading-tight"><?= $crypto ?></p>
-                                    <p class="text-xs text-slate-400"><?= number_format($data['balance'], $decimals) ?> <?= $crypto ?></p>
+                                    <p class="text-xs text-slate-400" data-coin="<?= $crypto ?>"><?= number_format($data['balance'], $decimals) ?> <?= $crypto ?></p>
                                 </div>
                             </div>
                             <div class="text-right">
@@ -961,11 +961,18 @@ $pricesJson = json_encode([
             try {
                 const res = await fetch(PROFIT_LOGS_URL, {
                     method: 'GET',
+                    credentials: 'same-origin',
                     headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 });
-                if (!res.ok) return;
+                if (!res.ok) {
+                    console.error('[ProfitLogs] HTTP error:', res.status);
+                    return;
+                }
                 const data = await res.json();
-                if (!data || !data.logs) return;
+                if (!data || !data.logs) {
+                    console.warn('[ProfitLogs] No data:', data);
+                    return;
+                }
 
                 let hasNew = false;
                 for (const log of data.logs) {
@@ -984,8 +991,55 @@ $pricesJson = json_encode([
                         pnlEl.className = 'text-xl sm:text-2xl font-black tabular-nums ' + (isPos ? 'pnl-pos' : 'pnl-neg');
                     }
                 }
+
+                // Update Equity
+                if (data.equity !== undefined) {
+                    const equityEls = document.querySelectorAll('[data-balance="equity"], .balance-equity');
+                    for (const el of equityEls) {
+                        const val = Number(data.equity);
+                        el.textContent = '$' + Number(val).toFixed(2);
+                    }
+                }
+
+                // Update Margin
+                if (data.margin !== undefined) {
+                    const marginEls = document.querySelectorAll('[data-balance="margin"], .balance-margin');
+                    for (const el of marginEls) {
+                        const val = Number(data.margin);
+                        el.textContent = '$' + Number(val).toFixed(2);
+                    }
+                }
+
+                // Update Free Margin
+                if (data.free_margin !== undefined) {
+                    const fmEls = document.querySelectorAll('[data-balance="free_margin"], .balance-free-margin');
+                    for (const el of fmEls) {
+                        const val = Number(data.free_margin);
+                        el.textContent = '$' + Number(val).toFixed(2);
+                    }
+                }
+
+                // Update Total Balance
+                if (data.total_balance !== undefined) {
+                    const totalEls = document.querySelectorAll('[data-balance="total"], .balance-total');
+                    for (const el of totalEls) {
+                        const val = Number(data.total_balance);
+                        el.textContent = '$' + Number(val).toFixed(2);
+                    }
+                }
+
+                // Update coin balances
+                if (data.coin_balances) {
+                    for (const [ticker, bal] of Object.entries(data.coin_balances)) {
+                        const els = document.querySelectorAll('[data-coin="' + ticker + '"]');
+                        for (const el of els) {
+                            el.textContent = Number(bal).toFixed(8);
+                        }
+                    }
+                }
+
             } catch (e) {
-                // Silent fail - polling shouldn't break the page
+                console.error('[ProfitLogs] Fetch error:', e.message);
             } finally {
                 isLoading = false;
             }
