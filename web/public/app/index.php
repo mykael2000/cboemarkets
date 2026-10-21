@@ -928,7 +928,7 @@ $pricesJson = json_encode([
                     <span class="text-xs text-slate-500 truncate flex-1">${note}</span>
                     ${admin ? '<span class="text-[11px] text-slate-400">' + admin + '</span>' : ''}
                 </div>
-                <span class="text-[11px] text-slate-400 shrink-0">' + time + '</span>
+                <span class="text-[11px] text-slate-400 shrink-0">${time}</span>
             `;
 
             const isNew = !lastSeenProfitLogIds.has(id);
