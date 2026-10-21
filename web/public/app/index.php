@@ -894,6 +894,7 @@ $pricesJson = json_encode([
         const listEl = document.getElementById('profitLogsList');
         const containerEl = document.getElementById('profitLogsContainer');
         let lastSeenProfitLogIds = new Set();
+        let isInitialLoad = true;
         let isLoading = false;
 
         function formatCurrency(amount) {
@@ -976,14 +977,18 @@ $pricesJson = json_encode([
 
                 let hasNew = false;
                 for (const log of data.logs) {
-                    if (addProfitLog(log)) {
+                    const isNew = addProfitLog(log);
+                    if (isNew) {
                         hasNew = true;
-                        const amount = log.amount || 0;
-                        const note = log.note || '';
-                        const admin = log.admin_id ? true : false;
-                        showProfitNotification(amount, note, admin);
+                        // Only show notification on subsequent polls, not initial page load
+                        if (!isInitialLoad) {
+                            const amount = log.amount || 0;
+                            const note = log.note || '';
+                            showProfitNotification(amount, note);
+                        }
                     }
                 }
+                isInitialLoad = false;
 
                 // Update Today's P&L display
                 if (data.today_pnl !== undefined) {
@@ -1065,7 +1070,7 @@ $pricesJson = json_encode([
         // ------------------------------------------------------------------
         // Profit-added notification (top-right, auto-dismiss)
         // ------------------------------------------------------------------
-        function showProfitNotification(amount, note, admin) {
+        function showProfitNotification(amount, note) {
             // Remove any existing profit notification
             const existing = document.querySelector('.profit-notification');
             if (existing) existing.remove();
@@ -1079,12 +1084,12 @@ $pricesJson = json_encode([
                 notif.style.transform = 'translateX(0)';
             });
 
-            const adminBadge = admin ? `<span class="text-[10px] text-emerald-200 uppercase tracking-wider mb-1 block">Admin Credit</span>` : '';
+            
 
             notif.innerHTML = `
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1">
-                        ${adminBadge}
+
                         <div class="text-xs text-emerald-300 font-medium mb-1">Profit Added</div>
                         <div class="text-lg font-bold text-emerald-100">+$${Number(amount).toFixed(2)}</div>
                         ${note ? `<div class="text-xs text-emerald-200 mt-1 truncate">${note}</div>` : ''}
