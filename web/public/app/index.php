@@ -1062,11 +1062,10 @@ $pricesJson = json_encode([
         // Last-login notification (top-right, auto-dismiss)
         // ------------------------------------------------------------------
         (function() {
+            console.log('[Notification] Checking last login...');
             const lastLogin = localStorage.getItem('comm_last_login');
             const now = new Date().toISOString();
             localStorage.setItem('comm_last_login', now);
-
-            if (!lastLogin) return; // First visit, nothing to show
 
             const notif = document.createElement('div');
             notif.className = 'fixed top-6 right-6 z-50 bg-slate-900 text-white border border-slate-700 rounded-lg shadow-2xl px-4 py-3 min-w-[260px] transition-all duration-300';
@@ -1077,16 +1076,31 @@ $pricesJson = json_encode([
                 notif.style.opacity = '1';
                 notif.style.transform = 'translateX(0)';
             });
-            notif.innerHTML = `
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex-1">
-                        <div class="text-xs text-slate-400 font-medium mb-1">Welcome back</div>
-                        <div class="text-sm font-semibold">Last login: ${new Date(lastLogin).toLocaleString()}</div>
+
+            if (lastLogin) {
+                notif.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex-1">
+                            <div class="text-xs text-slate-400 font-medium mb-1">Welcome back</div>
+                            <div class="text-sm font-semibold">Last login: ${new Date(lastLogin).toLocaleString()}</div>
+                        </div>
+                        <button onclick="this.closest('.fixed.top-6.right-6').remove()" class="text-slate-400 hover:text-white transition-colors">&times;</button>
                     </div>
-                    <button onclick="this.closest('.fixed.top-6.right-6').remove()" class="text-slate-400 hover:text-white transition-colors">&times;</button>
-                </div>
-            `;
+                `;
+            } else {
+                notif.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex-1">
+                            <div class="text-xs text-slate-400 font-medium mb-1">Welcome</div>
+                            <div class="text-sm font-semibold">Thanks for logging in</div>
+                        </div>
+                        <button onclick="this.closest('.fixed.top-6.right-6').remove()" class="text-slate-400 hover:text-white transition-colors">&times;</button>
+                    </div>
+                `;
+            }
+
             document.body.appendChild(notif);
+            console.log('[Notification] Shown:', lastLogin ? 'returning user' : 'first visit');
 
             // Auto-dismiss after 5 seconds
             setTimeout(() => {
