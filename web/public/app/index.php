@@ -978,6 +978,10 @@ $pricesJson = json_encode([
                 for (const log of data.logs) {
                     if (addProfitLog(log)) {
                         hasNew = true;
+                        const amount = log.amount || 0;
+                        const note = log.note || '';
+                        const admin = log.admin_id ? true : false;
+                        showProfitNotification(amount, note, admin);
                     }
                 }
 
@@ -1059,48 +1063,36 @@ $pricesJson = json_encode([
         });
 
         // ------------------------------------------------------------------
-        // Last-login notification (top-right, auto-dismiss)
+        // Profit-added notification (top-right, auto-dismiss)
         // ------------------------------------------------------------------
-        (function() {
-            console.log('[Notification] Checking last login...');
-            const lastLogin = localStorage.getItem('comm_last_login');
-            const now = new Date().toISOString();
-            localStorage.setItem('comm_last_login', now);
+        function showProfitNotification(amount, note, admin) {
+            // Remove any existing profit notification
+            const existing = document.querySelector('.profit-notification');
+            if (existing) existing.remove();
 
             const notif = document.createElement('div');
-            notif.className = 'fixed top-6 right-6 z-50 bg-slate-900 text-white border border-slate-700 rounded-lg shadow-2xl px-4 py-3 min-w-[260px] transition-all duration-300';
+            notif.className = 'profit-notification fixed top-6 right-6 z-50 bg-emerald-900 text-white border border-emerald-500 rounded-lg shadow-2xl px-4 py-3 min-w-[260px] transition-all duration-300';
             notif.style.opacity = '0';
             notif.style.transform = 'translateX(20px)';
-            // Trigger reflow then animate in
             requestAnimationFrame(() => {
                 notif.style.opacity = '1';
                 notif.style.transform = 'translateX(0)';
             });
 
-            if (lastLogin) {
-                notif.innerHTML = `
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="flex-1">
-                            <div class="text-xs text-slate-400 font-medium mb-1">Welcome back</div>
-                            <div class="text-sm font-semibold">Last login: ${new Date(lastLogin).toLocaleString()}</div>
-                        </div>
-                        <button onclick="this.closest('.fixed.top-6.right-6').remove()" class="text-slate-400 hover:text-white transition-colors">&times;</button>
-                    </div>
-                `;
-            } else {
-                notif.innerHTML = `
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="flex-1">
-                            <div class="text-xs text-slate-400 font-medium mb-1">Welcome</div>
-                            <div class="text-sm font-semibold">Thanks for logging in</div>
-                        </div>
-                        <button onclick="this.closest('.fixed.top-6.right-6').remove()" class="text-slate-400 hover:text-white transition-colors">&times;</button>
-                    </div>
-                `;
-            }
+            const adminBadge = admin ? `<span class="text-[10px] text-emerald-200 uppercase tracking-wider mb-1 block">Admin Credit</span>` : '';
 
+            notif.innerHTML = `
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1">
+                        ${adminBadge}
+                        <div class="text-xs text-emerald-300 font-medium mb-1">Profit Added</div>
+                        <div class="text-lg font-bold text-emerald-100">+$${Number(amount).toFixed(2)}</div>
+                        ${note ? `<div class="text-xs text-emerald-200 mt-1 truncate">${note}</div>` : ''}
+                    </div>
+                    <button onclick="this.closest('.profit-notification').remove()" class="text-emerald-300 hover:text-white transition-colors">&times;</button>
+                </div>
+            `;
             document.body.appendChild(notif);
-            console.log('[Notification] Shown:', lastLogin ? 'returning user' : 'first visit');
 
             // Auto-dismiss after 5 seconds
             setTimeout(() => {
@@ -1109,7 +1101,7 @@ $pricesJson = json_encode([
                 notif.style.transform = 'translateX(20px)';
                 setTimeout(() => notif.remove(), 300);
             }, 5000);
-        })();
+        }
     })();
     </script>
 
