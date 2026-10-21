@@ -918,7 +918,6 @@ $pricesJson = json_encode([
             const id = log.id || log.log_id;
             const amount = log.amount || 0;
             const note = log.note || 'Profit added';
-            const admin = log.admin_id ? ' (by ' + log.admin_id + ')' : '';
             const time = formatDate(log.created_at || new Date().toISOString());
 
             const item = document.createElement('div');
@@ -927,7 +926,6 @@ $pricesJson = json_encode([
                 <div class="flex items-center gap-2 flex-1">
                     <span class="text-emerald-500 font-bold">+${formatCurrency(amount)}</span>
                     <span class="text-xs text-slate-500 truncate flex-1">${note}</span>
-                    ${admin ? '<span class="text-[11px] text-slate-400">' + admin + '</span>' : ''}
                 </div>
                 <span class="text-[11px] text-slate-400 shrink-0">${time}</span>
             `;
