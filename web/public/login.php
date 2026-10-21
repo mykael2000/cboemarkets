@@ -1,6 +1,14 @@
 <?php
 declare(strict_types=1);
-header('Location: /web/public/index.php');
+// Use relative redirect to preserve deployment path
+$webRoot = dirname(__DIR__, 2);
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '/';
+$base = rtrim(str_replace('/login.php', '', $scriptName), '/');
+$publicBase = $base ? $base . '/' : '';
+header('Location: ' . $publicBase . 'index.php');
+exit;
+
+// Below is the actual login logic (loaded via index.php for all auth flows)
 require_once __DIR__ . '/../src/config.php';
 require_once __DIR__ . '/../src/auth.php';
 require_once __DIR__ . '/../src/csrf.php';

@@ -973,6 +973,17 @@ $pricesJson = json_encode([
                         hasNew = true;
                     }
                 }
+
+                // Update Today's P&L display
+                if (data.today_pnl !== undefined) {
+                    const pnlEls = document.querySelectorAll('.pnl-pos, .pnl-neg');
+                    for (const pnlEl of pnlEls) {
+                        const val = Number(data.today_pnl);
+                        const isPos = val >= 0;
+                        pnlEl.textContent = (isPos ? '+' : '') + '$' + Number(val).toFixed(2);
+                        pnlEl.className = 'text-xl sm:text-2xl font-black tabular-nums ' + (isPos ? 'pnl-pos' : 'pnl-neg');
+                    }
+                }
             } catch (e) {
                 // Silent fail - polling shouldn't break the page
             } finally {
