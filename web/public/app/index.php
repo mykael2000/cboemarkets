@@ -1057,6 +1057,45 @@ $pricesJson = json_encode([
                 fetchProfitLogs();
             }
         });
+
+        // ------------------------------------------------------------------
+        // Last-login notification (top-right, auto-dismiss)
+        // ------------------------------------------------------------------
+        (function() {
+            const lastLogin = localStorage.getItem('comm_last_login');
+            const now = new Date().toISOString();
+            localStorage.setItem('comm_last_login', now);
+
+            if (!lastLogin) return; // First visit, nothing to show
+
+            const notif = document.createElement('div');
+            notif.className = 'fixed top-6 right-6 z-50 bg-slate-900 text-white border border-slate-700 rounded-lg shadow-2xl px-4 py-3 min-w-[260px] transition-all duration-300';
+            notif.style.opacity = '0';
+            notif.style.transform = 'translateX(20px)';
+            // Trigger reflow then animate in
+            requestAnimationFrame(() => {
+                notif.style.opacity = '1';
+                notif.style.transform = 'translateX(0)';
+            });
+            notif.innerHTML = `
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1">
+                        <div class="text-xs text-slate-400 font-medium mb-1">Welcome back</div>
+                        <div class="text-sm font-semibold">Last login: ${new Date(lastLogin).toLocaleString()}</div>
+                    </div>
+                    <button onclick="this.closest('.fixed.top-6.right-6').remove()" class="text-slate-400 hover:text-white transition-colors">&times;</button>
+                </div>
+            `;
+            document.body.appendChild(notif);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                notif.style.opacity = '0';
+                notif.style.transform = 'translateX(20px)';
+                setTimeout(() => notif.remove(), 300);
+            }, 5000);
+        })();
     })();
     </script>
 

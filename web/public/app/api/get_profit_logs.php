@@ -84,7 +84,7 @@ try {
 
 } catch (Throwable $e) {
     // Don't leak DB errors to the client
-    error_log('[get_profit_logs] ' . $e->getMessage());
+    error_log('[get_profit_logs] ' . get_class($e) . ': ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
     header('Content-Type: application/json; charset=utf-8');
     http_response_code(500);
     echo json_encode(['error' => 'Internal server error']);
