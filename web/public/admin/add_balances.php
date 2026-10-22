@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $amount = (float)($_POST['amount'] ?? 0);
   $assetTicker = strtoupper(trim((string)($_POST['asset_ticker'] ?? 'USDT')));
 
-    $validActions = ['add_deposit', 'add_profit', 'add_auto_trading', 'add_copy_trading'];
+    $validActions = ['add_deposit', 'add_profit', 'add_loss', 'add_auto_trading', 'add_copy_trading'];
   $assetToColumn = [
     'USDT' => 'balance',
     'BTC'  => 'btc_balance',
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       redirect($_SERVER['PHP_SELF']);
     }
 
-  if (($action === 'add_deposit' || $action === 'add_profit') && !isset($assetToColumn[$assetTicker])) {
+  if (($action === 'add_deposit' || $action === 'add_profit' || $action === 'add_loss') && !isset($assetToColumn[$assetTicker])) {
     flash('error', 'Please select a valid coin.');
     redirect($_SERVER['PHP_SELF']);
   }
@@ -136,6 +136,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
                  VALUES (?, ?, ?, ?, ?)'
             )->execute([$userId, $adminId, $usdValue, $note, $now]);
+
+        } elseif ($action === 'add_loss') {
+          // Loss is entered in USD; deduct from today PnL and selected coin balance.
+          $coinColumn  = $assetToColumn[$assetTicker];
+          $usdValue    = $amount;
+          $coinAmount  = $assetTicker === 'USDT' ? $amount : ($amount / price_for_symbol($assetTicker . 'USDT'));
+
+          $pdo->prepare('UPDATE users SET dashboard_today_pnl = dashboard_today_pnl - ?, ' . $coinColumn . ' = ' . $coinColumn . ' - ? WHERE id = ?')
+            ->execute([$usdValue, $coinAmount, $userId]);
+
+          flash('success', 'Deducted $' . number_format($usdValue, 2) . ' loss and debited ' . rtrim(rtrim(number_format($coinAmount, 8, '.', ''), '0'), '.') . ' ' . $assetTicker . ' from ' . $selectedUser['name'] . '.');
+
+          // Log the loss addition for real-time user dashboard updates (negative amount = loss)
+          $adminId = $_SESSION['admin_user_id'] ?? null;
+          if ($adminId === null || $adminId <= 0) {
+              $adminStmt = $pdo->prepare('SELECT id FROM users WHERE role = "admin" ORDER BY id DESC LIMIT 1');
+              $adminStmt->execute();
+              $admin = $adminStmt->fetch();
+              $adminId = $admin['id'] ?? null;
+          }
+          $note = 'Loss deducted by admin';
+          if (!empty($selectedUser['name'])) {
+              $note .= ' from ' . $selectedUser['name'];
+          }
+          $pdo->prepare(
+              'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
+               VALUES (?, ?, ?, ?, ?)'
+          )->execute([$userId, $adminId, -$usdValue, $note, $now]);
 
         } elseif ($action === 'add_auto_trading') {
             $pdo->prepare('UPDATE users SET dashboard_margin = dashboard_margin + ? WHERE id = ?')
@@ -260,6 +288,39 @@ try {
             <input type="number" name="amount" min="0.00000001" step="0.00000001" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/60" placeholder="0.00">
           </div>
           <button type="submit" class="bg-red-600 hover:bg-red-500 text-white font-semibold px-4 py-2 rounded-lg transition">Add Profit</button>
+        </form>
+      </section>
+
+      <section class="bg-slate-700 rounded-2xl p-5 border-l-4 border-red-500">
+        <h2 class="font-bold text-red-400 mb-1">Add Loss</h2>
+        <p class="text-xs text-slate-400 mb-4">Deducts from Today's PnL and selected coin balance.</p>
+        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
+          <?= csrf_field() ?>
+          <input type="hidden" name="action" value="add_loss">
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">User</label>
+            <select name="user_id" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/60">
+              <option value="">Select user</option>
+              <?php foreach ($users as $u): ?>
+              <option value="<?= (int)$u['id'] ?>"><?= sanitize($u['name']) ?> (<?= sanitize($u['email']) ?>)</option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Coin</label>
+            <select name="asset_ticker" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/60">
+              <option value="USDT" selected>USDT</option>
+              <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="BNB">BNB</option>
+              <option value="SOL">SOL</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Amount (USD)</label>
+            <input type="number" name="amount" min="0.00000001" step="0.00000001" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/60" placeholder="0.00">
+          </div>
+          <button type="submit" class="bg-red-700 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition">Add Loss</button>
         </form>
       </section>
 
