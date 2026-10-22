@@ -387,7 +387,7 @@ $pricesJson = json_encode([
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-2 py-2 space-y-3">
+    <main class="w-full px-2 py-2 space-y-3">
 
         <!-- Flash messages -->
         <?php if ($flashSuccess): ?>
@@ -459,7 +459,7 @@ $pricesJson = json_encode([
             </div>
 
             <!-- Stats Grid -->
-            <div class="relative grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+            <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-2">
                 <!-- Today's P&L -->
                 <div class="glass-card rounded-2xl p-2 hover-lift">
                     <p class="text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-2">Today's P&amp;L</p>
@@ -512,7 +512,7 @@ $pricesJson = json_encode([
         <div class="grid lg:grid-cols-3 gap-3">
 
             <!-- ── Crypto Holdings ── -->
-            <div class="lg:col-span-2 glass-card rounded-3xl p-3">
+            <div class="lg:col-span-2 md:col-span-1 glass-card rounded-3xl p-3">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
                         <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -1074,6 +1074,7 @@ $pricesJson = json_encode([
             if (existing) existing.remove();
 
             const notif = document.createElement('div');
+            notif.style.position = 'fixed';
             const isLoss = type === 'loss' || Number(amount) < 0;
             const absAmount = Math.abs(Number(amount));
             const sign = isLoss ? '-' : '+';
