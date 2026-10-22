@@ -891,6 +891,8 @@ $pricesJson = json_encode([
     <!-- ─── RECENT PROFIT ADDED - Real-time AJAX ─── -->
     <script>
     (function() {
+        console.log('Dashboard script started');
+
         const PROFIT_LOGS_URL = 'api/get_profit_logs.php';
         const listEl = document.getElementById('profitLogsList');
         const containerEl = document.getElementById('profitLogsContainer');
