@@ -1,3 +1,4 @@
+
 ﻿<?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../src/config.php';
@@ -1112,7 +1113,7 @@ $pricesJson = json_encode([
                     <div class="flex-1">
                         <div class="text-xs ${labelColor} font-medium mb-1">${isLoss ? 'Loss' : 'Profit Added'}</div>
                         <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toFixed(2)}</div>
-                        ${note ? `\`<div class="text-xs ${noteColor} mt-1 truncate">${note}</div>\`` : ''}
+                         `\`<div class="text-xs ${noteColor} ">${note}</div>\`` : ''}
                     </div>
                     <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>
                 </div>
