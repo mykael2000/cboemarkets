@@ -982,7 +982,7 @@ $pricesJson = json_encode([
                         if (!isInitialLoad) {
                             const amount = log.amount || 0;
                             const note = log.note || '';
-                            showProfitNotification(amount, note);
+                            showBalanceNotification(amount, note, amount < 0 ? 'loss' : 'profit');
                         }
                     }
                 }
@@ -1068,31 +1068,48 @@ $pricesJson = json_encode([
         // ------------------------------------------------------------------
         // Profit-added notification (top-right, auto-dismiss)
         // ------------------------------------------------------------------
-        function showProfitNotification(amount, note) {
+        function showBalanceNotification(amount, note, type) {
             // Remove any existing profit notification
-            const existing = document.querySelector('.profit-notification');
+            const existing = document.querySelector('.balance-notification');
             if (existing) existing.remove();
 
             const notif = document.createElement('div');
-            notif.className = 'profit-notification fixed top-6 right-6 z-50 bg-emerald-900 text-white border border-emerald-500 rounded-lg shadow-2xl px-4 py-3 min-w-[260px] transition-all duration-300';
+            const isLoss = type === 'loss' || Number(amount) < 0;
+            const absAmount = Math.abs(Number(amount));
+            const sign = isLoss ? '-' : '+';
+
+// Position near the total balance element (slightly below it)
+            const balanceEl = document.querySelector('[data-balance="total"]');
+            let top = 100;
+            let left = 20;
+            if (balanceEl) {
+                const rect = balanceEl.getBoundingClientRect();
+                top = rect.bottom + 12;
+                left = rect.left;
+            }
+
+            notif.style.top = top + 'px';
+            notif.style.left = left + 'px';
             notif.style.opacity = '0';
-            notif.style.transform = 'translateX(20px)';
+            notif.style.transform = 'translateY(10px)';
             requestAnimationFrame(() => {
                 notif.style.opacity = '1';
-                notif.style.transform = 'translateX(0)';
+                notif.style.transform = 'translateY(0)';
             });
 
-            
+            const labelColor = isLoss ? 'text-red-300' : 'text-emerald-300';
+            const amountColor = isLoss ? 'text-red-100' : 'text-emerald-100';
+            const noteColor = isLoss ? 'text-red-200' : 'text-emerald-200';
+            const closeColor = isLoss ? 'text-red-300' : 'text-emerald-300';
 
             notif.innerHTML = `
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1">
-
-                        <div class="text-xs text-emerald-300 font-medium mb-1">Profit Added</div>
-                        <div class="text-lg font-bold text-emerald-100">+$${Number(amount).toFixed(2)}</div>
-                        
+                        <div class="text-xs ${labelColor} font-medium mb-1">${isLoss ? 'Loss' : 'Profit Added'}</div>
+                        <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toFixed(2)}</div>
+                        ${note ? `\`<div class="text-xs ${noteColor} mt-1 truncate">${note}</div>\`` : ''}
                     </div>
-                    <button onclick="this.closest('.profit-notification').remove()" class="text-emerald-300 hover:text-white transition-colors">&times;</button>
+                    <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>
                 </div>
             `;
             document.body.appendChild(notif);
@@ -1101,7 +1118,7 @@ $pricesJson = json_encode([
             setTimeout(() => {
                 notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 notif.style.opacity = '0';
-                notif.style.transform = 'translateX(20px)';
+                notif.style.transform = 'translateY(10px)';
                 setTimeout(() => notif.remove(), 300);
             }, 5000);
         }
