@@ -924,7 +924,7 @@ $pricesJson = json_encode([
             item.className = 'flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0';
             item.innerHTML = `
                 <div class="flex items-center gap-2 flex-1">
-                    <span class="text-emerald-900 font-bold">+${formatCurrency(amount)}</span>
+                    <span class="text-emerald-00 font-bold">+${formatCurrency(amount)}</span>
                     
                 </div>
                 <span class="text-[11px] text-slate-400 shrink-0">${time}</span>
@@ -1112,6 +1112,7 @@ $pricesJson = json_encode([
                     <div class="flex-1">
                         <div class="text-xs ${labelColor} font-medium mb-1">${isLoss ? 'Loss' : 'Profit Added'}</div>
                         <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toFixed(2)}</div>
+                        ${note ? `\`<div class="text-xs ${noteColor} mt-1 truncate">${note}</div>\`` : ''}
                     </div>
                     <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>
                 </div>
