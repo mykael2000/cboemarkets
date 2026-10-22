@@ -25,7 +25,7 @@ $COIN_COLS = [
 $flashSuccess = get_flash('success');
 $flashError   = get_flash('error');
 
-// Handle currency swap (PRG pattern � redirect after POST)
+// Handle currency swap (PRG pattern $ redirect after POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'swap') {
     csrf_verify();
     $fromCurrency = strtoupper(trim($_POST['from_currency'] ?? ''));
@@ -108,7 +108,7 @@ foreach ($symbols as $sym) {
 }
 $prices['USDTUSDT'] = 1.0;
 
-// Mock 24h change percentages � demo data only
+// Mock 24h change percentages $ demo data only
 $priceChanges = [
     'BTCUSDT'  => (mt_rand(-800, 1500) / 100),
     'ETHUSDT'  => (mt_rand(-600, 1200) / 100),
@@ -328,7 +328,7 @@ $pricesJson = json_encode([
                 </a>
             </div>
 
-            <!-- Desktop navigation (hidden on mobile � see bottom nav) -->
+            <!-- Desktop navigation (hidden on mobile $ see bottom nav) -->
             <nav class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
                 <a href="index.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-emerald-600 bg-emerald-50 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -447,7 +447,7 @@ $pricesJson = json_encode([
                     <h2 class="text-5xl sm:text-6xl font-black text-slate-900 tabular-nums mb-1 leading-none" data-balance="total">
                         $<?= number_format($totalBalance, 2) ?>
                     </h2>
-                    <p class="text-emerald-600 text-base font-medium">� <?= number_format($totalBalance, 2) ?> USDT</p>
+                    <p class="text-emerald-600 text-base font-medium">$ <?= number_format($totalBalance, 2) ?> USDT</p>
                 </div>
 
                 <div class="flex flex-row sm:flex-col gap-2 sm:items-end">
@@ -615,11 +615,11 @@ $pricesJson = json_encode([
                         <label class="block text-[11px] text-slate-600 font-semibold uppercase tracking-wider mb-1">From</label>
                         <select name="from_currency" id="swapFrom" required
                                 class="w-full bg-white border border-slate-300 text-slate-900 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/60 text-sm appearance-none cursor-pointer">
-                            <option value="USDT" selected>$ USDT � Tether</option>
-                            <option value="BTC">? BTC � Bitcoin</option>
-                            <option value="ETH">? ETH � Ethereum</option>
-                            <option value="BNB">? BNB � Binance Coin</option>
-                            <option value="SOL">? SOL � Solana</option>
+                            <option value="USDT" selected>$ USDT – Tether</option>
+                            <option value="BTC">₿ BTC – Bitcoin</option>
+                            <option value="ETH">Ξ ETH – Ethereum</option>
+                            <option value="BNB">◈ BNB – Binance Coin</option>
+                            <option value="SOL">◎ SOL – Solana</option>
                         </select>
                     </div>
 
@@ -634,18 +634,18 @@ $pricesJson = json_encode([
                         <label class="block text-[11px] text-slate-600 font-semibold uppercase tracking-wider mb-1">To</label>
                         <select name="to_currency" id="swapTo" required
                                 class="w-full bg-white border border-slate-300 text-slate-900 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/60 text-sm appearance-none cursor-pointer">
-                            <option value="USDT">$ USDT � Tether</option>
-                            <option value="BTC" selected>? BTC � Bitcoin</option>
-                            <option value="ETH">? ETH � Ethereum</option>
-                            <option value="BNB">? BNB � Binance Coin</option>
-                            <option value="SOL">? SOL � Solana</option>
+                            <option value="USDT">$ USDT – Tether</option>
+                            <option value="BTC" selected>₿ BTC – Bitcoin</option>
+                            <option value="ETH">Ξ ETH – Ethereum</option>
+                            <option value="BNB">◈ BNB – Binance Coin</option>
+                            <option value="SOL">◎ SOL – Solana</option>
                         </select>
                     </div>
 
                     <!-- Live Rate Display -->
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 space-y-1" id="rateBox">
                         <p class="text-[11px] text-slate-600 font-semibold uppercase tracking-wider">Live Exchange Rate</p>
-                        <p class="text-sm font-bold text-emerald-300 tabular-nums" id="rateDisplay">� loading �</p>
+                        <p class="text-sm font-bold text-emerald-300 tabular-nums" id="rateDisplay">- loading -</p>
                         <p class="text-[11px] text-slate-500" id="receiveDisplay"></p>
                     </div>
 
@@ -865,7 +865,7 @@ $pricesJson = json_encode([
 
             if (amount > 0) {
                 const recv = amount * rate;
-                recvDisp.textContent = `You receive � ${fmt(recv, dec)} ${to}`;
+                recvDisp.textContent = `You receive $ ${fmt(recv, dec)} ${to}`;
             } else {
                 recvDisp.textContent = '';
             }
