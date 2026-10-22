@@ -969,6 +969,8 @@ $pricesJson = json_encode([
                     return;
                 }
                 const data = await res.json();
+                console.log('[ProfitLogs] Fetched OK', data);
+
                 if (!data || !data.logs) {
                     console.warn('[ProfitLogs] No data:', data);
                     return;
