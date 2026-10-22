@@ -6,7 +6,7 @@ RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^(.*)$ $1.php [NC,L]
 
 # Redirect .php to non-.php (301 redirect)
-RewriteCond %{THE_REQUEST} ^[A-Z]+\\ +.*\.php[?]
+RewriteCond %{THE_REQUEST} ^[A-Z]+\ +.*\.php[?]
 RewriteRule ^(.*)\.php$ /$1 [R=301,L,NC]
 
 # Protect .htaccess
