@@ -1078,23 +1078,27 @@ $pricesJson = json_encode([
             const absAmount = Math.abs(Number(amount));
             const sign = isLoss ? '-' : '+';
 
-// Position near the total balance element (slightly below it)
+// Position beside the total balance element (to its right)
             const balanceEl = document.querySelector('[data-balance="total"]');
             let top = 100;
             let left = 20;
             if (balanceEl) {
                 const rect = balanceEl.getBoundingClientRect();
-                top = rect.bottom + 12;
-                left = rect.left;
+                top = rect.top;
+                left = rect.right + 12;
+                console.log('[Notification] Balance rect:', rect, 'top:', top, 'left:', left);
+            } else {
+                console.log('[Notification] Balance element not found, using fallback position');
             }
 
             notif.style.top = top + 'px';
             notif.style.left = left + 'px';
             notif.style.opacity = '0';
-            notif.style.transform = 'translateY(10px)';
+            notif.style.transform = 'translateX(10px)';
+            document.body.appendChild(notif);
             requestAnimationFrame(() => {
                 notif.style.opacity = '1';
-                notif.style.transform = 'translateY(0)';
+                notif.style.transform = 'translateX(0)';
             });
 
             const labelColor = isLoss ? 'text-red-300' : 'text-emerald-300';
@@ -1118,7 +1122,7 @@ $pricesJson = json_encode([
             setTimeout(() => {
                 notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 notif.style.opacity = '0';
-                notif.style.transform = 'translateY(10px)';
+                notif.style.transform = 'translateX(10px)';
                 setTimeout(() => notif.remove(), 300);
             }, 5000);
         }
