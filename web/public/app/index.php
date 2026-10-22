@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../src/config.php';
 require_once __DIR__ . '/../../src/auth.php';
@@ -328,7 +328,7 @@ $pricesJson = json_encode([
             </div>
 
             <!-- Desktop navigation (hidden on mobile – see bottom nav) -->
-            <nav class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+            <nav class="flex flex-col items-center gap-2 md:flex-row md:items-center md:gap-0.5">
                 <a href="index.php" class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium text-emerald-600 bg-emerald-50 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     Dashboard
@@ -924,8 +924,8 @@ $pricesJson = json_encode([
             item.className = 'flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0';
             item.innerHTML = `
                 <div class="flex items-center gap-2 flex-1">
-                    <span class="text-emerald-500 font-bold">+${formatCurrency(amount)}</span>
-                    <span class="text-xs text-slate-500 truncate flex-1">${note}</span>
+                    <span class="text-emerald-900 font-bold">+${formatCurrency(amount)}</span>
+                    
                 </div>
                 <span class="text-[11px] text-slate-400 shrink-0">${time}</span>
             `;
@@ -1112,7 +1112,6 @@ $pricesJson = json_encode([
                     <div class="flex-1">
                         <div class="text-xs ${labelColor} font-medium mb-1">${isLoss ? 'Loss' : 'Profit Added'}</div>
                         <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toFixed(2)}</div>
-                        ${note ? `\`<div class="text-xs ${noteColor} mt-1 truncate">${note}</div>\`` : ''}
                     </div>
                     <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>
                 </div>
