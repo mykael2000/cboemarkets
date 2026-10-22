@@ -1075,6 +1075,15 @@ $pricesJson = json_encode([
             if (existing) existing.remove();
 
             const notif = document.createElement('div');
+            notif.className = 'balance-notification';
+            notif.style.zIndex = '9999';
+            notif.style.padding = '12px 16px';
+            notif.style.borderRadius = '12px';
+            notif.style.background = isLoss ? 'rgba(220,38,38,0.95)' : 'rgba(16,185,129,0.95)';
+            notif.style.color = '#fff';
+            notif.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)';
+            notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
             notif.style.position = 'fixed';
             const isLoss = type === 'loss' || Number(amount) < 0;
             const absAmount = Math.abs(Number(amount));

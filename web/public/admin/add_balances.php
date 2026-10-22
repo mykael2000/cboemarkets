@@ -109,6 +109,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ->execute([$coinAmount, $usdValue, $userId]);
 
           flash('success', 'Added $' . number_format($usdValue, 2) . ' (' . rtrim(rtrim(number_format($coinAmount, 8, '.', ''), '0'), '.') . ' ' . $assetTicker . ') deposit to ' . $selectedUser['name'] . '.');
+          // Log the deposit for real-time user dashboard updates
+          $adminId = $_SESSION['admin_user_id'] ?? null;
+          if ($adminId === null || $adminId <= 0) {
+              $adminStmt = $pdo->prepare('SELECT id FROM users WHERE role = "admin" ORDER BY id DESC LIMIT 1');
+              $adminStmt->execute();
+              $admin = $adminStmt->fetch();
+              $adminId = $admin['id'] ?? null;
+          }
+          $note = 'Deposit added by admin';
+          if (!empty($selectedUser['name'])) {
+              $note .= ' to ' . $selectedUser['name'];
+          }
+          $pdo->prepare(
+              'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
+               VALUES (?, ?, ?, ?, ?)'
+          )->execute([$userId, $adminId, $usdValue, $note, $now]);
+
         } elseif ($action === 'add_profit') {
           // Profit is entered in USD; also credit selected coin balance.
           $coinColumn  = $assetToColumn[$assetTicker];
