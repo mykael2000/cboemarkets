@@ -549,8 +549,8 @@ $pricesJson = json_encode([
                                 </div>
                             </div>
                             <div class="text-right">
-                                <p class="font-bold text-slate-900 tabular-nums">$<?= number_format($data['value'], 2) ?></p>
-                                <p class="text-xs <?= $col['pct'] ?> font-semibold"><?= number_format($pct, 1) ?>%</p>
+                                <p class="font-bold text-slate-900 tabular-nums" data-coin-value="<?= $crypto ?>">$<?= number_format($data['value'], 2) ?></p>
+                                <p class="text-xs <?= $col['pct'] ?> font-semibold" data-coin-pct="<?= $crypto ?>"><?= number_format($pct, 1) ?>%</p>
                             </div>
                         </div>
                         <div class="w-full bg-slate-200 rounded-full h-1.5">
@@ -1047,6 +1047,29 @@ $pricesJson = json_encode([
                         const els = document.querySelectorAll('[data-coin="' + ticker + '"]');
                         for (const el of els) {
                             el.textContent = Number(bal).toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
+                        }
+                    }
+                }
+
+                // Update coin USD values and percentages based on live prices
+                if (data.coin_prices && data.total_balance !== undefined) {
+                    const totalBalance = Number(data.total_balance);
+                    const priceDecimals = { BTC: 2, ETH: 2, BNB: 2, SOL: 2, USDT: 2 };
+                    for (const [ticker, price] of Object.entries(data.coin_prices)) {
+                        // Get the current coin balance from the DOM (updated above)
+                        const balanceEl = document.querySelector('[data-coin="' + ticker + '"]');
+                        const bal = balanceEl ? parseFloat(balanceEl.textContent.replace(/,/g, '')) : 0;
+                        const usdValue = bal * Number(price);
+
+                        const valueEls = document.querySelectorAll('[data-coin-value="' + ticker + '"]');
+                        for (const el of valueEls) {
+                            el.textContent = '$' + usdValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+
+                        const pct = totalBalance > 0 ? (usdValue / totalBalance) * 100 : 0;
+                        const pctEls = document.querySelectorAll('[data-coin-pct="' + ticker + '"]');
+                        for (const el of pctEls) {
+                            el.textContent = pct.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
                         }
                     }
                 }

@@ -85,6 +85,13 @@ try {
             'BNB'  => $bnbBal,
             'SOL'  => $solBal,
         ],
+        'coin_prices' => [
+            'USDT' => $prices['USDT'],
+            'BTC'  => $prices['BTC'],
+            'ETH'  => $prices['ETH'],
+            'BNB'  => $prices['BNB'],
+            'SOL'  => $prices['SOL'],
+        ],
         'user_id' => $user_id,
     ];
 
