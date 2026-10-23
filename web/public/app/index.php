@@ -1078,9 +1078,9 @@ $pricesJson = json_encode([
             const existing = document.querySelector('.balance-notification');
             if (existing) existing.remove();
 
-            // const isLoss = type === 'loss' || Number(amount) < 0;
-            // const absAmount = Math.abs(Number(amount));
-            // const sign = isLoss ? '-' : '+';
+            const isLoss = type === 'loss' || Number(amount) < 0;
+            const absAmount = Math.abs(Number(amount));
+            const sign = isLoss ? '-' : '+';
 
             const notif = document.createElement('div');
             notif.className = 'balance-notification';
@@ -1093,7 +1093,6 @@ $pricesJson = json_encode([
             notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
 
             notif.style.position = 'fixed';
-            const sign = isLoss ? '-' : '+';
 
         // Position beside the total balance element (to its right)
             const balanceEl = document.querySelector('[data-balance="total"]');
