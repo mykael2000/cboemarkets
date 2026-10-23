@@ -261,7 +261,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Deposit</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to selected coin balance and updates Total Deposit.</p>
-        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
+        <form method="POST" action="<?= sanitize(current_url()) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_deposit">
           <div>
@@ -295,7 +295,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Profit</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to Today's PnL and credits selected coin balance.</p>
-        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
+        <form method="POST" action="<?= sanitize(current_url()) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_profit">
           <div>
@@ -328,7 +328,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5 border-l-4 border-red-500">
         <h2 class="font-bold text-red-400 mb-1">Add Loss</h2>
         <p class="text-xs text-slate-400 mb-4">Deducts from Today's PnL and selected coin balance.</p>
-        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
+        <form method="POST" action="<?= sanitize(current_url()) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_loss">
           <div>
@@ -361,7 +361,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Auto Trading Balance</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to Auto Trading Allocated.</p>
-        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
+        <form method="POST" action="<?= sanitize(current_url()) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_auto_trading">
           <div>
@@ -384,7 +384,7 @@ try {
       <section class="bg-slate-700 rounded-2xl p-5">
         <h2 class="font-bold text-white mb-1">Add Copy Trading Balance</h2>
         <p class="text-xs text-slate-400 mb-4">Adds to Copy Trading Allocated.</p>
-        <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="space-y-3">
+        <form method="POST" action="<?= sanitize(current_url()) ?>" class="space-y-3">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="add_copy_trading">
           <div>

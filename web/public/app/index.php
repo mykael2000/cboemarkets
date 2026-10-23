@@ -1036,7 +1036,7 @@ $pricesJson = json_encode([
                     const totalEls = document.querySelectorAll('[data-balance="total"], .balance-total');
                     for (const el of totalEls) {
                         const val = Number(data.total_balance);
-                        el.textContent = '$' + Number(val).toFixed(2);
+                        el.textContent = '$' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     }
                 }
 
@@ -1045,7 +1045,7 @@ $pricesJson = json_encode([
                     for (const [ticker, bal] of Object.entries(data.coin_balances)) {
                         const els = document.querySelectorAll('[data-coin="' + ticker + '"]');
                         for (const el of els) {
-                            el.textContent = Number(bal).toFixed(8);
+                            el.textContent = Number(bal).toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
                         }
                     }
                 }

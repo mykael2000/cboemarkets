@@ -24,6 +24,16 @@ function sanitize(string $str): string
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
+function current_url(): string
+{
+    $script = $_SERVER['SCRIPT_NAME'] ?? '/';
+    $lastDot = strrpos($script, '.');
+    if ($lastDot !== false) {
+        $script = substr($script, 0, $lastDot);
+    }
+    return $script;
+}
+
 /**
  * Fetch live price from Binance public API.
  * Falls back to mock prices if the request fails.
