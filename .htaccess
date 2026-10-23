@@ -1,0 +1,12 @@
+
+Options -MultiViews
+RewriteEngine On
+
+# Redirect direct requests from file.php to /file
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php(?:[?\s]) [NC]
+RewriteRule ^(.+)\.php$ /$1 [R=302,L,NC]
+
+# Serve file.php when the clean URL /file is requested
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [END]

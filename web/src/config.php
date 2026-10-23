@@ -78,7 +78,7 @@ function app_dashboard_url(?string $script = null): string
 {
     $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
     $base = site_base_path($script);
-    return $base . '/app/index.php';
+    return $base . '/app';
 }
 
 function auth_login_url(?string $script = null): string
@@ -86,14 +86,14 @@ function auth_login_url(?string $script = null): string
     // Use the actual public login page (web root + /public/login.php).
     // site_base_path() strips /admin suffix, which breaks the login URL
     // when the current script is under /admin/. Return the global login URL.
-    return '/cboemarkets/web/public/login.php';
+    return '/web/public/login.php';
 }
 
 function admin_dashboard_url(?string $script = null): string
 {
     $script ??= $_SERVER['SCRIPT_NAME'] ?? '/';
     $base = site_base_path($script);
-    return $base . '/admin/index.php';
+    return $base . '/admin';
 }
 
 // ---------------------------------------------------------------------------
