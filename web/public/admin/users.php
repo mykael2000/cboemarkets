@@ -181,7 +181,7 @@ try {
                 </span>
               </td>
               <td class="px-4 py-3 text-right">
-                <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="flex flex-wrap items-center justify-end gap-1">
+                <form method="POST" action="<?= sanitize(current_url()) ?>" class="flex flex-wrap items-center justify-end gap-1">
                   <?= csrf_field() ?>
                   <input type="hidden" name="action" value="update_balance">
                   <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
@@ -237,7 +237,7 @@ try {
               <td class="px-4 py-3">
                 <div class="flex gap-2 justify-end">
                   <!-- Toggle Status -->
-                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>">
+                  <form method="POST" action="<?= sanitize(current_url()) ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="toggle_status">
                     <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
@@ -248,7 +248,7 @@ try {
                   </form>
                   <!-- Toggle Role -->
                   <?php if ((int)$u['id'] !== (int)($_SESSION['user_id'] ?? 0)): ?>
-                  <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>">
+                  <form method="POST" action="<?= sanitize(current_url()) ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="toggle_role">
                     <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
