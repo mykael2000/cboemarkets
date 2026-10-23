@@ -705,9 +705,7 @@ $pricesJson = json_encode([
                             <span class="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span>LIVE
                         </span>
                     </div>
-                    <p class="text-2xl font-black <?= $m['price_color'] ?> tabular-nums mb-1">
-                        $<?= number_format($prices[$m['sym']], 2) ?>
-                    </p>
+                    <p class="text-2xl font-black <?= $m['price_color'] ?> tabular-nums mb-1" data-price="<?= $base ?>">$<?= number_format($prices[$m['sym']], 2) ?></p>
                     <p class="text-sm font-semibold <?= $isPos ? 'text-emerald-400' : 'text-red-400' ?>">
                         <?= $isPos ? '?' : '?' ?> <?= number_format(abs($change), 2) ?>%
                         <span class="text-[11px] text-slate-500 font-normal ml-1">24h</span>
@@ -1070,6 +1068,12 @@ $pricesJson = json_encode([
                         const pctEls = document.querySelectorAll('[data-coin-pct="' + ticker + '"]');
                         for (const el of pctEls) {
                             el.textContent = pct.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+                        }
+
+                        // Update live market price display (Live Markets section)
+                        const priceEls = document.querySelectorAll('[data-price="' + ticker + '"]');
+                        for (const el of priceEls) {
+                            el.textContent = '$' + Number(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     }
                 }
