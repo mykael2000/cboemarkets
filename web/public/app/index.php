@@ -987,7 +987,8 @@ $pricesJson = json_encode([
                         if (!isInitialLoad) {
                             const amount = log.amount || 0;
                             const note = log.note || '';
-                            showBalanceNotification(amount, note, amount < 0 ? 'loss' : 'profit');
+                            const logType = log.type || (amount < 0 ? 'loss' : 'profit');
+                            showBalanceNotification(amount, note, logType);
                         }
                     }
                 }
@@ -1078,6 +1079,7 @@ $pricesJson = json_encode([
             const existing = document.querySelector('.balance-notification');
             if (existing) existing.remove();
 
+            const isDeposit = type === 'deposit';
             const isLoss = type === 'loss' || Number(amount) < 0;
             const absAmount = Math.abs(Number(amount));
             const sign = isLoss ? '-' : '+';
@@ -1117,7 +1119,7 @@ $pricesJson = json_encode([
             notif.innerHTML = `
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1">
-                        <div class="text-xs ${labelColor} font-medium mb-1">${isLoss ? 'Loss' : 'Profit Added'}</div>
+                        <div class="text-xs ${labelColor} font-medium mb-1">${isDeposit ? 'Deposit Received' : (isLoss ? 'Loss Deducted' : 'Profit Added')}</div>
                         <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     </div>
                     <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>

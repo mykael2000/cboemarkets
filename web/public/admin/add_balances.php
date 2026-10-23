@@ -39,6 +39,7 @@ function ensure_profit_logs_table(): void
                 id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 user_id         BIGINT UNSIGNED NOT NULL,
                 admin_id        BIGINT UNSIGNED NULL,
+                type            VARCHAR(20) NOT NULL DEFAULT "profit",
                 amount          DECIMAL(18,8) NOT NULL,
                 note            VARCHAR(255) NULL DEFAULT NULL,
                 created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -47,6 +48,12 @@ function ensure_profit_logs_table(): void
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             ) ENGINE=InnoDB'
         );
+        // Add type column if table already existed without it
+        try {
+            db()->exec('ALTER TABLE profit_logs ADD COLUMN type VARCHAR(20) NOT NULL DEFAULT "profit" AFTER admin_id');
+        } catch (Throwable) {
+            // Column already exists
+        }
     } catch (Throwable) {
         // Table creation is best-effort; logging still works if table exists.
     }
@@ -109,22 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ->execute([$coinAmount, $usdValue, $userId]);
 
           flash('success', 'Added $' . number_format($usdValue, 2) . ' (' . rtrim(rtrim(number_format($coinAmount, 8, '.', ''), '0'), '.') . ' ' . $assetTicker . ') deposit to ' . $selectedUser['name'] . '.');
-          // Log the deposit for real-time user dashboard updates
-          $adminId = $_SESSION['admin_user_id'] ?? null;
-          if ($adminId === null || $adminId <= 0) {
-              $adminStmt = $pdo->prepare('SELECT id FROM users WHERE role = "admin" ORDER BY id DESC LIMIT 1');
-              $adminStmt->execute();
-              $admin = $adminStmt->fetch();
-              $adminId = $admin['id'] ?? null;
-          }
-          $note = 'Deposit added by admin';
-          if (!empty($selectedUser['name'])) {
-              $note .= ' to ' . $selectedUser['name'];
-          }
-          $pdo->prepare(
-              'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
-               VALUES (?, ?, ?, ?, ?)'
-          )->execute([$userId, $adminId, $usdValue, $note, $now]);
 
           // Log the deposit for real-time user dashboard updates
           $adminId = $_SESSION['admin_user_id'] ?? null;
@@ -139,8 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               $note .= ' to ' . $selectedUser['name'];
           }
           $pdo->prepare(
-              'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
-               VALUES (?, ?, ?, ?, ?)'
+              'INSERT INTO profit_logs (user_id, admin_id, type, amount, note, created_at)
+               VALUES (?, ?, "deposit", ?, ?, ?)'
           )->execute([$userId, $adminId, $usdValue, $note, $now]);
 
         } elseif ($action === 'add_profit') {
@@ -167,8 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $note .= ' to ' . $selectedUser['name'];
             }
             $pdo->prepare(
-                'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
-                 VALUES (?, ?, ?, ?, ?)'
+                'INSERT INTO profit_logs (user_id, admin_id, type, amount, note, created_at)
+                 VALUES (?, ?, "profit", ?, ?, ?)'
             )->execute([$userId, $adminId, $usdValue, $note, $now]);
 
         } elseif ($action === 'add_loss') {
@@ -195,8 +186,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               $note .= ' from ' . $selectedUser['name'];
           }
           $pdo->prepare(
-              'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
-               VALUES (?, ?, ?, ?, ?)'
+              'INSERT INTO profit_logs (user_id, admin_id, type, amount, note, created_at)
+               VALUES (?, ?, "loss", ?, ?, ?)'
           )->execute([$userId, $adminId, -$usdValue, $note, $now]);
 
         } elseif ($action === 'add_auto_trading') {

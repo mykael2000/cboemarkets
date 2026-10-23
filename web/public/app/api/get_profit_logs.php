@@ -26,9 +26,17 @@ $user_id = (int)$currentUser['id'];
 try {
     $pdo = db();
 
+    // Fetch real-time prices for all coins (USDT is always $1)
+    $symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT'];
+    $prices  = [];
+    foreach ($symbols as $sym) {
+        $prices[str_replace('USDT', '', $sym)] = price_for_symbol($sym);
+    }
+    $prices['USDT'] = 1.0;
+
     // Fetch recent profit log entries for this user (last 20, newest first).
     $logsStmt = $pdo->prepare(
-        'SELECT id, user_id, admin_id, amount, note, created_at
+        'SELECT id, user_id, admin_id, type, amount, note, created_at
          FROM profit_logs
          WHERE user_id = ?
          ORDER BY created_at DESC
@@ -36,9 +44,6 @@ try {
     );
     $logsStmt->execute([$user_id]);
     $logs = $logsStmt->fetchAll();
-
-    // Reverse so newest is at the bottom (or keep newest first? We'll sort newest first in JS)
-    // Actually, we want to show newest first in the UI. Keep as is (DESC) and reverse in JS if needed.
 
     // Fetch current dashboard metrics + coin balances
     $metricsStmt = $pdo->prepare(
@@ -59,8 +64,12 @@ try {
     $bnbBal   = (float)($metrics['bnb_balance'] ?? 0);
     $solBal   = (float)($metrics['sol_balance'] ?? 0);
 
-    // Total balance = sum of all coin balances valued in USDT (BTC/ETH/etc. valued at 1:1 for now; can be enhanced with price feed)
-    $totalBalance = $usdtBal + $btcBal + $ethBal + $bnbBal + $solBal;
+    // Total balance = sum of all coin balances valued in USDT
+    $totalBalance = $usdtBal * $prices['USDT']
+                  + $btcBal  * $prices['BTC']
+                  + $ethBal  * $prices['ETH']
+                  + $bnbBal  * $prices['BNB']
+                  + $solBal  * $prices['SOL'];
 
     $response = [
         'logs' => $logs,
