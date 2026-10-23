@@ -467,8 +467,8 @@ $pricesJson = json_encode([
                     <p class="text-xl sm:text-2xl font-black tabular-nums <?= $todayPnl >= 0 ? 'pnl-pos' : 'pnl-neg' ?>">
                         <?= $todayPnl >= 0 ? '+' : '' ?>$<?= number_format(abs($todayPnl), 2) ?>
                     </p>
-                    <p class="text-xs <?= $todayPnl >= 0 ? 'text-emerald-400' : 'text-red-400' ?> font-semibold mt-1">
-                        <?= $todayPnl >= 0 ? '?' : '?' ?> <?= number_format(abs($todayPnlPercent), 2) ?>%
+                    <p class="text-xs pnl-pct <?= $todayPnl >= 0 ? 'text-emerald-400' : 'text-red-400' ?> font-semibold mt-1">
+                        <?= $todayPnl >= 0 ? '▲' : '▼' ?> <?= number_format(abs($todayPnlPercent), 2) ?>%
                     </p>
                 </div>
 
@@ -1000,6 +1000,18 @@ $pricesJson = json_encode([
                         const isPos = val >= 0;
                         pnlEl.textContent = (isPos ? '+' : '') + '$' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         pnlEl.className = 'text-xl sm:text-2xl font-black tabular-nums ' + (isPos ? 'pnl-pos' : 'pnl-neg');
+                    }
+
+                    // Update Today's P&L percentage with up/down arrow
+                    if (data.today_pnl_pct !== undefined) {
+                        const pct = Number(data.today_pnl_pct);
+                        const isPos = pct >= 0;
+                        const arrow = isPos ? '▲' : '▼';
+                        const pctEls = document.querySelectorAll('.pnl-pct, [data-pnl-pct]');
+                        for (const el of pctEls) {
+                            el.innerHTML = arrow + ' ' + Math.abs(pct).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+                            el.className = (el.className.replace(/text-emerald-400|text-red-400/, '')) + ' ' + (isPos ? 'text-emerald-400' : 'text-red-400');
+                        }
                     }
                 }
 

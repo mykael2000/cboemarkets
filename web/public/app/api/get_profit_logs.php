@@ -74,6 +74,7 @@ try {
     $response = [
         'logs' => $logs,
         'today_pnl' => $todayPnl,
+        'today_pnl_pct' => $equity > 0 ? ($todayPnl / $equity) * 100 : 0,
         'equity' => $equity,
         'margin' => $margin,
         'free_margin' => $freeMargin,
