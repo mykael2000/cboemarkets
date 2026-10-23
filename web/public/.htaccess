@@ -1,11 +1,4 @@
-
 RewriteEngine On
-
-# Redirect direct requests from .php to clean URLs
-RewriteCond %{THE_REQUEST} \s/+(.+?)\.php(?:[\s?]) [NC]
-RewriteRule ^(.+?)\.php$ /$1 [R=301,L,NE]
-
-# Load the matching PHP file internally
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^(.+?)/?$ $1.php [L]
+RewriteRule ^(.*)$ $1.php [NC,L]
