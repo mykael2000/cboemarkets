@@ -320,8 +320,8 @@ $pricesJson = json_encode([
     <!-- ----------------------------------------
          TOP HEADER
     ---------------------------------------- -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-2.5">
-        <div class="flex items-center justify-between max-w-max mx-auto gap-2">
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-2 py-2.5">
+        <div class="flex items-center justify-between flex-wrap max-w-7xl mx-auto gap-2 overflow-hidden">
             <div class="flex items-center gap-3 flex-shrink-0">
                 <a href="index.php" class="flex items-center">
                 <span class="text-xl font-extrabold tracking-tight text-emerald-600">CBOE<span class="text-slate-900">Markets</span></span>
