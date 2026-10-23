@@ -77,6 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggl
 }
 
 // Update balance
+// Ensure dashboard metric columns exist in the database before updating balances
+try {
+    db()->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS dashboard_today_pnl DECIMAL(18,8) NOT NULL DEFAULT 0.00000000');
+    db()->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS dashboard_equity DECIMAL(18,8) NOT NULL DEFAULT 0.00000000');
+    db()->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS dashboard_margin DECIMAL(18,8) NOT NULL DEFAULT 0.00000000');
+    db()->exec('ALTER TABLE users ADD COLUMN IF NOT EXISTS dashboard_free_margin DECIMAL(18,8) NOT NULL DEFAULT 0.00000000');
+} catch (Throwable) {
+    // Ignore; the UPDATE may still work if columns exist from schema
+}
+
+// If posting update balance submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update_balance') {
     csrf_verify();
     $id         = (int)($_POST['id'] ?? 0);
