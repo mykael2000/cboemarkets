@@ -1096,21 +1096,11 @@ $pricesJson = json_encode([
             notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
 
             notif.style.position = 'fixed';
+            notif.style.top = '16px';
+            notif.style.right = '16px';
+            notif.style.left = 'auto';
 
-        // Position beside the total balance element (to its right)
-            const balanceEl = document.querySelector('[data-balance="total"]');
-            let top = 100;
-            let left = 20;
-            if (balanceEl) {
-                const rect = balanceEl.getBoundingClientRect();
-                top = rect.top;
-                left = rect.right + 12;
-                console.log('[Notification] Balance rect:', rect, 'top:', top, 'left:', left);
-            } else {
-                console.log('[Notification] Balance element not found, using fallback position');
-            }
 
-            notif.style.top = top + 'px';
             notif.style.left = left + 'px';
             notif.style.opacity = '0';
             notif.style.transform = 'translateX(10px)';
