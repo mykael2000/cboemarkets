@@ -1088,7 +1088,7 @@ $pricesJson = json_encode([
             notif.style.padding = '12px 16px';
             notif.style.maxWidth = 'calc(100vw - 24px)';
             notif.style.fontSize = '13px';
-
+            notif.style.fontSize = '12px';
             notif.style.borderRadius = '12px';
             notif.style.background = isLoss ? 'rgba(220,38,38,0.95)' : 'rgba(16,185,129,0.95)';
             notif.style.color = '#fff';
@@ -1096,7 +1096,7 @@ $pricesJson = json_encode([
             notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
 
             notif.style.position = 'fixed';
-            notif.style.top = '80px';
+            notif.style.top = '120px';
             notif.style.right = '16px';
             notif.style.left = 'auto';
             notif.style.padding = '8px 12px';
@@ -1119,7 +1119,6 @@ $pricesJson = json_encode([
                     <div class="flex-1">
                         <div class="text-xs ${labelColor} font-medium mb-1">${isLoss ? 'Loss' : 'Profit Added'}</div>
                         <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toFixed(2)}</div>
-                         ${note ? `<div class="text-xs ${noteColor} mt-1">${note}</div>` : ''}
                     </div>
                     <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>
                 </div>
