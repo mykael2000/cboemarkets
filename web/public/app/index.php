@@ -1096,10 +1096,10 @@ $pricesJson = json_encode([
             notif.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
 
             notif.style.position = 'fixed';
-            notif.style.top = '16px';
+            notif.style.top = '80px';
             notif.style.right = '16px';
             notif.style.left = 'auto';
-
+            notif.style.padding = '8px 12px';
 
             notif.style.opacity = '0';
             notif.style.transform = 'translateX(10px)';
