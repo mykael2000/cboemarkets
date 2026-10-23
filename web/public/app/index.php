@@ -447,7 +447,7 @@ $pricesJson = json_encode([
                     <h2 class="text-5xl sm:text-6xl font-black text-slate-900 tabular-nums mb-1 leading-none" data-balance="total">
                         $<?= number_format($totalBalance, 2) ?>
                     </h2>
-                    <p class="text-emerald-600 text-base font-medium">$ <?= number_format($totalBalance, 2) ?> USDT</p>
+                    <p class="text-emerald-600 text-base font-medium" data-balance="total">$ <?= number_format($totalBalance, 2) ?> USDT</p>
                 </div>
 
                 <div class="flex flex-row sm:flex-col gap-2 sm:items-end">
