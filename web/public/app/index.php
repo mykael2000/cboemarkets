@@ -901,7 +901,7 @@ $pricesJson = json_encode([
         let isLoading = false;
 
         function formatCurrency(amount) {
-            return '$' + Number(amount).toFixed(2);
+            return '$' + Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
         function formatDate(dateStr) {
@@ -999,7 +999,7 @@ $pricesJson = json_encode([
                     for (const pnlEl of pnlEls) {
                         const val = Number(data.today_pnl);
                         const isPos = val >= 0;
-                        pnlEl.textContent = (isPos ? '+' : '') + '$' + Number(val).toFixed(2);
+                        pnlEl.textContent = (isPos ? '+' : '') + '$' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         pnlEl.className = 'text-xl sm:text-2xl font-black tabular-nums ' + (isPos ? 'pnl-pos' : 'pnl-neg');
                     }
                 }
@@ -1009,7 +1009,7 @@ $pricesJson = json_encode([
                     const equityEls = document.querySelectorAll('[data-balance="equity"], .balance-equity');
                     for (const el of equityEls) {
                         const val = Number(data.equity);
-                        el.textContent = '$' + Number(val).toFixed(2);
+                        el.textContent = '$' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     }
                 }
 
@@ -1018,7 +1018,7 @@ $pricesJson = json_encode([
                     const marginEls = document.querySelectorAll('[data-balance="margin"], .balance-margin');
                     for (const el of marginEls) {
                         const val = Number(data.margin);
-                        el.textContent = '$' + Number(val).toFixed(2);
+                        el.textContent = '$' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     }
                 }
 
@@ -1027,7 +1027,7 @@ $pricesJson = json_encode([
                     const fmEls = document.querySelectorAll('[data-balance="free_margin"], .balance-free-margin');
                     for (const el of fmEls) {
                         const val = Number(data.free_margin);
-                        el.textContent = '$' + Number(val).toFixed(2);
+                        el.textContent = '$' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     }
                 }
 
@@ -1118,7 +1118,7 @@ $pricesJson = json_encode([
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1">
                         <div class="text-xs ${labelColor} font-medium mb-1">${isLoss ? 'Loss' : 'Profit Added'}</div>
-                        <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toFixed(2)}</div>
+                        <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     </div>
                     <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>
                 </div>
