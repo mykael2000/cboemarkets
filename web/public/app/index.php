@@ -707,7 +707,7 @@ $pricesJson = json_encode([
                     </div>
                     <p class="text-2xl font-black <?= $m['price_color'] ?> tabular-nums mb-1" data-price="<?= $base ?>">$<?= number_format($prices[$m['sym']], 2) ?></p>
                     <p class="text-sm font-semibold <?= $isPos ? 'text-emerald-400' : 'text-red-400' ?>">
-                        <?= $isPos ? '?' : '?' ?> <?= number_format(abs($change), 2) ?>%
+                        <?= $isPos ? '▲' : '▼' ?> <?= number_format(abs($change), 2) ?>%
                         <span class="text-[11px] text-slate-500 font-normal ml-1">24h</span>
                     </p>
                 </div>
@@ -918,7 +918,7 @@ $pricesJson = json_encode([
         function addProfitLog(log) {
             const id = log.id || log.log_id;
             const amount = log.amount || 0;
-            const note = log.note || 'Profit added';
+            const note = log.note || 'Profit/Loss';
             const time = formatDate(log.created_at || new Date().toISOString());
 
             const item = document.createElement('div');
@@ -1158,7 +1158,7 @@ $pricesJson = json_encode([
             notif.innerHTML = `
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1">
-                        <div class="text-xs ${labelColor} font-medium mb-1">${isDeposit ? 'Deposit Received' : (isLoss ? 'Loss Deducted' : 'Profit Added')}</div>
+                        <div class="text-xs ${labelColor} font-medium mb-1">${isDeposit ? 'Deposit Received' : (isLoss ? 'Profit/Loss' : 'Profit/Loss')}</div>
                         <div class="text-lg font-bold ${amountColor}">${sign}$${absAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     </div>
                     <button onclick="this.closest('.balance-notification').remove()" class="${closeColor} hover:text-white transition-colors">&times;</button>

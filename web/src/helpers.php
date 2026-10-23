@@ -42,9 +42,11 @@ function price_for_symbol(string $symbol): float
 {
     static $cache = [];
     $symbol = strtoupper(trim($symbol));
+    $now    = microtime(true);
+    $ttl    = 5; // cache prices for 5 seconds, then refresh
 
-    if (isset($cache[$symbol])) {
-        return $cache[$symbol];
+    if (isset($cache[$symbol]) && ($now - $cache[$symbol]['time'] < $ttl)) {
+        return $cache[$symbol]['price'];
     }
 
     $mock = [
@@ -68,7 +70,7 @@ function price_for_symbol(string $symbol): float
             $data = json_decode($raw, true);
             if (isset($data['price'])) {
                 $price = (float) $data['price'];
-                $cache[$symbol] = $price;
+                $cache[$symbol] = ['price' => $price, 'time' => $now];
                 return $price;
             }
         }
@@ -77,7 +79,7 @@ function price_for_symbol(string $symbol): float
     }
 
     $price = $mock[$symbol] ?? 1.0;
-    $cache[$symbol] = $price;
+    $cache[$symbol] = ['price' => $price, 'time' => $now];
     return $price;
 }
 
