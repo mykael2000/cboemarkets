@@ -1086,6 +1086,9 @@ $pricesJson = json_encode([
             notif.className = 'balance-notification';
             notif.style.zIndex = '9999';
             notif.style.padding = '12px 16px';
+            notif.style.maxWidth = 'calc(100vw - 24px)';
+            notif.style.fontSize = '13px';
+
             notif.style.borderRadius = '12px';
             notif.style.background = isLoss ? 'rgba(220,38,38,0.95)' : 'rgba(16,185,129,0.95)';
             notif.style.color = '#fff';
