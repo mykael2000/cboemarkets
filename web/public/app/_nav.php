@@ -12,7 +12,7 @@ $_navPage = $activePage;
      DESKTOP NAVIGATION (hidden on mobile)
 ═══════════════════════════════════════════ -->
 <nav class="hidden lg:flex items-center gap-0.5 bg-white/95 border-b border-slate-100 px-4 py-1 shadow-sm backdrop-blur">
-    <div class="max-w-7xl mx-auto w-full flex items-center gap-0.5 flex-wrap">
+    <div class="max-w-7xl mx-auto w-full flex items-center justify-center gap-0.5 flex-wrap">
 
         <a href="index.php"
            class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition <?= $_navPage === 'index.php' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' ?>">
