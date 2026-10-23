@@ -1101,7 +1101,6 @@ $pricesJson = json_encode([
             notif.style.left = 'auto';
 
 
-            notif.style.left = left + 'px';
             notif.style.opacity = '0';
             notif.style.transform = 'translateX(10px)';
             document.body.appendChild(notif);
