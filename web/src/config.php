@@ -86,7 +86,7 @@ function auth_login_url(?string $script = null): string
     // Use the actual public login page (web root + /public/login.php).
     // site_base_path() strips /admin suffix, which breaks the login URL
     // when the current script is under /admin/. Return the global login URL.
-    return WEB_ROOT . '/public/login.php';
+    return '/cboemarkets/web/public/login.php';
 }
 
 function admin_dashboard_url(?string $script = null): string
