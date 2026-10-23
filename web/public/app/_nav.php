@@ -11,7 +11,7 @@ $_navPage = $activePage;
 <!-- ═══════════════════════════════════════════
      DESKTOP NAVIGATION (hidden on mobile)
 ═══════════════════════════════════════════ -->
-<nav class="hidden md:flex items-center gap-0.5 bg-white/95 border-b border-slate-100 px-4 py-1 shadow-sm backdrop-blur">
+<nav class="hidden lg:flex items-center gap-0.5 bg-white/95 border-b border-slate-100 px-4 py-1 shadow-sm backdrop-blur">
     <div class="max-w-7xl mx-auto w-full flex items-center gap-0.5 flex-wrap">
 
         <a href="index.php"
@@ -74,7 +74,7 @@ $_navPage = $activePage;
 <!-- ═══════════════════════════════════════════
      MOBILE BOTTOM NAVIGATION
 ═══════════════════════════════════════════ -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-200 flex justify-around py-1.5 z-50 md:hidden">
+<nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-200 flex justify-around py-1.5 z-50 lg:hidden">
     <a href="index.php" class="flex flex-col items-center gap-0.5 py-1 px-2 <?= $_navPage === 'index.php' ? 'text-emerald-500' : 'text-slate-500 hover:text-emerald-400' ?> transition">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         <span class="text-[10px] font-semibold">Home</span>
