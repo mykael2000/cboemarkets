@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../src/config.php';
 require_once __DIR__ . '/../../src/auth.php';
@@ -126,6 +126,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                VALUES (?, ?, ?, ?, ?)'
           )->execute([$userId, $adminId, $usdValue, $note, $now]);
 
+          // Log the deposit for real-time user dashboard updates
+          $adminId = $_SESSION['admin_user_id'] ?? null;
+          if ($adminId === null || $adminId <= 0) {
+              $adminStmt = $pdo->prepare('SELECT id FROM users WHERE role = "admin" ORDER BY id DESC LIMIT 1');
+              $adminStmt->execute();
+              $admin = $adminStmt->fetch();
+              $adminId = $admin['id'] ?? null;
+          }
+          $note = 'Deposit added by admin';
+          if (!empty($selectedUser['name'])) {
+              $note .= ' to ' . $selectedUser['name'];
+          }
+          $pdo->prepare(
+              'INSERT INTO profit_logs (user_id, admin_id, amount, note, created_at)
+               VALUES (?, ?, ?, ?, ?)'
+          )->execute([$userId, $adminId, $usdValue, $note, $now]);
 
         } elseif ($action === 'add_profit') {
           // Profit is entered in USD; also credit selected coin balance.
@@ -138,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           flash('success', 'Added $' . number_format($usdValue, 2) . ' profit and credited ' . rtrim(rtrim(number_format($coinAmount, 8, '.', ''), '0'), '.') . ' ' . $assetTicker . ' to ' . $selectedUser['name'] . '.');
 
-            // â”€â”€ Log the profit addition for real-time user dashboard updates â”€â”€
+            // ── Log the profit addition for real-time user dashboard updates ──
             $adminId = $_SESSION['admin_user_id'] ?? null;
             if ($adminId === null || $adminId <= 0) {
                 $adminStmt = $pdo->prepare('SELECT id FROM users WHERE role = "admin" ORDER BY id DESC LIMIT 1');
@@ -270,7 +286,7 @@ try {
           <div>
             <label class="block text-xs text-slate-300 mb-1">Amount (USD)</label>
             <input type="number" name="amount" min="0.01" step="0.01" required class="w-full bg-slate-600 border border-slate-500 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/60" placeholder="0.00">
-            <p class="text-xs text-slate-400 mt-1">Enter value in USD â€” will be auto-converted to the selected coin.</p>
+            <p class="text-xs text-slate-400 mt-1">Enter value in USD — will be auto-converted to the selected coin.</p>
           </div>
           <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-lg transition">Add Deposit</button>
         </form>
