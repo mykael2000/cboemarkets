@@ -35,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'revie
         if (!$request) {
             $pdo->rollBack();
             flash('error', 'Request not found or already reviewed.');
-            redirect($_SERVER['PHP_SELF']);
+            redirect(current_url());
         }
 
         if ($status === 'approved') {
             if ((float)$request['user_balance'] < (float)$request['amount']) {
                 $pdo->rollBack();
                 flash('error', 'User has insufficient USDT balance for approval.');
-                redirect($_SERVER['PHP_SELF']);
+                redirect(current_url());
             }
 
             $pdo->prepare('UPDATE users SET balance = balance - ? WHERE id = ?')->execute([(float)$request['amount'], (int)$request['user_id']]);
@@ -58,13 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'revie
         $pdo->commit();
         flash('success', 'Copy request updated.');
     } catch (Throwable) {
-        if (isset($pdo) && $pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
         flash('error', 'Failed to review request.');
-    }
+    redirect(current_url());
 
-    redirect($_SERVER['PHP_SELF']);
+    redirect(current_url());
 }
 
 $filterStatus = $_GET['status'] ?? 'pending';
@@ -159,7 +156,7 @@ try {
               <td class="px-4 py-3 text-xs text-slate-400"><?= date('M j, Y H:i', strtotime($request['created_at'])) ?></td>
               <td class="px-4 py-3 text-right">
                 <?php if ($request['status'] === 'pending'): ?>
-                <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" class="ml-auto flex w-56 flex-col gap-2">
+                <form method="POST" action="<?= sanitize($_SERVER['current_url()']) ?>" class="ml-auto flex w-56 flex-col gap-2">
                   <?= csrf_field() ?>
                   <input type="hidden" name="action" value="review">
                   <input type="hidden" name="id" value="<?= (int)$request['id'] ?>">

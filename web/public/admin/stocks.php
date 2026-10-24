@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($symbol === '' || $company === '' || $price < 0) {
             flash('error', 'Symbol, company and price are required.');
-            redirect($_SERVER['PHP_SELF']);
+            redirect(current_url());
         }
 
         try {
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable $e) {
             flash('error', 'Failed to save stock. ' . $e->getMessage());
         }
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     if ($action === 'delete_stock') {
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable) {
             flash('error', 'Failed to remove stock.');
         }
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     if ($action === 'add_position' || $action === 'update_position' || $action === 'delete_position') {

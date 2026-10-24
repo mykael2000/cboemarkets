@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
 
     if ($name === '' || $minD <= 0 || $maxD <= 0 || $days <= 0 || $roi <= 0) {
         flash('error', 'All fields are required and must be positive.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     try {
@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add')
         flash('success', 'Plan added successfully.');
     } catch (Throwable) {
         flash('error', 'Failed to add plan.');
+        redirect(current_url());
     }
-    redirect($_SERVER['PHP_SELF']);
 }
 
 // Handle Edit
@@ -65,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'edit'
         flash('success', 'Plan updated.');
     } catch (Throwable) {
         flash('error', 'Failed to update plan.');
+        redirect(current_url());
     }
-    redirect($_SERVER['PHP_SELF']);
 }
 
 // Handle Delete
@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
         flash('success', 'Plan deleted.');
     } catch (Throwable) {
         flash('error', 'Failed to delete plan.');
+        redirect(current_url());
     }
-    redirect($_SERVER['PHP_SELF']);
 }
 
 $plans = [];

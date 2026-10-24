@@ -21,16 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
 
     if ($title === '') {
         flash('error', 'Title is required.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     if (!isset($_FILES['document']) || $_FILES['document']['error'] === UPLOAD_ERR_NO_FILE) {
         flash('error', 'Please select a file to upload.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
     if ($_FILES['document']['error'] !== UPLOAD_ERR_OK) {
         flash('error', 'Upload error. Please try again.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     $allowed_exts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'png', 'jpg', 'jpeg'];
@@ -39,11 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
 
     if (!in_array($ext, $allowed_exts, true)) {
         flash('error', 'Invalid file type. Allowed: PDF, DOC, DOCX, XLS, XLSX, TXT, PNG, JPG.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
     if ($_FILES['document']['size'] > $max_size) {
         flash('error', 'File exceeds the 20 MB limit.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     // Validate MIME type using finfo
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
     $mimeType = $finfo->file($_FILES['document']['tmp_name']);
     if (!in_array($mimeType, $allowedMimes, true)) {
         flash('error', 'File content type is not allowed.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     // Ensure upload directory and .htaccess protection exist before any file operations
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
 
     if (!move_uploaded_file($_FILES['document']['tmp_name'], $uploadDir . $safeName)) {
         flash('error', 'Failed to save file. Please try again.');
-        redirect($_SERVER['PHP_SELF']);
+        redirect(current_url());
     }
 
     try {

@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'reject' && $id > 0) {
         if ($note === '') {
             flash('error', 'A rejection reason is required.');
-            redirect($_SERVER['PHP_SELF']);
+            redirect(current_url());
         }
         try {
             db()->prepare(
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('error', 'Failed to reject KYC.');
         }
     }
-    redirect($_SERVER['PHP_SELF']);
+    redirect(current_url());
 }
 
 // Filter
@@ -163,7 +163,7 @@ try {
         <!-- Actions -->
         <?php if ($sub['status'] === 'pending'): ?>
         <div class="flex flex-wrap gap-3">
-          <form method="POST" action="<?= sanitize($_SERVER['PHP_SELF']) ?>" onsubmit="return confirm('Approve this KYC?')">
+          <form method="POST" action="<?= current_url() ?>" onsubmit="return confirm('Approve this KYC?')">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="approve">
             <input type="hidden" name="id" value="<?= (int)$sub['id'] ?>">
