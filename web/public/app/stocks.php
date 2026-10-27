@@ -578,7 +578,7 @@ $user = current_user();
   </main>
 
   <?php if (!$questionnaireCompleted): ?>
-  <section class="fixed inset-0 z-[999] questionnaire-backdrop flex items-center justify-center p-3 sm:p-6" aria-modal="true" role="dialog" aria-labelledby="stocksQuestionnaireTitle">
+  <section class="fixed inset-0 z-[999] questionnaire-backdrop flex items-start justify-center p-3 sm:p-6 overflow-y-auto" aria-modal="true" role="dialog" aria-labelledby="stocksQuestionnaireTitle">
     <div class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[95vh] flex flex-col">
       <div class="px-5 sm:px-7 py-5 border-b border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white">
         <p class="text-xs uppercase tracking-[0.2em] text-slate-200">Stocks Account Access</p>
