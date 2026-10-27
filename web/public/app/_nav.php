@@ -105,6 +105,9 @@ $_navPage = $activePage;
 <script type="text/javascript">
 var _smartsupp = _smartsupp || {};
 _smartsupp.key = '6eb8775f8f2362d54f0ca99c92dff27646af0aef';
+if (window.innerWidth < 768) {
+  _smartsupp.offsetY = 80;
+}
 window.smartsupp||(function(d) {
   var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
   s=d.getElementsByTagName('script')[0];c=d.createElement('script');
