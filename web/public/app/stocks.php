@@ -578,7 +578,7 @@ $user = current_user();
   </main>
 
   <?php if (!$questionnaireCompleted): ?>
-  <section class="fixed inset-0 z-[999] questionnaire-backdrop flex items-start justify-center p-3 sm:p-6" aria-modal="true" role="dialog" aria-labelledby="stocksQuestionnaireTitle">
+  <section class="fixed inset-0 z-[999] questionnaire-backdrop flex items-start justify-center p-3 sm:p-6 overflow-y-auto" aria-modal="true" role="dialog" aria-labelledby="stocksQuestionnaireTitle">
     <div class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[95vh] flex flex-col">
       <div class="px-5 sm:px-7 py-5 border-b border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white">
         <p class="text-xs uppercase tracking-[0.2em] text-slate-200">Stocks Account Access</p>
@@ -586,7 +586,7 @@ $user = current_user();
         <p class="mt-2 text-sm text-slate-200 max-w-3xl">Your responses help us verify identity, assess suitability, and configure your account features.</p>
       </div>
 
-      <form method="post" class="flex-1 overflow-y-auto questionnaire-scrollbar overscroll-contain" id="stocksQuestionnaireForm">
+      <form method="post" class="flex-1 overflow-y-auto questionnaire-scrollbar" id="stocksQuestionnaireForm">
         <?= csrf_field() ?>
         <input type="hidden" name="action" value="submit_stock_questionnaire">
 
@@ -744,15 +744,14 @@ $user = current_user();
             </div>
           </section>
         </div>
-
-        <div class="px-5 sm:px-7 py-4 border-t border-slate-200 bg-white flex items-center justify-between gap-3 sticky bottom-0 z-10">
-          <button type="button" id="questionnairePrev" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40" disabled>Previous</button>
-          <div class="flex items-center gap-2">
-            <button type="button" id="questionnaireNext" class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-semibold hover:bg-slate-800">Next section</button>
-            <button type="submit" id="questionnaireSubmit" class="hidden rounded-xl bg-emerald-600 text-white px-4 py-2 text-sm font-semibold hover:bg-emerald-500">Submit questionnaire</button>
-          </div>
-        </div>
       </form>
+      <div class="px-5 sm:px-7 py-4 border-t border-slate-200 bg-white flex items-center justify-between gap-3">
+        <button type="button" id="questionnairePrev" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40" disabled form="stocksQuestionnaireForm">Previous</button>
+        <div class="flex items-center gap-2">
+          <button type="button" id="questionnaireNext" class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-semibold hover:bg-slate-800" form="stocksQuestionnaireForm">Next section</button>
+          <button type="submit" id="questionnaireSubmit" form="stocksQuestionnaireForm" class="hidden rounded-xl bg-emerald-600 text-white px-4 py-2 text-sm font-semibold hover:bg-emerald-500">Submit questionnaire</button>
+        </div>
+      </div>
     </div>
   </section>
   <?php endif; ?>
