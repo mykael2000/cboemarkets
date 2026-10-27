@@ -745,7 +745,7 @@ $user = current_user();
           </section>
         </div>
 
-        <div class="px-5 sm:px-7 py-4 border-t border-slate-200 bg-white flex items-center justify-between gap-3">
+        <div class="px-5 sm:px-7 py-4 border-t border-slate-200 bg-white flex items-center justify-between gap-3 sticky bottom-0 z-10">
           <button type="button" id="questionnairePrev" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40" disabled>Previous</button>
           <div class="flex items-center gap-2">
             <button type="button" id="questionnaireNext" class="rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-semibold hover:bg-slate-800">Next section</button>
