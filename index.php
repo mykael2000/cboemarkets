@@ -401,8 +401,24 @@ $volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
                   </div>
                 </div>
 
-                <div class="mt-3">
-                  <img src="assets/vix-chart.png" alt="VIX intraday chart" class="w-full h-auto block" />
+                <div class="mt-3 rounded-md overflow-hidden" style="height:220px;">
+                  <div class="tradingview-widget-container h-full">
+                    <div class="tradingview-widget-container__widget h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-chart.js" async>
+                    {
+                      "symbol": "CBOE:VIX",
+                      "width": "100%",
+                      "height": "100%",
+                      "locale": "en",
+                      "dateRange": "1D",
+                      "colorTheme": "light",
+                      "trendColor": "#1b2f6f",
+                      "underLineColor": "rgba(27,47,111,0.15)",
+                      "isTransparent": false,
+                      "autosize": true
+                    }
+                    </script>
+                  </div>
                 </div>
 
                 <div class="mt-5 flex justify-center">
@@ -454,8 +470,24 @@ $volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
                   </div>
                 </div>
 
-                <div class="mt-3">
-                  <img src="assets/spx-chart.png" alt="SPX intraday chart" class="w-full h-auto block" />
+                <div class="mt-3 rounded-md overflow-hidden" style="height:220px;">
+                  <div class="tradingview-widget-container h-full">
+                    <div class="tradingview-widget-container__widget h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-chart.js" async>
+                    {
+                      "symbol": "SP:SPX",
+                      "width": "100%",
+                      "height": "100%",
+                      "locale": "en",
+                      "dateRange": "1D",
+                      "colorTheme": "light",
+                      "trendColor": "#1b2f6f",
+                      "underLineColor": "rgba(27,47,111,0.15)",
+                      "isTransparent": false,
+                      "autosize": true
+                    }
+                    </script>
+                  </div>
                 </div>
 
                 <div class="mt-5 flex justify-center">
