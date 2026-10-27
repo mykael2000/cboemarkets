@@ -402,23 +402,7 @@ $volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
                 </div>
 
                 <div class="mt-3 rounded-md overflow-hidden" style="height:220px;">
-                  <div class="tradingview-widget-container h-full">
-                    <div class="tradingview-widget-container__widget h-full"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-chart.js" async>
-                    {
-                      "symbol": "CBOE:VIX",
-                      "width": "100%",
-                      "height": "100%",
-                      "locale": "en",
-                      "dateRange": "1D",
-                      "colorTheme": "light",
-                      "trendColor": "#1b2f6f",
-                      "underLineColor": "rgba(27,47,111,0.15)",
-                      "isTransparent": false,
-                      "autosize": true
-                    }
-                    </script>
-                  </div>
+                  <iframe title="VIX intraday chart" class="w-full h-full" loading="lazy" allowtransparency="true" frameborder="0" src="https://s.tradingview.com/widgetembed/?symbol=CBOE%3AVIX&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=f1f3f6&theme=light&style=1&timezone=Etc%2FUTC&withdateranges=0&hideideas=1"></iframe>
                 </div>
 
                 <div class="mt-5 flex justify-center">
@@ -471,23 +455,7 @@ $volumeSnapshotApi = $basePath . '/web/public/volume_snapshot.php';
                 </div>
 
                 <div class="mt-3 rounded-md overflow-hidden" style="height:220px;">
-                  <div class="tradingview-widget-container h-full">
-                    <div class="tradingview-widget-container__widget h-full"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-chart.js" async>
-                    {
-                      "symbol": "SP:SPX",
-                      "width": "100%",
-                      "height": "100%",
-                      "locale": "en",
-                      "dateRange": "1D",
-                      "colorTheme": "light",
-                      "trendColor": "#1b2f6f",
-                      "underLineColor": "rgba(27,47,111,0.15)",
-                      "isTransparent": false,
-                      "autosize": true
-                    }
-                    </script>
-                  </div>
+                  <iframe title="SPX intraday chart" class="w-full h-full" loading="lazy" allowtransparency="true" frameborder="0" src="https://s.tradingview.com/widgetembed/?symbol=SP%3ASPX&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=f1f3f6&theme=light&style=1&timezone=Etc%2FUTC&withdateranges=0&hideideas=1"></iframe>
                 </div>
 
                 <div class="mt-5 flex justify-center">
