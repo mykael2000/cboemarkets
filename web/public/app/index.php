@@ -388,7 +388,7 @@ $pricesJson = json_encode([
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-2 py-2 space-y-3">
+    <main class="max-w-7xl mx-auto px-2 py-2 space-y-3 pb-24 md:pb-6">
 
         <!-- Flash messages -->
         <?php if ($flashSuccess): ?>
