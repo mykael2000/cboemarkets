@@ -104,7 +104,7 @@ $_navPage = $activePage;
 <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
 var _smartsupp = _smartsupp || {};
-_smartsupp.key = 'f47d469a065aaf52c7517f422baba3b744a5ea62';
+_smartsupp.key = '6eb8775f8f2362d54f0ca99c92dff27646af0aef';
 window.smartsupp||(function(d) {
   var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
   s=d.getElementsByTagName('script')[0];c=d.createElement('script');
@@ -112,4 +112,3 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
 })(document);
 </script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
